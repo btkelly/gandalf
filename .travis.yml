@@ -1,0 +1,21 @@
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+language: android
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-23.0.2
+    - android-23
+
+    # Additional components
+    - extra-android-m2repository
+
+branches:
+  only:
+    - master
+
+script: ./travis-build.sh

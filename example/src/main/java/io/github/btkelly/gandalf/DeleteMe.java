@@ -15,19 +15,8 @@
  */
 package io.github.btkelly.gandalf;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-
 /**
- * To work on unit tests, switch the Test Artifact in the Build Variants view.
+ * TODO: Add a class header comment!
  */
-public class ExampleUnitTest {
-
-    private static final int EXPECTED = 4;
-
-    @Test
-    public void additionIsCorrect() {
-        Assert.assertEquals(EXPECTED, 2 + 2);
-    }
+public class DeleteMe {
 }

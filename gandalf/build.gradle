@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.btkelly:gnag:0.1.1'
+    }
+}
+
+plugins {
+    id "com.github.hierynomus.license" version "0.12.1"
+}
+
 apply plugin: 'com.android.library'
+apply plugin: 'com.noveogroup.android.check'
+apply plugin: 'gnag-plugin'
 
 android {
     compileSdkVersion 23
@@ -18,8 +33,35 @@ android {
     }
 }
 
+license {
+    header = file('../Apache2License.txt')
+    strictCheck true
+}
+
+gnag {
+    gitHubRepoName 'btkelly/gandalf'
+    failBuildOnError true
+}
+
+check {
+    abortOnError false
+    checkstyle {
+        config project.file('config/checkstyle.xml')
+    }
+
+    findbugs {
+        config hard()
+    }
+
+    pmd {
+        config project.file('config/pmd.xml')
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
 }
+
+preBuild.dependsOn licenseFormat

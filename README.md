@@ -1,1 +1,1 @@
-# gandalf [![Build Status](https://travis-ci.org/btkelly/gandalf.svg?branch=master)](https://travis-ci.org/btkelly/gandalf)
+# gandalf [![Build Status](https://travis-ci.org/btkelly/gandalf.svg?branch=master)](https://travis-ci.org/btkelly/gandalf) <a href="http://www.detroitlabs.com/"><img src="https://img.shields.io/badge/Sponsor-Detroit%20Labs-000000.svg" /></a>

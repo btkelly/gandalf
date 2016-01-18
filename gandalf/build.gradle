@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.btkelly:gnag:0.1.1'
+        classpath 'com.btkelly:gnag:0.1.2'
     }
 }
 
@@ -25,6 +25,22 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    lintOptions {
+        abortOnError true
+    }
+
+    testOptions.unitTests {
+        returnDefaultValues = true
+        all {
+            maxParallelForks = 2
+            forkEvery = 150
+            afterTest { descriptor, result ->
+                println "Executing test for ${descriptor.name} with result: ${result.resultType}"
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

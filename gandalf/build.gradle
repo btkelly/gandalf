@@ -80,6 +80,7 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.squareup.okhttp3:okhttp:3.0.1'
+    compile 'com.google.code.gson:gson:2.5'
 
     testCompile 'junit:junit:4.12'
 }

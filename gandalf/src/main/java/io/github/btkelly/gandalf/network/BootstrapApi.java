@@ -65,7 +65,7 @@ public class BootstrapApi {
     public void fetchBootstrap(Callback callback) {
 
         if (StringUtils.isBlank(gandalf.getBootstrapUrl())) {
-            throw new IllegalStateException("You must supply a bootstrap url in the Gandalf builder");
+            throw new IllegalStateException("You must supply a bootstrap url in the Gandalf installer");
         }
 
         Request request = new Request.Builder()

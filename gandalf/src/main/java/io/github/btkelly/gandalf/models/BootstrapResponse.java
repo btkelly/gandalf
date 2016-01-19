@@ -42,12 +42,12 @@ public class BootstrapResponse implements Parcelable {
 
     @Override
     public String toString() {
-        return "BootstrapResponse{" +
-                "android=" + android +
-                '}';
+        return "BootstrapResponse{"
+                + "android=" + android
+                + '}';
     }
 
-    public BootstrapResponse() {
+    private BootstrapResponse() {
 
     }
 

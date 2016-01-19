@@ -39,10 +39,10 @@ public class OptionalUpdate implements Parcelable {
 
     @Override
     public String toString() {
-        return "OptionalUpdate{" +
-                "optionalVersion='" + optionalVersion + '\'' +
-                ", message='" + message + '\'' +
-                '}';
+        return "OptionalUpdate{"
+                + "optionalVersion='" + optionalVersion + '\''
+                + ", message='" + message + '\''
+                + '}';
     }
 
     @Override
@@ -56,7 +56,8 @@ public class OptionalUpdate implements Parcelable {
         dest.writeString(this.message);
     }
 
-    public OptionalUpdate() {
+    private OptionalUpdate() {
+
     }
 
     protected OptionalUpdate(Parcel in) {

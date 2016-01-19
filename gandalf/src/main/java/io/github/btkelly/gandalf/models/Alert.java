@@ -38,10 +38,10 @@ public class Alert implements Parcelable {
 
     @Override
     public String toString() {
-        return "Alert{" +
-                "message='" + message + '\'' +
-                ", blocking=" + blocking +
-                '}';
+        return "Alert{"
+                + "message='" + message + '\''
+                + ", blocking=" + blocking
+                + '}';
     }
 
     @Override
@@ -55,7 +55,8 @@ public class Alert implements Parcelable {
         dest.writeByte(blocking ? (byte) 1 : (byte) 0);
     }
 
-    public Alert() {
+    private Alert() {
+
     }
 
     protected Alert(Parcel in) {

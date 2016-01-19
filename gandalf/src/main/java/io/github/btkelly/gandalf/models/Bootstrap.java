@@ -45,11 +45,11 @@ public class Bootstrap implements Parcelable {
 
     @Override
     public String toString() {
-        return "Bootstrap{" +
-                "alert=" + alert +
-                ", optionalUpdate=" + optionalUpdate +
-                ", requiredUpdate=" + requiredUpdate +
-                '}';
+        return "Bootstrap{"
+                + "alert=" + alert
+                + ", optionalUpdate=" + optionalUpdate
+                + ", requiredUpdate=" + requiredUpdate
+                + '}';
     }
 
     @Override
@@ -64,7 +64,7 @@ public class Bootstrap implements Parcelable {
         dest.writeParcelable(this.requiredUpdate, flags);
     }
 
-    public Bootstrap() {
+    private Bootstrap() {
 
     }
 

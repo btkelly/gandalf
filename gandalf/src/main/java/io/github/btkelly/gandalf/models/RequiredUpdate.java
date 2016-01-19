@@ -39,10 +39,10 @@ public class RequiredUpdate implements Parcelable {
 
     @Override
     public String toString() {
-        return "RequiredUpdate{" +
-                "minimumVersion='" + minimumVersion + '\'' +
-                ", message='" + message + '\'' +
-                '}';
+        return "RequiredUpdate{"
+                + "minimumVersion='" + minimumVersion + '\''
+                + ", message='" + message + '\''
+                + '}';
     }
 
     @Override
@@ -56,7 +56,8 @@ public class RequiredUpdate implements Parcelable {
         dest.writeString(this.message);
     }
 
-    public RequiredUpdate() {
+    private RequiredUpdate() {
+
     }
 
     protected RequiredUpdate(Parcel in) {

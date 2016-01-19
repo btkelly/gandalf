@@ -1,0 +1,16 @@
+{
+  "android": {
+    "alert": {
+      "message": "We are currently performing server maintenance. Please try again later.",
+      "blocking": true
+    },
+    "optionalUpdate": {
+      "optionalVersion": "12",
+      "message": "A new version of the application is available, please click below to update to the latest version."
+    },
+    "requiredUpdate": {
+      "minimumVersion": "9",
+      "message": "A new version of the application is available and is required to continue, please click below to update to the latest version."
+    }
+  }
+}

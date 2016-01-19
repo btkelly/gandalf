@@ -15,8 +15,24 @@
  */
 package io.github.btkelly.gandalf;
 
+import android.app.Application;
+
 /**
- * TODO: Add a class header comment!
+ * Class to provide a static accessor to the Application context
  */
-public class DeleteMe {
+public final class AppProvider {
+
+    private static Application application;
+
+    private AppProvider() {
+
+    }
+
+    public static Application getApplication() {
+        return application;
+    }
+
+    public static void setApplication(Application application) {
+        AppProvider.application = application;
+    }
 }

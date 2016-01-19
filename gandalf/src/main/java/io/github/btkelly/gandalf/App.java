@@ -15,19 +15,16 @@
  */
 package io.github.btkelly.gandalf;
 
-import org.junit.Assert;
-import org.junit.Test;
-
+import android.app.Application;
 
 /**
- * To work on unit tests, switch the Test Artifact in the Build Variants view.
+ * TODO: Add a class header comment!
  */
-public class ExampleUnitTest {
+public class App extends Application {
 
-    private static final int EXPECTED = 4;
-
-    @Test
-    public void additionIsCorrect() {
-        Assert.assertEquals(EXPECTED, 2 + 2);
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        AppProvider.setApplication(this);
     }
 }

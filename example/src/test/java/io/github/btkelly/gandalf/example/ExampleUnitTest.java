@@ -13,10 +13,21 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package io.github.btkelly.gandalf;
+package io.github.btkelly.gandalf.example;
+
+import org.junit.Assert;
+import org.junit.Test;
+
 
 /**
- * TODO: Add a class header comment!
+ * To work on unit tests, switch the Test Artifact in the Build Variants view.
  */
-public class DeleteMe {
+public class ExampleUnitTest {
+
+    private static final int EXPECTED = 4;
+
+    @Test
+    public void additionIsCorrect() {
+        Assert.assertEquals(EXPECTED, 2 + 2);
+    }
 }

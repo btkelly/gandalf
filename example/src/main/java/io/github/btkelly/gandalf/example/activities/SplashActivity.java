@@ -13,18 +13,10 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package io.github.btkelly.gandalf;
-
-import android.app.Application;
+package io.github.btkelly.gandalf.example.activities;
 
 /**
  * TODO: Add a class header comment!
  */
-public class App extends Application {
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        AppProvider.setApplication(this);
-    }
+public class SplashActivity {
 }

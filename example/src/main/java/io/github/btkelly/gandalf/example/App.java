@@ -13,26 +13,24 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package io.github.btkelly.gandalf;
+package io.github.btkelly.gandalf.example;
 
 import android.app.Application;
 
+import io.github.btkelly.gandalf.Gandalf;
+
 /**
- * Class to provide a static accessor to the Application context
+ * TODO: Add a class header comment!
  */
-public final class AppProvider {
+public class App extends Application {
 
-    private static Application application;
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
-    private AppProvider() {
+        new Gandalf.Installer()
+                .setBootstrapUrl("Test")
+                .install();
 
-    }
-
-    public static Application getApplication() {
-        return application;
-    }
-
-    public static void setApplication(Application application) {
-        AppProvider.application = application;
     }
 }

@@ -22,11 +22,15 @@ import io.github.btkelly.gandalf.utils.StringUtils;
 /**
  * This is the public api that allows consumers to configure the Gandalf library.
  */
-public class Gandalf {
+public final class Gandalf {
 
     private static Gandalf gandalfInstance;
 
     private String bootstrapUrl;
+
+    private Gandalf() {
+
+    }
 
     public static Gandalf get() {
         synchronized (Gandalf.class) {
@@ -36,6 +40,10 @@ public class Gandalf {
         }
 
         return gandalfInstance;
+    }
+
+    private static Gandalf createInstance() {
+        return new Gandalf();
     }
 
     public String getBootstrapUrl() {
@@ -65,7 +73,7 @@ public class Gandalf {
                     throw new IllegalStateException("You must supply a bootstrap url");
                 }
 
-                Gandalf gandalf = new Gandalf();
+                Gandalf gandalf = createInstance();
 
                 gandalf.bootstrapUrl = this.bootstrapUrl;
 

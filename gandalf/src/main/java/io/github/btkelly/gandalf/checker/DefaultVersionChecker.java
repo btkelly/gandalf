@@ -24,7 +24,7 @@ import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.models.RequiredUpdate;
 import io.github.btkelly.gandalf.utils.StringUtils;
 
-public class DefaultVersionGate implements VersionGate {
+public class DefaultVersionChecker implements VersionChecker {
 
     @Override
     public boolean showRequiredUpdate(@NonNull final RequiredUpdate requiredUpdate, @NonNull final AppVersionDetails appVersionDetails) {

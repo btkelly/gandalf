@@ -32,13 +32,13 @@ import io.github.btkelly.gandalf.models.RequiredUpdate;
  */
 public class GateKeeper {
 
-    private final VersionGate versionGate;
-    private final HistoryGate historyGate;
+    private final VersionChecker versionChecker;
+    private final HistoryChecker historyChecker;
     private final AppVersionDetails appVersionDetails;
 
-    public GateKeeper(@NonNull final Context context, @NonNull VersionGate versionGate, @NonNull HistoryGate historyGate) {
-        this.versionGate = versionGate;
-        this.historyGate = historyGate;
+    public GateKeeper(@NonNull final Context context, @NonNull VersionChecker versionChecker, @NonNull HistoryChecker historyChecker) {
+        this.versionChecker = versionChecker;
+        this.historyChecker = historyChecker;
 
         try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -54,24 +54,24 @@ public class GateKeeper {
      * @param bootstrap - provided version requirements
      * @return true if the app's version is lower than required
      */
-    public boolean mustUpdate(@NonNull final Bootstrap bootstrap) {
+    public boolean updateIsRequired(@NonNull final Bootstrap bootstrap) {
         final RequiredUpdate requiredUpdate = bootstrap.getRequiredUpdate();
 
         return requiredUpdate != null
-                && versionGate.showRequiredUpdate(requiredUpdate, appVersionDetails);
+                && versionChecker.showRequiredUpdate(requiredUpdate, appVersionDetails);
     }
 
     /**
      * Checks version of installed app against the {@link Bootstrap}.
      * @param bootstrap - provided version requirements
-     * @return true if an update is available
+     * @return true if an update is available and hasn't been recorded in history
      */
-    public boolean canUpdate(@NonNull final Bootstrap bootstrap) {
+    public boolean updateIsOptional(@NonNull final Bootstrap bootstrap) {
         final OptionalUpdate optionalUpdate = bootstrap.getOptionalUpdate();
 
         return optionalUpdate != null
-                && versionGate.showOptionalUpdate(optionalUpdate, appVersionDetails)
-                && historyGate.matches(optionalUpdate);
+                && versionChecker.showOptionalUpdate(optionalUpdate, appVersionDetails)
+                && !historyChecker.contains(optionalUpdate);
     }
 
     /**
@@ -83,7 +83,7 @@ public class GateKeeper {
         final Alert alert = bootstrap.getAlert();
 
         return alert != null
-                && (versionGate.showAlert(alert) || historyGate.matches(alert));
+                && (versionChecker.showAlert(alert) || !historyChecker.contains(alert));
     }
 
 }

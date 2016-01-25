@@ -18,9 +18,9 @@ package io.github.btkelly.gandalf.checker;
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 
-public interface HistoryGate {
+public interface HistoryChecker {
 
-    boolean matches(Alert alert);
-    boolean matches(OptionalUpdate optionalUpdate);
+    boolean contains(Alert alert);
+    boolean contains(OptionalUpdate optionalUpdate);
 
 }

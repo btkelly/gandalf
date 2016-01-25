@@ -17,17 +17,35 @@ package io.github.btkelly.gandalf.checker;
 
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.AppVersionDetails;
-import io.github.btkelly.gandalf.models.Bootstrap;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.models.RequiredUpdate;
 
 /**
- * Describes a checker for interpreting a {@link Bootstrap}. This can be custom.
+ * Checks for needed updates.
  */
-public interface VersionGate {
+public interface VersionChecker {
 
+    /**
+     * Checks if the {@link RequiredUpdate} should be shown.
+     * @param requiredUpdate current required version information
+     * @param appVersionDetails details about the current version of the install app
+     * @return {@code true} if {@code requiredUpdate} should be shown
+     */
     boolean showRequiredUpdate(RequiredUpdate requiredUpdate, AppVersionDetails appVersionDetails);
+
+    /**
+     * Checks if the {@link OptionalUpdate} should be shown.
+     * @param optionalUpdate current optional version information
+     * @param appVersionDetails details about the current version of the installed app
+     * @return {@code true} if {@code optionalUpdate} should be shown
+     */
     boolean showOptionalUpdate(OptionalUpdate optionalUpdate, AppVersionDetails appVersionDetails);
+
+    /**
+     * Checks if the {@link Alert} should be shown.
+     * @param alert current alert information
+     * @return {@code true} if {@code alert} should be shown
+     */
     boolean showAlert(Alert alert);
 
 }

@@ -18,9 +18,24 @@ package io.github.btkelly.gandalf.checker;
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 
+/**
+ * Interface to facilitate checking the previously
+ * seen {@link OptionalUpdate} and {@link Alert}.
+ */
 public interface HistoryChecker {
 
+    /**
+     * Checks provided {@link Alert} against the last seen one.
+     * @param alert item to compare against the history
+     * @return {@code true} if provided alert matches the history
+     */
     boolean contains(Alert alert);
+
+    /**
+     * Checks provided {@link OptionalUpdate} against the last seen one.
+     * @param optionalUpdate item to compare against the history
+     * @return {@code true} if provided update matches the history
+     */
     boolean contains(OptionalUpdate optionalUpdate);
 
 }

@@ -24,8 +24,18 @@ import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.models.RequiredUpdate;
 import io.github.btkelly.gandalf.utils.StringUtils;
 
+/**
+ * Default implementation of {@link VersionChecker}.
+ */
 public class DefaultVersionChecker implements VersionChecker {
 
+    /**
+     * Checks provided {@link RequiredUpdate} against {@link AppVersionDetails} of the currently installed
+     * app.
+     * @param requiredUpdate current required version information
+     * @param appVersionDetails details about the current version of the install app
+     * @return {@code true} if app's version is less than the required version
+     */
     @Override
     public boolean showRequiredUpdate(@NonNull final RequiredUpdate requiredUpdate, @NonNull final AppVersionDetails appVersionDetails) {
 
@@ -44,6 +54,13 @@ public class DefaultVersionChecker implements VersionChecker {
         }
     }
 
+    /**
+     * Checks provided {@link OptionalUpdate} against {@link AppVersionDetails} of the currently installed
+     * app.
+     * @param optionalUpdate current optional version information
+     * @param appVersionDetails details about the current version of the installed app
+     * @return {@code true} if app's version is behind the optional version
+     */
     @Override
     public boolean showOptionalUpdate(@NonNull final OptionalUpdate optionalUpdate, @NonNull final AppVersionDetails appVersionDetails) {
         final String optionalVersionString = optionalUpdate.getOptionalVersion();
@@ -61,6 +78,11 @@ public class DefaultVersionChecker implements VersionChecker {
         }
     }
 
+    /**
+     * Checks provided {@link Alert}.
+     * @param alert current alert information
+     * @return {@code true} if alert should block
+     */
     @Override
     public boolean showAlert(@NonNull final Alert alert) {
         final String message = alert.getMessage();

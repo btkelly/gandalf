@@ -46,6 +46,7 @@ public class RecordKeeper implements HistoryChecker {
      * @param optionalUpdate this should be the current optional update information
      * @return true if {@code optionalUpdate} matches the last viewed update to be recorded.
      */
+    @Override
     public boolean contains(@NonNull final OptionalUpdate optionalUpdate) {
         final String optionalVersion = optionalUpdate.getOptionalVersion();
         final String storedValue = prefs.getString(KEY_OPTIONAL_UPDATE, "");
@@ -70,6 +71,7 @@ public class RecordKeeper implements HistoryChecker {
      * @param alert the current optional update information
      * @return true if {@code alert} matches the last viewed alert to be recorded.
      */
+    @Override
     public boolean contains(@NonNull final Alert alert) {
         final String message = alert.getMessage();
         final String storedValue = prefs.getString(KEY_ALERT, "");

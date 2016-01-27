@@ -17,20 +17,37 @@ package io.github.btkelly.gandalf.example;
 
 import android.app.Application;
 
+import java.io.IOException;
+
 import io.github.btkelly.gandalf.Gandalf;
+import okhttp3.mockwebserver.MockWebServer;
 
 /**
  * TODO: Add a class header comment!
  */
 public class App extends Application {
 
+    private static MockWebServer mockWebServer;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
+        mockWebServer = new MockWebServer();
+        try {
+            mockWebServer.start();
+        } catch (IOException e) {
+            throw new RuntimeException("Problem starting mock web server");
+        }
+
         new Gandalf.Installer()
-                .setBootstrapUrl("Test")
+                .setContext(this)
+                .setBootstrapUrl(String.valueOf(mockWebServer.url("")))
                 .install();
 
+    }
+
+    public static MockWebServer getMockWebServer() {
+        return mockWebServer;
     }
 }

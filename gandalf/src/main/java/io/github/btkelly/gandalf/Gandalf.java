@@ -31,7 +31,7 @@ import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.Bootstrap;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.network.BootstrapApi;
-import io.github.btkelly.gandalf.prefs.RecordKeeper;
+import io.github.btkelly.gandalf.checker.DefaultHistoryChecker;
 import io.github.btkelly.gandalf.utils.StringUtils;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -158,7 +158,7 @@ public final class Gandalf {
                 gandalf.context = this.context;
                 gandalf.bootstrapUrl = this.bootstrapUrl;
                 gandalf.versionChecker = new DefaultVersionChecker();
-                gandalf.historyChecker = new RecordKeeper(this.context);
+                gandalf.historyChecker = new DefaultHistoryChecker(this.context);
                 gandalf.gateKeeper = new GateKeeper(this.context, gandalf.versionChecker, gandalf.historyChecker);
 
                 gandalfInstance = gandalf;

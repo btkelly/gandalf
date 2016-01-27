@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package io.github.btkelly.gandalf.prefs;
+package io.github.btkelly.gandalf.checker;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -28,7 +28,7 @@ import io.github.btkelly.gandalf.utils.StringUtils;
  * Accesses {@link SharedPreferences} to determine if items have been
  * marked as previously viewed, and updates items with newly viewed versions.
  */
-public class RecordKeeper implements HistoryChecker {
+public class DefaultHistoryChecker implements HistoryChecker {
 
     private static final String SHARED_PREFS_NAME = "io.github.btkelly.gandalf";
 
@@ -37,7 +37,7 @@ public class RecordKeeper implements HistoryChecker {
 
     private final SharedPreferences prefs;
 
-    public RecordKeeper(@NonNull final Context context) {
+    public DefaultHistoryChecker(@NonNull final Context context) {
         prefs = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
     }
 

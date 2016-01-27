@@ -23,15 +23,14 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
+import io.github.btkelly.gandalf.checker.DefaultHistoryChecker;
 import io.github.btkelly.gandalf.checker.DefaultVersionChecker;
 import io.github.btkelly.gandalf.checker.GateKeeper;
 import io.github.btkelly.gandalf.checker.HistoryChecker;
-import io.github.btkelly.gandalf.checker.VersionChecker;
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.Bootstrap;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.network.BootstrapApi;
-import io.github.btkelly.gandalf.checker.DefaultHistoryChecker;
 import io.github.btkelly.gandalf.utils.StringUtils;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -44,14 +43,16 @@ public final class Gandalf {
 
     private static Gandalf gandalfInstance;
 
-    private Context context;
-    private String bootstrapUrl;
-    private GateKeeper gateKeeper;
-    private VersionChecker versionChecker;
-    private HistoryChecker historyChecker;
+    private final Context context;
+    private final String bootstrapUrl;
+    private final HistoryChecker historyChecker;
+    private final GateKeeper gateKeeper;
 
-    private Gandalf() {
-
+    private Gandalf(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper) {
+        this.context = context;
+        this.bootstrapUrl = bootstrapUrl;
+        this.historyChecker = historyChecker;
+        this.gateKeeper = gateKeeper;
     }
 
     public static Gandalf get() {
@@ -64,8 +65,8 @@ public final class Gandalf {
         return gandalfInstance;
     }
 
-    private static Gandalf createInstance() {
-        return new Gandalf();
+    private static Gandalf createInstance(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper) {
+        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper);
     }
 
     /**
@@ -153,15 +154,14 @@ public final class Gandalf {
                     throw new IllegalStateException("You must supply a bootstrap url");
                 }
 
-                Gandalf gandalf = createInstance();
+                HistoryChecker historyChecker = new DefaultHistoryChecker(this.context);
 
-                gandalf.context = this.context;
-                gandalf.bootstrapUrl = this.bootstrapUrl;
-                gandalf.versionChecker = new DefaultVersionChecker();
-                gandalf.historyChecker = new DefaultHistoryChecker(this.context);
-                gandalf.gateKeeper = new GateKeeper(this.context, gandalf.versionChecker, gandalf.historyChecker);
-
-                gandalfInstance = gandalf;
+                gandalfInstance = createInstance(
+                        this.context,
+                        this.bootstrapUrl,
+                        historyChecker,
+                        new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker)
+                );
             }
         }
     }

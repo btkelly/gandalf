@@ -73,7 +73,7 @@ public final class Gandalf {
      * @param optionalUpdate the provided current optional update information
      * @return {@code true} if {@code optionalUpdate} was successfully saved
      */
-    boolean save(@NonNull final OptionalUpdate optionalUpdate) {
+    public boolean save(@NonNull final OptionalUpdate optionalUpdate) {
         return this.historyChecker.save(optionalUpdate);
     }
 
@@ -101,24 +101,18 @@ public final class Gandalf {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        try {
-                            Gson gson = new GsonBuilder()
-                                    .create();
+                        Gson gson = new GsonBuilder()
+                                .create();
 
-                            Bootstrap bootstrap = gson.fromJson(response.body().toString(), Bootstrap.class);
+                        Bootstrap bootstrap = gson.fromJson(response.body().toString(), Bootstrap.class);
 
-                            if (gateKeeper.updateIsRequired(bootstrap)) {
-                                gandalfCallback.onRequiredUpdate(Gandalf.this, bootstrap.getRequiredUpdate());
-                            } else if (gateKeeper.updateIsOptional(bootstrap)) {
-                                gandalfCallback.onOptionalUpdate(Gandalf.this, bootstrap.getOptionalUpdate());
-                            } else if (gateKeeper.showAlert(bootstrap)) {
-                                gandalfCallback.onAlert(Gandalf.this, bootstrap.getAlert());
-                            } else {
-                                gandalfCallback.onNoActionRequired();
-                            }
-                        } catch (Exception e) {
-                            //In any error case we should let the user in as to not block based on a bug
-                            e.printStackTrace();
+                        if (gateKeeper.updateIsRequired(bootstrap)) {
+                            gandalfCallback.onRequiredUpdate(Gandalf.this, bootstrap.getRequiredUpdate());
+                        } else if (gateKeeper.updateIsOptional(bootstrap)) {
+                            gandalfCallback.onOptionalUpdate(Gandalf.this, bootstrap.getOptionalUpdate());
+                        } else if (gateKeeper.showAlert(bootstrap)) {
+                            gandalfCallback.onAlert(Gandalf.this, bootstrap.getAlert());
+                        } else {
                             gandalfCallback.onNoActionRequired();
                         }
 

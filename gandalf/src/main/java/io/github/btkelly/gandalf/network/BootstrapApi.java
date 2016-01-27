@@ -20,7 +20,6 @@ import android.content.Context;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-import io.github.btkelly.gandalf.Gandalf;
 import io.github.btkelly.gandalf.utils.StringUtils;
 import okhttp3.Cache;
 import okhttp3.Callback;
@@ -35,16 +34,16 @@ public class BootstrapApi {
     private static final int CACHE_SIZE = 1024;
     private static final long CONNECTION_TIMEOUT_SECONDS = 30;
 
-    private final Gandalf gandalf;
+    private final String bootStrapUrl;
     private final OkHttpClient okHttpClient;
 
     /**
      * Creates a bootstrap api class
      * @param context - Android context used for setting up http cache directory
-     * @param gandalf - Gandalf used to read the current configuration
+     * @param bootStrapUrl - url to fetch the bootstrap file from
      */
-    public BootstrapApi(Context context, Gandalf gandalf) {
-        this.gandalf = gandalf;
+    public BootstrapApi(Context context, String bootStrapUrl) {
+        this.bootStrapUrl = bootStrapUrl;
 
         File cacheDir = context.getCacheDir();
         Cache cache = new Cache(cacheDir, CACHE_SIZE);
@@ -64,12 +63,12 @@ public class BootstrapApi {
      */
     public void fetchBootstrap(Callback callback) {
 
-        if (StringUtils.isBlank(gandalf.getBootstrapUrl())) {
-            throw new IllegalStateException("You must supply a bootstrap url in the Gandalf installer");
+        if (StringUtils.isBlank(bootStrapUrl)) {
+            throw new IllegalStateException("You must supply a bootstrap url");
         }
 
         Request request = new Request.Builder()
-                .url(gandalf.getBootstrapUrl())
+                .url(bootStrapUrl)
                 .build();
 
         okHttpClient.newCall(request).enqueue(callback);

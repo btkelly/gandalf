@@ -13,13 +13,12 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package io.github.btkelly.gandalf.prefs;
+package io.github.btkelly.gandalf.checker;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
-import io.github.btkelly.gandalf.checker.HistoryChecker;
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.utils.StringUtils;
@@ -28,7 +27,7 @@ import io.github.btkelly.gandalf.utils.StringUtils;
  * Accesses {@link SharedPreferences} to determine if items have been
  * marked as previously viewed, and updates items with newly viewed versions.
  */
-public class RecordKeeper implements HistoryChecker {
+public class DefaultHistoryChecker implements HistoryChecker {
 
     private static final String SHARED_PREFS_NAME = "io.github.btkelly.gandalf";
 
@@ -37,7 +36,7 @@ public class RecordKeeper implements HistoryChecker {
 
     private final SharedPreferences prefs;
 
-    public RecordKeeper(@NonNull final Context context) {
+    public DefaultHistoryChecker(@NonNull final Context context) {
         prefs = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
     }
 
@@ -46,6 +45,7 @@ public class RecordKeeper implements HistoryChecker {
      * @param optionalUpdate this should be the current optional update information
      * @return true if {@code optionalUpdate} matches the last viewed update to be recorded.
      */
+    @Override
     public boolean contains(@NonNull final OptionalUpdate optionalUpdate) {
         final String optionalVersion = optionalUpdate.getOptionalVersion();
         final String storedValue = prefs.getString(KEY_OPTIONAL_UPDATE, "");
@@ -70,6 +70,7 @@ public class RecordKeeper implements HistoryChecker {
      * @param alert the current optional update information
      * @return true if {@code alert} matches the last viewed alert to be recorded.
      */
+    @Override
     public boolean contains(@NonNull final Alert alert) {
         final String message = alert.getMessage();
         final String storedValue = prefs.getString(KEY_ALERT, "");

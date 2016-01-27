@@ -19,10 +19,11 @@ import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.models.RequiredUpdate;
 
-public interface Callback {
+public interface GandalfCallback {
 
-    void onRequiredUpdate(Gandalf gandalf, RequiredUpdate requiredUpdate);
-    void onOptionalUpdate(Gandalf gandalf, OptionalUpdate optionalUpdate);
-    void onAlert(Gandalf gandalf, Alert alert);
+    void onRequiredUpdate(RequiredUpdate requiredUpdate);
+    void onOptionalUpdate(OptionalUpdate optionalUpdate);
+    void onAlert(Alert alert);
+    void onNoActionRequired();
 
 }

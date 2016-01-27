@@ -70,8 +70,8 @@ public class GateKeeper {
         final OptionalUpdate optionalUpdate = bootstrap.getOptionalUpdate();
 
         return optionalUpdate != null
-                && versionChecker.showOptionalUpdate(optionalUpdate, appVersionDetails)
-                && !historyChecker.contains(optionalUpdate);
+                && !historyChecker.contains(optionalUpdate)
+                && versionChecker.showOptionalUpdate(optionalUpdate, appVersionDetails);
     }
 
     /**

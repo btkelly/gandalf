@@ -1,0 +1,12 @@
+author_approval: ignored
+approve_by_comment: true
+approve_regex: ^Approved
+reject_regex: ^Rejected
+reset_on_push: true
+reviewers:
+  members:
+  - btkelly
+  - stkent
+  - jsibbold
+  name: default
+  required: 1

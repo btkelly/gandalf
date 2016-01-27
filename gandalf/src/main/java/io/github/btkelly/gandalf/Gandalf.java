@@ -107,11 +107,11 @@ public final class Gandalf {
                         Bootstrap bootstrap = gson.fromJson(response.body().toString(), Bootstrap.class);
 
                         if (gateKeeper.updateIsRequired(bootstrap)) {
-                            gandalfCallback.onRequiredUpdate(Gandalf.this, bootstrap.getRequiredUpdate());
+                            gandalfCallback.onRequiredUpdate(bootstrap.getRequiredUpdate());
                         } else if (gateKeeper.updateIsOptional(bootstrap)) {
-                            gandalfCallback.onOptionalUpdate(Gandalf.this, bootstrap.getOptionalUpdate());
+                            gandalfCallback.onOptionalUpdate(bootstrap.getOptionalUpdate());
                         } else if (gateKeeper.showAlert(bootstrap)) {
-                            gandalfCallback.onAlert(Gandalf.this, bootstrap.getAlert());
+                            gandalfCallback.onAlert(bootstrap.getAlert());
                         } else {
                             gandalfCallback.onNoActionRequired();
                         }

@@ -68,7 +68,7 @@ public abstract class GandalfActivity extends AppCompatActivity implements Ganda
     }
 
     @Override
-    public final void onRequiredUpdate(final Gandalf gandalf, RequiredUpdate requiredUpdate) {
+    public final void onRequiredUpdate(RequiredUpdate requiredUpdate) {
         //TODO show in a dialog using dialog util
         //This is just temporary until this is implemented
         new AlertDialog.Builder(this)
@@ -82,13 +82,13 @@ public abstract class GandalfActivity extends AppCompatActivity implements Ganda
     }
 
     @Override
-    public final void onOptionalUpdate(Gandalf gandalf, OptionalUpdate optionalUpdate) {
+    public final void onOptionalUpdate(OptionalUpdate optionalUpdate) {
         //TODO show in a dialog using dialog util
         this.gandalf.save(optionalUpdate);
     }
 
     @Override
-    public final void onAlert(Gandalf gandalf, Alert alert) {
+    public final void onAlert(Alert alert) {
         //TODO show in a dialog using dialog util
         this.gandalf.save(alert);
     }

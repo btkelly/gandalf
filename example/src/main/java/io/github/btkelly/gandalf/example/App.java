@@ -16,10 +16,20 @@
 package io.github.btkelly.gandalf.example;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.annotation.RawRes;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import io.github.btkelly.gandalf.Gandalf;
+import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
 /**
@@ -27,15 +37,27 @@ import okhttp3.mockwebserver.MockWebServer;
  */
 public class App extends Application {
 
-    private static MockWebServer mockWebServer;
+    public static final String KEY_RES_ID = "KEY_RES_ID";
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        mockWebServer = new MockWebServer();
+        MockWebServer mockWebServer = new MockWebServer();
         try {
             mockWebServer.start();
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+            int mockBootstrapResId = sharedPreferences.getInt(KEY_RES_ID, R.raw.no_action_bootstrap);
+
+            String mockBootstrapJsonBody = getMockJsonBootstrap(mockBootstrapResId);
+
+            MockResponse mockResponse = new MockResponse();
+            mockResponse.setResponseCode(200);
+            mockResponse.setBody(mockBootstrapJsonBody);
+            mockWebServer.enqueue(mockResponse);
+
         } catch (IOException e) {
             throw new RuntimeException("Problem starting mock web server");
         }
@@ -44,10 +66,25 @@ public class App extends Application {
                 .setContext(this)
                 .setBootstrapUrl(String.valueOf(mockWebServer.url("")))
                 .install();
-
     }
 
-    public static MockWebServer getMockWebServer() {
-        return mockWebServer;
+    private String getMockJsonBootstrap(@RawRes int rawRes) throws IOException {
+
+        InputStream inputStream = getResources().openRawResource(rawRes);
+
+        Writer writer = new StringWriter();
+        char[] buffer = new char[1024];
+
+        Reader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+
+        int bufferData;
+
+        while ((bufferData = reader.read(buffer)) != -1) {
+            writer.write(buffer, 0, bufferData);
+        }
+
+        inputStream.close();
+
+        return writer.toString();
     }
 }

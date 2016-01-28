@@ -16,8 +16,6 @@
 package io.github.btkelly.gandalf.example;
 
 import android.app.Application;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.RawRes;
 
 import java.io.BufferedReader;
@@ -29,8 +27,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import io.github.btkelly.gandalf.Gandalf;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
 
 /**
  * TODO: Add a class header comment!
@@ -43,28 +39,35 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        MockWebServer mockWebServer = new MockWebServer();
-        try {
-            mockWebServer.start();
+/*        final MockWebServer mockWebServer = new MockWebServer();
 
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mockWebServer.start();
 
-            int mockBootstrapResId = sharedPreferences.getInt(KEY_RES_ID, R.raw.no_action_bootstrap);
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.this);
 
-            String mockBootstrapJsonBody = getMockJsonBootstrap(mockBootstrapResId);
+                    int mockBootstrapResId = sharedPreferences.getInt(KEY_RES_ID, R.raw.no_action_bootstrap);
 
-            MockResponse mockResponse = new MockResponse();
-            mockResponse.setResponseCode(200);
-            mockResponse.setBody(mockBootstrapJsonBody);
-            mockWebServer.enqueue(mockResponse);
+                    String mockBootstrapJsonBody = getMockJsonBootstrap(mockBootstrapResId);
 
-        } catch (IOException e) {
-            throw new RuntimeException("Problem starting mock web server");
-        }
+                    MockResponse mockResponse = new MockResponse();
+                    mockResponse.setResponseCode(200);
+                    mockResponse.setBody(mockBootstrapJsonBody);
+                    mockWebServer.enqueue(mockResponse);
+
+                } catch (IOException e) {
+                    throw new RuntimeException("Problem starting mock web server");
+                }
+            }
+        }).start();*/
 
         new Gandalf.Installer()
                 .setContext(this)
-                .setBootstrapUrl(String.valueOf(mockWebServer.url("")))
+                //.setBootstrapUrl(String.valueOf(mockWebServer.url("")))
+                .setBootstrapUrl("http://private-55a85-gandalftest.apiary-mock.com/bootstrap.json")
                 .install();
     }
 

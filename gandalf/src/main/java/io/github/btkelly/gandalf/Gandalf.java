@@ -18,9 +18,6 @@ package io.github.btkelly.gandalf;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.io.IOException;
 
 import io.github.btkelly.gandalf.checker.DefaultHistoryChecker;
@@ -31,10 +28,8 @@ import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.Bootstrap;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.network.BootstrapApi;
+import io.github.btkelly.gandalf.network.BootstrapCallback;
 import io.github.btkelly.gandalf.utils.StringUtils;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 /**
  * This is the public api that allows consumers to configure the Gandalf library.
@@ -93,20 +88,10 @@ public final class Gandalf {
      */
     public void shallIPass(final GandalfCallback gandalfCallback) {
         new BootstrapApi(context, bootstrapUrl)
-                .fetchBootstrap(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        //In any error case we should let the user in as to not block based on a bug
-                        gandalfCallback.onNoActionRequired();
-                    }
+                .fetchBootstrap(new BootstrapCallback() {
 
                     @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        Gson gson = new GsonBuilder()
-                                .create();
-
-                        Bootstrap bootstrap = gson.fromJson(response.body().toString(), Bootstrap.class);
-
+                    public void onSuccess(Bootstrap bootstrap) {
                         if (gateKeeper.updateIsRequired(bootstrap)) {
                             gandalfCallback.onRequiredUpdate(bootstrap.getRequiredUpdate());
                         } else if (gateKeeper.updateIsOptional(bootstrap)) {
@@ -117,6 +102,12 @@ public final class Gandalf {
                             gandalfCallback.onNoActionRequired();
                         }
 
+                    }
+
+                    @Override
+                    public void onError(IOException e) {
+                        //In any error case we should let the user in as to not block based on a bug
+                        gandalfCallback.onNoActionRequired();
                     }
                 });
     }

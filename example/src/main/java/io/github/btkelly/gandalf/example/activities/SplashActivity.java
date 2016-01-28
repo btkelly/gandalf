@@ -66,6 +66,15 @@ public class SplashActivity extends GandalfActivity {
             case R.id.menuRestartRequired:
                 restartApp(R.raw.update_required_bootstrap);
                 break;
+            case R.id.menuResetState:
+
+                PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext())
+                        .edit()
+                        .clear()
+                        .commit();
+
+                restartApp(R.raw.no_action_bootstrap);
+                break;
         }
 
         return true;

@@ -22,7 +22,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.support.annotation.RawRes;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import io.github.btkelly.gandalf.activities.GandalfActivity;
 import io.github.btkelly.gandalf.example.App;
@@ -31,15 +32,11 @@ import io.github.btkelly.gandalf.example.R;
 /**
  * TODO: Add a class header comment!
  */
-public class SplashActivity extends GandalfActivity implements View.OnClickListener {
+public class SplashActivity extends GandalfActivity {
 
     @Override
     public void youShallPass() {
         setContentView(R.layout.activity_splash_finished_loading);
-        findViewById(R.id.btnRestartAlert).setOnClickListener(this);
-        findViewById(R.id.btnRestartNoAction).setOnClickListener(this);
-        findViewById(R.id.btnRestartOptional).setOnClickListener(this);
-        findViewById(R.id.btnRestartRequired).setOnClickListener(this);
     }
 
     @Override
@@ -48,22 +45,30 @@ public class SplashActivity extends GandalfActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View view) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.restart_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        switch (view.getId()) {
-            case R.id.btnRestartAlert:
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.menuRestartAlert:
                 restartApp(R.raw.alert_bootstrap);
                 break;
-            case R.id.btnRestartNoAction:
+            case R.id.menuRestartNoAction:
                 restartApp(R.raw.no_action_bootstrap);
                 break;
-            case R.id.btnRestartOptional:
+            case R.id.menuRestartOptional:
                 restartApp(R.raw.update_optional_bootstrap);
                 break;
-            case R.id.btnRestartRequired:
+            case R.id.menuRestartRequired:
                 restartApp(R.raw.update_required_bootstrap);
                 break;
         }
+
+        return true;
     }
 
     @SuppressLint("CommitPrefEdits")

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 
     Copyright 2016 Bryan Kelly
 
@@ -26,37 +25,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:text="Finished checking Bootstrap!"
         android:textSize="20sp" />
-
-    <Button
-        android:id="@+id/btnRestartNoAction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Restart with no action" />
-
-    <Button
-        android:id="@+id/btnRestartAlert"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Restart with blocking alert" />
-
-    <Button
-        android:id="@+id/btnRestartOptional"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Restart with optional update" />
-
-    <Button
-        android:id="@+id/btnRestartRequired"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Restart with required update" />
 
 </LinearLayout>

@@ -16,6 +16,8 @@
 package io.github.btkelly.gandalf.example;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.RawRes;
 
 import java.io.BufferedReader;
@@ -27,6 +29,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import io.github.btkelly.gandalf.Gandalf;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 
 /**
  * TODO: Add a class header comment!
@@ -39,9 +43,9 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-/*        final MockWebServer mockWebServer = new MockWebServer();
+        final MockWebServer mockWebServer = new MockWebServer();
 
-        new Thread(new Runnable() {
+        Thread startMockServer = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -62,12 +66,19 @@ public class App extends Application {
                     throw new RuntimeException("Problem starting mock web server");
                 }
             }
-        }).start();*/
+        });
+
+        startMockServer.start();
+
+        try {
+            startMockServer.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         new Gandalf.Installer()
                 .setContext(this)
-                //.setBootstrapUrl(String.valueOf(mockWebServer.url("")))
-                .setBootstrapUrl("http://private-55a85-gandalftest.apiary-mock.com/bootstrap.json")
+                .setBootstrapUrl(String.valueOf(mockWebServer.url("")))
                 .install();
     }
 

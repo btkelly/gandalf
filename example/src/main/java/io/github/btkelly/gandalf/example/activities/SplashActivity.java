@@ -20,7 +20,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.RawRes;
 import android.view.View;
@@ -48,22 +47,6 @@ public class SplashActivity extends GandalfActivity implements View.OnClickListe
         return R.layout.activity_splash_loading;
     }
 
-    @SuppressLint("CommitPrefEdits")
-    private void restartApp(@RawRes int bootstrapRes) {
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.edit().putInt(App.KEY_RES_ID, bootstrapRes);
-        sharedPreferences.edit().commit();
-
-        Intent restartApplication = new Intent(this, SplashActivity.class);
-        PendingIntent mPendingIntent = PendingIntent.getActivity(this, 123456, restartApplication, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        AlarmManager mgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-
-        System.exit(0);
-    }
-
     @Override
     public void onClick(View view) {
 
@@ -81,6 +64,22 @@ public class SplashActivity extends GandalfActivity implements View.OnClickListe
                 restartApp(R.raw.update_required_bootstrap);
                 break;
         }
+    }
 
+    @SuppressLint("CommitPrefEdits")
+    private void restartApp(@RawRes int bootstrapRes) {
+
+        PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext())
+            .edit()
+            .putInt(App.KEY_RES_ID, bootstrapRes)
+            .commit();
+
+        Intent restartApplication = new Intent(this, SplashActivity.class);
+        PendingIntent mPendingIntent = PendingIntent.getActivity(this, 123456, restartApplication, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager mgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 50, mPendingIntent);
+
+        System.exit(0);
     }
 }

@@ -49,6 +49,13 @@ public class SplashActivity extends GandalfActivity {
     //** Methods below are just for allowing switching of bootstrap file, not related to Gandalf implementation **//
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        MockWebServerUtil.setMockBootstrapRes(this, R.raw.no_action_bootstrap);
+        System.exit(0);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.restart_menu, menu);
         return super.onCreateOptionsMenu(menu);

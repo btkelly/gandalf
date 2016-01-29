@@ -29,6 +29,7 @@ import io.github.btkelly.gandalf.models.Bootstrap;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.network.BootstrapApi;
 import io.github.btkelly.gandalf.network.BootstrapCallback;
+import io.github.btkelly.gandalf.utils.LoggerUtil;
 import io.github.btkelly.gandalf.utils.StringUtils;
 
 /**
@@ -97,18 +98,28 @@ public final class Gandalf {
      * @param gandalfCallback - a callback interface to respond to events from the bootstrap check
      */
     public void shallIPass(final GandalfCallback gandalfCallback) {
+
+        LoggerUtil.logD("Fetching bootstrap");
+
         new BootstrapApi(context, bootstrapUrl)
                 .fetchBootstrap(new BootstrapCallback() {
 
                     @Override
                     public void onSuccess(Bootstrap bootstrap) {
+
+                        LoggerUtil.logD("Fetched bootstrap: " + bootstrap);
+
                         if (gateKeeper.updateIsRequired(bootstrap)) {
+                            LoggerUtil.logD("Update is required");
                             gandalfCallback.onRequiredUpdate(bootstrap.getRequiredUpdate());
                         } else if (gateKeeper.updateIsOptional(bootstrap)) {
+                            LoggerUtil.logD("Update is optional");
                             gandalfCallback.onOptionalUpdate(bootstrap.getOptionalUpdate());
                         } else if (gateKeeper.showAlert(bootstrap)) {
+                            LoggerUtil.logD("Alert");
                             gandalfCallback.onAlert(bootstrap.getAlert());
                         } else {
+                            LoggerUtil.logD("No action is required");
                             gandalfCallback.onNoActionRequired();
                         }
 
@@ -116,6 +127,7 @@ public final class Gandalf {
 
                     @Override
                     public void onError(IOException e) {
+                        LoggerUtil.logE("Error fetching bootstrap: " + e.getMessage());
                         //In any error case we should let the user in as to not block based on a bug
                         gandalfCallback.onNoActionRequired();
                     }

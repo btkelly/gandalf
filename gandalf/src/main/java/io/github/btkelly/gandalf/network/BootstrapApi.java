@@ -16,15 +16,25 @@
 package io.github.btkelly.gandalf.network;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import io.github.btkelly.gandalf.models.Bootstrap;
+import io.github.btkelly.gandalf.models.BootstrapResponse;
 import io.github.btkelly.gandalf.utils.StringUtils;
 import okhttp3.Cache;
+import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Network class for fetching the bootstrap file
@@ -59,9 +69,9 @@ public class BootstrapApi {
      * Will execute a request to fetch the application bootstrap file specified by the bootstrap
      * url set on the Gandalf class. Request is executed on a background thread.
      * @throws IllegalStateException - throws if the bootstrap url has not been set
-     * @param callback - an OkHttp Callback to receive call backs for the network call
+     * @param bootstrapCallback - a BootstrapCallback to receive call backs for the network call
      */
-    public void fetchBootstrap(Callback callback) {
+    public void fetchBootstrap(final BootstrapCallback bootstrapCallback) {
 
         if (StringUtils.isBlank(bootStrapUrl)) {
             throw new IllegalStateException("You must supply a bootstrap url");
@@ -71,7 +81,34 @@ public class BootstrapApi {
                 .url(bootStrapUrl)
                 .build();
 
-        okHttpClient.newCall(request).enqueue(callback);
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, final IOException e) {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bootstrapCallback.onError(e);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                Gson gson = new GsonBuilder()
+                        .create();
+
+                BootstrapResponse bootstrapResponse = gson.fromJson(response.body().string(), BootstrapResponse.class);
+                final Bootstrap bootstrap = bootstrapResponse.getAndroid();
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bootstrapCallback.onSuccess(bootstrap);
+                    }
+                });
+            }
+        });
     }
 
 }

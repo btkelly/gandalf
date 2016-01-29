@@ -13,27 +13,18 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package io.github.btkelly.gandalf.example;
+package io.github.btkelly.gandalf.network;
 
-import android.app.Application;
+import java.io.IOException;
 
-import io.github.btkelly.gandalf.Gandalf;
-import io.github.btkelly.gandalf.example.utils.MockWebServerUtil;
+import io.github.btkelly.gandalf.models.Bootstrap;
 
 /**
  * TODO: Add a class header comment!
  */
-public class App extends Application {
+public interface BootstrapCallback {
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    void onSuccess(Bootstrap bootstrap);
+    void onError(IOException e);
 
-        String mockBootstrapUrl = MockWebServerUtil.startMockWebServer(this);
-
-        new Gandalf.Installer()
-                .setContext(this)
-                .setBootstrapUrl(mockBootstrapUrl)
-                .install();
-    }
 }

@@ -13,27 +13,15 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package io.github.btkelly.gandalf.example;
-
-import android.app.Application;
-
-import io.github.btkelly.gandalf.Gandalf;
-import io.github.btkelly.gandalf.example.utils.MockWebServerUtil;
-
-/**
- * TODO: Add a class header comment!
- */
-public class App extends Application {
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        String mockBootstrapUrl = MockWebServerUtil.startMockWebServer(this);
-
-        new Gandalf.Installer()
-                .setContext(this)
-                .setBootstrapUrl(mockBootstrapUrl)
-                .install();
+{
+  "android": {
+    "optionalUpdate": {
+      "optionalVersion": "6",
+      "message": "A new version of the application is available, please click below to update to the latest version."
+    },
+    "requiredUpdate": {
+      "minimumVersion": "6",
+      "message": "A new version of the application is available and is required to continue, please click below to update to the latest version."
     }
+  }
 }

@@ -15,8 +15,85 @@
  */
 package io.github.btkelly.gandalf.example.activities;
 
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.preference.PreferenceManager;
+import android.support.annotation.RawRes;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import io.github.btkelly.gandalf.activities.GandalfActivity;
+import io.github.btkelly.gandalf.example.R;
+import io.github.btkelly.gandalf.example.utils.MockWebServerUtil;
+
 /**
- * TODO: Add a class header comment!
+ * An example splash activity that demonstrates the simplest way to add Gandalf to a project
  */
-public class SplashActivity {
+public class SplashActivity extends GandalfActivity {
+
+    @Override
+    public void youShallPass() {
+        //After a successful bootstrap check we change the content view
+        setContentView(R.layout.activity_splash_finished_loading);
+    }
+
+    @Override
+    public int contentView() {
+        //While the bootstrap check is running we provide a loading layout to be displayed
+        return R.layout.activity_splash_loading;
+    }
+
+    //** Methods below are just for allowing switching of bootstrap file, not related to Gandalf implementation **//
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.restart_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.menuRestartAlert:
+                restartApp(R.raw.alert_bootstrap);
+                break;
+            case R.id.menuRestartNoAction:
+                restartApp(R.raw.no_action_bootstrap);
+                break;
+            case R.id.menuRestartOptional:
+                restartApp(R.raw.update_optional_bootstrap);
+                break;
+            case R.id.menuRestartRequired:
+                restartApp(R.raw.update_required_bootstrap);
+                break;
+            case R.id.menuResetState:
+
+                PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext())
+                        .edit()
+                        .clear()
+                        .commit();
+
+                restartApp(R.raw.no_action_bootstrap);
+                break;
+        }
+
+        return true;
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    private void restartApp(@RawRes int bootstrapRes) {
+        MockWebServerUtil.setMockBootstrapRes(this, bootstrapRes);
+
+        Intent restartApplication = new Intent(this, SplashActivity.class);
+        PendingIntent mPendingIntent = PendingIntent.getActivity(this, 123456, restartApplication, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager mgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 50, mPendingIntent);
+
+        System.exit(0);
+    }
 }

@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 
     Copyright 2016 Bryan Kelly
 
@@ -15,11 +15,18 @@
     under the License.
 
 -->
-<resources>
-    <string name="app_name">Gandalf</string>
-    <string name="restart_with_no_action">Restart with no action</string>
-    <string name="restart_with_blocking_alert">Restart with blocking alert</string>
-    <string name="restart_with_optional_update">Restart with optional update</string>
-    <string name="restart_with_required_update">Restart with required update</string>
-    <string name="reset_state_and_restart">Reset state and restart</string>
-</resources>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="25dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Finished checking Bootstrap!"
+        android:textSize="20sp" />
+
+</LinearLayout>

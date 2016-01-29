@@ -17,6 +17,7 @@ package io.github.btkelly.gandalf.checker;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import io.github.btkelly.gandalf.models.Alert;
@@ -29,15 +30,13 @@ import io.github.btkelly.gandalf.utils.StringUtils;
  */
 public class DefaultHistoryChecker implements HistoryChecker {
 
-    private static final String SHARED_PREFS_NAME = "io.github.btkelly.gandalf";
-
     public static final String KEY_OPTIONAL_UPDATE = "optionalUpdate";
     public static final String KEY_ALERT = "alert";
 
     private final SharedPreferences prefs;
 
     public DefaultHistoryChecker(@NonNull final Context context) {
-        prefs = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     /**

@@ -26,23 +26,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import io.github.btkelly.gandalf.activities.GandalfActivity;
-import io.github.btkelly.gandalf.example.App;
 import io.github.btkelly.gandalf.example.R;
+import io.github.btkelly.gandalf.example.utils.MockWebServerUtil;
 
 /**
- * TODO: Add a class header comment!
+ * An example splash activity that demonstrates the simplest way to add Gandalf to a project
  */
 public class SplashActivity extends GandalfActivity {
 
     @Override
     public void youShallPass() {
+        //After a successful bootstrap check we change the content view
         setContentView(R.layout.activity_splash_finished_loading);
     }
 
     @Override
     public int contentView() {
+        //While the bootstrap check is running we provide a loading layout to be displayed
         return R.layout.activity_splash_loading;
     }
+
+    //** Methods below are just for allowing switching of bootstrap file, not related to Gandalf implementation **//
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,11 +86,7 @@ public class SplashActivity extends GandalfActivity {
 
     @SuppressLint("CommitPrefEdits")
     private void restartApp(@RawRes int bootstrapRes) {
-
-        PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext())
-            .edit()
-            .putInt(App.KEY_RES_ID, bootstrapRes)
-            .commit();
+        MockWebServerUtil.setMockBootstrapRes(this, bootstrapRes);
 
         Intent restartApplication = new Intent(this, SplashActivity.class);
         PendingIntent mPendingIntent = PendingIntent.getActivity(this, 123456, restartApplication, PendingIntent.FLAG_CANCEL_CURRENT);

@@ -42,12 +42,14 @@ public final class Gandalf {
     private final String bootstrapUrl;
     private final HistoryChecker historyChecker;
     private final GateKeeper gateKeeper;
+    private final String packageName;
 
-    private Gandalf(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper) {
+    private Gandalf(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper, String packageName) {
         this.context = context;
         this.bootstrapUrl = bootstrapUrl;
         this.historyChecker = historyChecker;
         this.gateKeeper = gateKeeper;
+        this.packageName = packageName;
     }
 
     public static Gandalf get() {
@@ -60,8 +62,16 @@ public final class Gandalf {
         return gandalfInstance;
     }
 
-    private static Gandalf createInstance(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper) {
-        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper);
+    private static Gandalf createInstance(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper, String packageName) {
+        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper, packageName);
+    }
+
+    /**
+     * Returns the package name set during the Gandalf Install
+     * @return
+     */
+    public String getPackageName() {
+        return packageName;
     }
 
     /**
@@ -119,6 +129,7 @@ public final class Gandalf {
 
         private Context context;
         private String bootstrapUrl;
+        private String packageName;
 
         public Installer setContext(Context context) {
             this.context = context;
@@ -127,6 +138,11 @@ public final class Gandalf {
 
         public Installer setBootstrapUrl(@NonNull String bootstrapUrl) {
             this.bootstrapUrl = bootstrapUrl;
+            return this;
+        }
+
+        public Installer setPackageName(String packageName) {
+            this.packageName = packageName;
             return this;
         }
 
@@ -145,13 +161,18 @@ public final class Gandalf {
                     throw new IllegalStateException("You must supply a bootstrap url");
                 }
 
+                if (StringUtils.isBlank(this.packageName)) {
+                    throw new IllegalStateException("You must supply a package name for the PlayStore");
+                }
+
                 HistoryChecker historyChecker = new DefaultHistoryChecker(this.context);
 
                 gandalfInstance = createInstance(
                         this.context,
                         this.bootstrapUrl,
                         historyChecker,
-                        new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker)
+                        new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker),
+                        this.packageName
                 );
             }
         }

@@ -33,6 +33,7 @@ public class App extends Application {
 
         new Gandalf.Installer()
                 .setContext(this)
+                .setPackageName("com.github.stkent.bugshaker")
                 .setBootstrapUrl(mockBootstrapUrl)
                 .install();
     }

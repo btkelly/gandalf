@@ -13,7 +13,7 @@ The goal of Gandalf was to add this basic boiler plate code to any application q
 Extend the Android [`Application`](http://developer.android.com/reference/android/app/Application.html) class and add the following to the `onCreate()`
 
 ```java
-public class App extends Application {
+public class CustomApplication extends Application {
 
     @Override
     public void onCreate() {

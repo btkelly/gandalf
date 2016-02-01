@@ -4,23 +4,26 @@ In the lifetime of any application there will come a time where you need to drop
 
 Gandalf will easily add a check to a remote file that can notify a user with a simple alert, inform them of an optional update, and in dire situations block the user from accessing older versions of the application completely (**ex:**security vulnerability has been found).
 
-# Usage
+## Usage
 
-The goal of Gandalf was to add this basic boiler plate code you any application quickly. You will need to add the following code to your application as well as host a json file on a publicly accessible server with the format included below.
+The goal of Gandalf was to add this basic boiler plate code to any application quickly. You will need to add the following code to your application as well as host a JSON file on a publicly accessible server with the format included below.
 
 #### Application Class
 
 Extend the Android [`Application`](http://developer.android.com/reference/android/app/Application.html) class and add the following to the `onCreate()`
 
 ```java
-@Override
-public void onCreate() {
-    super.onCreate();
-    new Gandalf.Installer()
-            .setContext(this)
-            .setPackageName("com.my.package")
-            .setBootstrapUrl("http://www.example.com/bootstrap.json)
-            .install();
+public class App extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        new Gandalf.Installer()
+                .setContext(this)
+                .setPackageName("com.my.package")
+                .setBootstrapUrl("http://www.example.com/bootstrap.json")
+                .install();
+    }
 }
 ```
 
@@ -72,9 +75,9 @@ Add the `android:name` attribute to the `application` tag and specify the path t
 </manifest>
 ```
 
-#### Json File
+#### JSON File
 
-You must host a json file remotely and set the url of this file in the the Gandalf installer. The Json file must match the following format and use the Android `versionCode` not the `versionName` for version information.
+You must host a JSON file remotely and set the URL of this file in the the Gandalf installer. The JSON file must match the following format and use the Android `versionCode` not the `versionName` for version information.
 
 ```json
 {
@@ -96,7 +99,9 @@ You must host a json file remotely and set the url of this file in the the Ganda
 ```
 
 
-That's all that's needed to get Gandalf up and running using the basic settings, if extending `GandalfActivity` doesn't work for you the `Gandalf` class can be used directly by calling `shallIPass(GandalfCallback callback)`. 
+That's all that's needed to get Gandalf up and running using the basic settings.
+ 
+If extending `GandalfActivity` doesn't work for you the `Gandalf` class can be used directly by calling `shallIPass(GandalfCallback callback)`. In this case make sure you respond to the callback methods and make a call to `gandalf.save(Alert alert)` and `gandalf.save(OptionalUpdate optionalUpdate)` if not using the `BootstrapDialogUtil` for your UI.
 
 ## Example App
 

@@ -63,7 +63,11 @@ public final class Gandalf {
         return gandalfInstance;
     }
 
-    private static Gandalf createInstance(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper, String packageName) {
+    private static Gandalf createInstance(@NonNull final Context context,
+                                          @NonNull final String bootstrapUrl,
+                                          @NonNull final HistoryChecker historyChecker,
+                                          @NonNull final GateKeeper gateKeeper,
+                                          @NonNull final String packageName) {
         return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper, packageName);
     }
 

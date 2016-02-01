@@ -20,7 +20,7 @@ import android.util.Log;
 /**
  * Simple log cat wrapper for different log levels
  */
-public class LoggerUtil {
+public final class LoggerUtil {
 
     private static final String LOGGER_TAG = "Gandalf";
 
@@ -28,6 +28,10 @@ public class LoggerUtil {
         DEBUG,
         ERROR,
         NONE
+    }
+
+    private LoggerUtil() {
+
     }
 
     public static void logD(String message) {

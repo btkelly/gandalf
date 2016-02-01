@@ -16,6 +16,7 @@
 package io.github.btkelly.gandalf.example;
 
 import android.app.Application;
+import android.util.Log;
 
 import io.github.btkelly.gandalf.Gandalf;
 import io.github.btkelly.gandalf.example.utils.MockWebServerUtil;
@@ -31,8 +32,11 @@ public class App extends Application {
 
         String mockBootstrapUrl = MockWebServerUtil.startMockWebServer(this);
 
+        Log.d("GandalfExample", "Mock server started at " + mockBootstrapUrl);
+
         new Gandalf.Installer()
                 .setContext(this)
+                .setPackageName("com.github.stkent.bugshaker")
                 .setBootstrapUrl(mockBootstrapUrl)
                 .install();
     }

@@ -46,7 +46,7 @@ public final class BootstrapDialogUtil {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                    PlayStoreUtil.openPlayStoreToRate(activity, gandalf.getPackageName());
+                    PlayStoreUtil.openPlayStoreToUpdate(activity, gandalf.getPackageName());
                 } else {
                     if (ActivityStateUtil.isActivityValid(activity)) {
                         activity.finish();
@@ -75,7 +75,7 @@ public final class BootstrapDialogUtil {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                    PlayStoreUtil.openPlayStoreToRate(activity, gandalf.getPackageName());
+                    PlayStoreUtil.openPlayStoreToUpdate(activity, gandalf.getPackageName());
                 } else if (which == DialogInterface.BUTTON_NEUTRAL) {
                     gandalf.save(optionalUpdate);
                     bootstrapDialogListener.continueLoading();

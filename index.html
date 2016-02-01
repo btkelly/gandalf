@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Gandalf by btkelly</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Gandalf</h1>
+          <h2>Easily notify a user with a simple alert, inform them of an optional update, and in dire situations block the user from accessing older versions of the application completely.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/btkelly/gandalf/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/btkelly/gandalf/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/btkelly/gandalf" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="gandalf--" class="anchor" href="#gandalf--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gandalf <a href="https://travis-ci.org/btkelly/gandalf"><img src="https://travis-ci.org/btkelly/gandalf.svg?branch=master" alt="Build Status"></a> <a href="http://www.detroitlabs.com/"><img src="https://img.shields.io/badge/Sponsor-Detroit%20Labs-000000.svg"></a>
+</h1>
+
+<p>In the lifetime of any application there will come a time where you need to drop support for a feature, end of life a product, notify about maintenance, any number of other reasons, Gandalf is here to help!</p>
+
+<p>Gandalf will easily add a check to a remote file that can notify a user with a simple alert, inform them of an optional update, and in dire situations block the user from accessing older versions of the application completely (<strong>ex:</strong>security vulnerability has been found).</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>The goal of Gandalf was to add this basic boiler plate code to any application quickly. You will need to add the following code to your application as well as host a JSON file on a publicly accessible server with the format included below.</p>
+
+<h4>
+<a id="application-class" class="anchor" href="#application-class" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Application Class</h4>
+
+<p>Extend the Android <a href="http://developer.android.com/reference/android/app/Application.html"><code>Application</code></a> class and add the following to the <code>onCreate()</code></p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">CustomApplication</span> <span class="pl-k">extends</span> <span class="pl-e">Application</span> {
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onCreate</span>() {
+        <span class="pl-v">super</span><span class="pl-k">.</span>onCreate();
+        <span class="pl-k">new</span> <span class="pl-smi">Gandalf</span>.<span class="pl-smi">Installer</span>()
+                .setContext(<span class="pl-v">this</span>)
+                .setPackageName(<span class="pl-s"><span class="pl-pds">"</span>com.my.package<span class="pl-pds">"</span></span>)
+                .setBootstrapUrl(<span class="pl-s"><span class="pl-pds">"</span>http://www.example.com/bootstrap.json<span class="pl-pds">"</span></span>)
+                .install();
+    }
+}</pre></div>
+
+<h4>
+<a id="splash-activity" class="anchor" href="#splash-activity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Splash Activity</h4>
+
+<p>Extend <code>GandalfActivity</code> for use as your main "Splash" type activity, this is where the magic will happen. Just provide a layout resource id to display while the bootstrap file is being checked and implement the <code>youShallPass()</code> method with what should happen after a successful check.</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">SplashActivity</span> <span class="pl-k">extends</span> <span class="pl-e">GandalfActivity</span> {
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">youShallPass</span>() {
+        <span class="pl-c">//After a successful bootstrap check we change the content view, you may also load a new activity or do whatever logic you want after the check is complete.</span>
+        setContentView(<span class="pl-smi">R</span><span class="pl-k">.</span>layout<span class="pl-k">.</span>activity_splash_finished_loading);
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">int</span> <span class="pl-en">contentView</span>() {
+        <span class="pl-c">//While the bootstrap check is running we provide a layout to be displayed</span>
+        <span class="pl-k">return</span> <span class="pl-smi">R</span><span class="pl-k">.</span>layout<span class="pl-k">.</span>activity_splash_loading;
+    }
+}</pre></div>
+
+<h4>
+<a id="manifest-changes" class="anchor" href="#manifest-changes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Manifest Changes</h4>
+
+<p>Add the <code>android:name</code> attribute to the <code>application</code> tag and specify the path to your custom <a href="http://developer.android.com/reference/android/app/Application.html"><code>Application</code></a> class from above and set your <code>SplashActivity</code> as the entry point for your app. </p>
+
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">manifest</span> <span class="pl-e">xmlns</span><span class="pl-e">:</span><span class="pl-e">android</span>=<span class="pl-s"><span class="pl-pds">"</span>http://schemas.android.com/apk/res/android<span class="pl-pds">"</span></span>
+    <span class="pl-e">package</span>=<span class="pl-s"><span class="pl-pds">"</span>io.github.btkelly.gandalf.example<span class="pl-pds">"</span></span>&gt;
+
+    &lt;<span class="pl-ent">application</span>
+        <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>.CustomApplication<span class="pl-pds">"</span></span>
+        <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">icon</span>=<span class="pl-s"><span class="pl-pds">"</span>@mipmap/ic_launcher<span class="pl-pds">"</span></span>
+        <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">label</span>=<span class="pl-s"><span class="pl-pds">"</span>@string/app_name<span class="pl-pds">"</span></span>
+        <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">theme</span>=<span class="pl-s"><span class="pl-pds">"</span>@style/AppTheme<span class="pl-pds">"</span></span>&gt;
+
+        &lt;<span class="pl-ent">activity</span>
+            <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>.SplashActivity<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">intent-filter</span>&gt;
+                &lt;<span class="pl-ent">action</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>android.intent.action.MAIN<span class="pl-pds">"</span></span> /&gt;
+                &lt;<span class="pl-ent">category</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>android.intent.category.LAUNCHER<span class="pl-pds">"</span></span> /&gt;
+            &lt;/<span class="pl-ent">intent-filter</span>&gt;
+        &lt;/<span class="pl-ent">activity</span>&gt;
+
+    &lt;/<span class="pl-ent">application</span>&gt;
+
+&lt;/<span class="pl-ent">manifest</span>&gt;</pre></div>
+
+<h4>
+<a id="json-file" class="anchor" href="#json-file" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>JSON File</h4>
+
+<p>You must host a JSON file remotely and set the URL of this file in the the Gandalf installer. The JSON file must match the following format and use the Android <code>versionCode</code> not the <code>versionName</code> for version information.</p>
+
+<div class="highlight highlight-source-json"><pre>{
+  <span class="pl-s"><span class="pl-pds">"</span>android<span class="pl-pds">"</span></span>: {
+    <span class="pl-s"><span class="pl-pds">"</span>alert<span class="pl-pds">"</span></span>: {
+      <span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>We are currently performing server maintenance. Please try again later.<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>blocking<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>
+    },
+    <span class="pl-s"><span class="pl-pds">"</span>optionalUpdate<span class="pl-pds">"</span></span>: {
+      <span class="pl-s"><span class="pl-pds">"</span>optionalVersion<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>6<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>A new version of the application is available, please click below to update to the latest version.<span class="pl-pds">"</span></span>
+    },
+    <span class="pl-s"><span class="pl-pds">"</span>requiredUpdate<span class="pl-pds">"</span></span>: {
+      <span class="pl-s"><span class="pl-pds">"</span>minimumVersion<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>7<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>A new version of the application is available and is required to continue, please click below to update to the latest version.<span class="pl-pds">"</span></span>
+    }
+  }
+}</pre></div>
+
+<p>That's all that's needed to get Gandalf up and running using the basic settings.</p>
+
+<p>If extending <code>GandalfActivity</code> doesn't work for you the <code>Gandalf</code> class can be used directly by calling <code>shallIPass(GandalfCallback callback)</code>. In this case make sure you respond to the callback methods and make a call to <code>gandalf.save(Alert alert)</code> and <code>gandalf.save(OptionalUpdate optionalUpdate)</code> if not using the <code>BootstrapDialogUtil</code> for your UI.</p>
+
+<h2>
+<a id="example-app" class="anchor" href="#example-app" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example App</h2>
+
+<p>Included in the source is a simple example application showing four different launch states based on a remote file. You can load and relaunch the app with each scenario by selecting an option in the Android menu.</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>Copyright 2016 Bryan Kelly</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License.</p>
+
+<p>You may obtain a copy of the License at
+<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations
+under the License.</p>
+        </section>
+
+        <footer>
+          Gandalf is maintained by <a href="https://github.com/btkelly">btkelly</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+                  <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-73153943-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+      </div>
+    </div>
+  </body>
+</html>

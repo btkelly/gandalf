@@ -29,6 +29,7 @@ import io.github.btkelly.gandalf.models.Bootstrap;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.network.BootstrapApi;
 import io.github.btkelly.gandalf.network.BootstrapCallback;
+import io.github.btkelly.gandalf.utils.LoggerUtil;
 import io.github.btkelly.gandalf.utils.StringUtils;
 
 /**
@@ -42,12 +43,14 @@ public final class Gandalf {
     private final String bootstrapUrl;
     private final HistoryChecker historyChecker;
     private final GateKeeper gateKeeper;
+    private final String packageName;
 
-    private Gandalf(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper) {
+    private Gandalf(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper, String packageName) {
         this.context = context;
         this.bootstrapUrl = bootstrapUrl;
         this.historyChecker = historyChecker;
         this.gateKeeper = gateKeeper;
+        this.packageName = packageName;
     }
 
     public static Gandalf get() {
@@ -60,8 +63,20 @@ public final class Gandalf {
         return gandalfInstance;
     }
 
-    private static Gandalf createInstance(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper) {
-        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper);
+    private static Gandalf createInstance(@NonNull final Context context,
+                                          @NonNull final String bootstrapUrl,
+                                          @NonNull final HistoryChecker historyChecker,
+                                          @NonNull final GateKeeper gateKeeper,
+                                          @NonNull final String packageName) {
+        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper, packageName);
+    }
+
+    /**
+     * Returns the package name set during the Gandalf Install
+     * @return
+     */
+    public String getPackageName() {
+        return packageName;
     }
 
     /**
@@ -87,18 +102,28 @@ public final class Gandalf {
      * @param gandalfCallback - a callback interface to respond to events from the bootstrap check
      */
     public void shallIPass(final GandalfCallback gandalfCallback) {
+
+        LoggerUtil.logD("Fetching bootstrap");
+
         new BootstrapApi(context, bootstrapUrl)
                 .fetchBootstrap(new BootstrapCallback() {
 
                     @Override
                     public void onSuccess(Bootstrap bootstrap) {
+
+                        LoggerUtil.logD("Fetched bootstrap: " + bootstrap);
+
                         if (gateKeeper.updateIsRequired(bootstrap)) {
+                            LoggerUtil.logD("Update is required");
                             gandalfCallback.onRequiredUpdate(bootstrap.getRequiredUpdate());
                         } else if (gateKeeper.updateIsOptional(bootstrap)) {
+                            LoggerUtil.logD("Update is optional");
                             gandalfCallback.onOptionalUpdate(bootstrap.getOptionalUpdate());
                         } else if (gateKeeper.showAlert(bootstrap)) {
+                            LoggerUtil.logD("Alert");
                             gandalfCallback.onAlert(bootstrap.getAlert());
                         } else {
+                            LoggerUtil.logD("No action is required");
                             gandalfCallback.onNoActionRequired();
                         }
 
@@ -106,6 +131,7 @@ public final class Gandalf {
 
                     @Override
                     public void onError(IOException e) {
+                        LoggerUtil.logE("Error fetching bootstrap: " + e.getMessage());
                         //In any error case we should let the user in as to not block based on a bug
                         gandalfCallback.onNoActionRequired();
                     }
@@ -119,6 +145,7 @@ public final class Gandalf {
 
         private Context context;
         private String bootstrapUrl;
+        private String packageName;
 
         public Installer setContext(Context context) {
             this.context = context;
@@ -127,6 +154,11 @@ public final class Gandalf {
 
         public Installer setBootstrapUrl(@NonNull String bootstrapUrl) {
             this.bootstrapUrl = bootstrapUrl;
+            return this;
+        }
+
+        public Installer setPackageName(String packageName) {
+            this.packageName = packageName;
             return this;
         }
 
@@ -145,13 +177,18 @@ public final class Gandalf {
                     throw new IllegalStateException("You must supply a bootstrap url");
                 }
 
+                if (StringUtils.isBlank(this.packageName)) {
+                    throw new IllegalStateException("You must supply a package name for the PlayStore");
+                }
+
                 HistoryChecker historyChecker = new DefaultHistoryChecker(this.context);
 
                 gandalfInstance = createInstance(
                         this.context,
                         this.bootstrapUrl,
                         historyChecker,
-                        new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker)
+                        new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker),
+                        this.packageName
                 );
             }
         }

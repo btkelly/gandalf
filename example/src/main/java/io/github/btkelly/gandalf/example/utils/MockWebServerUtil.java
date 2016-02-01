@@ -40,6 +40,7 @@ import okhttp3.mockwebserver.MockWebServer;
 public final class MockWebServerUtil {
 
     private static final String KEY_BOOTSTRAP_RES_ID = "KEY_BOOTSTRAP_RES_ID";
+    private static MockWebServer mockWebServer;
 
     /**
      * Starts a mock web server to return the bootstrap file set using setMockBootstrapRes(Context context, int rawResourceId)
@@ -48,7 +49,8 @@ public final class MockWebServerUtil {
      */
     public static String startMockWebServer(@NonNull final Context context) {
 
-        final MockWebServer mockWebServer = new MockWebServer();
+        shutdownWebServer();
+        mockWebServer = new MockWebServer();
 
         Thread startMockServer = new Thread(new Runnable() {
             @Override
@@ -65,7 +67,7 @@ public final class MockWebServerUtil {
                     MockResponse mockResponse = new MockResponse();
                     mockResponse.setResponseCode(200);
                     mockResponse.setBody(mockBootstrapJsonBody);
-                    mockResponse.setBodyDelay(4, TimeUnit.SECONDS);
+                    mockResponse.setBodyDelay(2, TimeUnit.SECONDS);
 
                     mockWebServer.enqueue(mockResponse);
 
@@ -93,10 +95,24 @@ public final class MockWebServerUtil {
      */
     public static void setMockBootstrapRes(@NonNull Context context, @RawRes int rawResourceId) {
 
+        shutdownWebServer();
+
         PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext())
                 .edit()
                 .putInt(KEY_BOOTSTRAP_RES_ID, rawResourceId)
                 .commit();
+    }
+
+    private static void shutdownWebServer() {
+        if (mockWebServer != null) {
+            try {
+                mockWebServer.shutdown();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                mockWebServer = null;
+            }
+        }
     }
 
     private static String getMockJsonBootstrap(@NonNull Context context, @RawRes int rawRes) throws IOException {

@@ -15,24 +15,22 @@
  */
 package io.github.btkelly.gandalf.activities;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import io.github.btkelly.gandalf.Gandalf;
 import io.github.btkelly.gandalf.GandalfCallback;
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.models.RequiredUpdate;
+import io.github.btkelly.gandalf.utils.BootstrapDialogUtil;
 
 /**
  * Abstract activity that should be extended for the simplest use of the Gandalf library
  */
-public abstract class GandalfActivity extends AppCompatActivity implements GandalfCallback {
+public abstract class GandalfActivity extends AppCompatActivity implements GandalfCallback, BootstrapDialogUtil.BootstrapDialogListener {
 
     private Gandalf gandalf;
 
@@ -69,32 +67,40 @@ public abstract class GandalfActivity extends AppCompatActivity implements Ganda
 
     @Override
     public final void onRequiredUpdate(RequiredUpdate requiredUpdate) {
-        //TODO show in a dialog using dialog util
-        //This is just temporary until this is implemented
-        new AlertDialog.Builder(this)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.e("IGNORE", gandalf.toString());
-                    }
-                })
-                .show();
+        BootstrapDialogUtil.showRequiredUpdateDialog(
+                this,
+                this.gandalf,
+                requiredUpdate
+        );
     }
 
     @Override
     public final void onOptionalUpdate(OptionalUpdate optionalUpdate) {
-        //TODO show in a dialog using dialog util
-        this.gandalf.save(optionalUpdate);
+        BootstrapDialogUtil.showOptionalUpdateDialog(
+                this,
+                this.gandalf,
+                optionalUpdate,
+                this
+        );
     }
 
     @Override
     public final void onAlert(Alert alert) {
-        //TODO show in a dialog using dialog util
-        this.gandalf.save(alert);
+        BootstrapDialogUtil.showAlertDialog(
+                this,
+                this.gandalf,
+                alert,
+                this
+        );
     }
 
     @Override
     public final void onNoActionRequired() {
+        youShallPass();
+    }
+
+    @Override
+    public void continueLoading() {
         youShallPass();
     }
 }

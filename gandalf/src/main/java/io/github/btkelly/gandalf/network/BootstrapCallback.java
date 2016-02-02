@@ -20,7 +20,8 @@ import java.io.IOException;
 import io.github.btkelly.gandalf.models.Bootstrap;
 
 /**
- * TODO: Add a class header comment!
+ * Callback to be used when making a network request to fetch the bootstrap file. Callbacks should be
+ * executed on the main thread.
  */
 public interface BootstrapCallback {
 

@@ -34,13 +34,23 @@ public final class LoggerUtil {
 
     }
 
+    public static void log(final String message, final LogLevel logLevel) {
+        switch (logLevel) {
+            case DEBUG:
+                logD(message);
+                break;
+            case ERROR:
+                logE(message);
+                break;
+            default:
+        }
+    }
+
     public static void logD(String message) {
-        //TODO add log level config to gandalf class
         Log.d(LOGGER_TAG, message);
     }
 
     public static void logE(String message) {
-        //TODO add log level config to gandalf class
         Log.e(LOGGER_TAG, message);
     }
 

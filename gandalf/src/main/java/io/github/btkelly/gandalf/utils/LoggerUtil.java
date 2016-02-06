@@ -23,36 +23,31 @@ import android.util.Log;
 public final class LoggerUtil {
 
     private static final String LOGGER_TAG = "Gandalf";
+    private static LogLevel level = LogLevel.NONE;
 
     public enum LogLevel {
-        DEBUG,
+        NONE,
         ERROR,
-        NONE
+        DEBUG
     }
 
     private LoggerUtil() {
 
     }
 
-    public static void log(final String message, final LogLevel logLevel) {
-        switch (logLevel) {
-            case DEBUG:
-                logD(message);
-                break;
-            case ERROR:
-                logE(message);
-                break;
-            default:
-        }
+    public static void setLogLevel(final LogLevel level) {
+        LoggerUtil.level = level;
     }
 
     public static void logD(String message) {
-        Log.d(LOGGER_TAG, message);
+        if (level.ordinal() >= LogLevel.DEBUG.ordinal()) {
+            Log.d(LOGGER_TAG, message);
+        }
     }
 
     public static void logE(String message) {
-        Log.e(LOGGER_TAG, message);
+        if (level.ordinal() >= LogLevel.ERROR.ordinal()) {
+            Log.e(LOGGER_TAG, message);
+        }
     }
-
-
 }

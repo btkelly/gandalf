@@ -30,6 +30,7 @@ import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.network.BootstrapApi;
 import io.github.btkelly.gandalf.network.BootstrapCallback;
 import io.github.btkelly.gandalf.utils.LoggerUtil;
+import io.github.btkelly.gandalf.utils.LoggerUtil.LogLevel;
 import io.github.btkelly.gandalf.utils.StringUtils;
 
 /**
@@ -44,16 +45,14 @@ public final class Gandalf {
     private final HistoryChecker historyChecker;
     private final GateKeeper gateKeeper;
     private final String packageName;
-    private final LoggerUtil.LogLevel logLevel;
 
     private Gandalf(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper,
-                    String packageName, LoggerUtil.LogLevel logLevel) {
+                    String packageName) {
         this.context = context;
         this.bootstrapUrl = bootstrapUrl;
         this.historyChecker = historyChecker;
         this.gateKeeper = gateKeeper;
         this.packageName = packageName;
-        this.logLevel = logLevel;
     }
 
     public static Gandalf get() {
@@ -70,9 +69,8 @@ public final class Gandalf {
                                           @NonNull final String bootstrapUrl,
                                           @NonNull final HistoryChecker historyChecker,
                                           @NonNull final GateKeeper gateKeeper,
-                                          @NonNull final String packageName,
-                                          @NonNull final LoggerUtil.LogLevel logLevel) {
-        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper, packageName, logLevel);
+                                          @NonNull final String packageName) {
+        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper, packageName);
     }
 
     /**
@@ -107,7 +105,7 @@ public final class Gandalf {
      */
     public void shallIPass(final GandalfCallback gandalfCallback) {
 
-        LoggerUtil.log("Fetching bootstrap", logLevel);
+        LoggerUtil.logD("Fetching bootstrap");
 
         new BootstrapApi(context, bootstrapUrl)
                 .fetchBootstrap(new BootstrapCallback() {
@@ -115,19 +113,19 @@ public final class Gandalf {
                     @Override
                     public void onSuccess(Bootstrap bootstrap) {
 
-                        LoggerUtil.log("Fetched bootstrap: " + bootstrap, logLevel);
+                        LoggerUtil.logD("Fetched bootstrap: " + bootstrap);
 
                         if (gateKeeper.updateIsRequired(bootstrap)) {
-                            LoggerUtil.log("Update is required", logLevel);
+                            LoggerUtil.logD("Update is required");
                             gandalfCallback.onRequiredUpdate(bootstrap.getRequiredUpdate());
                         } else if (gateKeeper.updateIsOptional(bootstrap)) {
-                            LoggerUtil.log("Update is optional", logLevel);
+                            LoggerUtil.logD("Update is optional");
                             gandalfCallback.onOptionalUpdate(bootstrap.getOptionalUpdate());
                         } else if (gateKeeper.showAlert(bootstrap)) {
-                            LoggerUtil.log("Alert", logLevel);
+                            LoggerUtil.logD("Alert");
                             gandalfCallback.onAlert(bootstrap.getAlert());
                         } else {
-                            LoggerUtil.log("No action is required", logLevel);
+                            LoggerUtil.logD("No action is required");
                             gandalfCallback.onNoActionRequired();
                         }
 
@@ -135,7 +133,7 @@ public final class Gandalf {
 
                     @Override
                     public void onError(IOException e) {
-                        LoggerUtil.log("Error fetching bootstrap: " + e.getMessage(), logLevel);
+                        LoggerUtil.logE("Error fetching bootstrap: " + e.getMessage());
                         //In any error case we should let the user in as to not block based on a bug
                         gandalfCallback.onNoActionRequired();
                     }
@@ -150,7 +148,7 @@ public final class Gandalf {
         private Context context;
         private String bootstrapUrl;
         private String packageName;
-        private LoggerUtil.LogLevel logLevel = LoggerUtil.LogLevel.NONE;
+        private LogLevel logLevel = LogLevel.NONE;
 
         public Installer setContext(Context context) {
             this.context = context;
@@ -167,7 +165,7 @@ public final class Gandalf {
             return this;
         }
 
-        public Installer setLogLevel(final LoggerUtil.LogLevel logLevel) {
+        public Installer setLogLevel(@NonNull final LogLevel logLevel) {
             this.logLevel = logLevel;
             return this;
         }
@@ -193,13 +191,14 @@ public final class Gandalf {
 
                 HistoryChecker historyChecker = new DefaultHistoryChecker(this.context);
 
+                LoggerUtil.setLogLevel(logLevel);
+
                 gandalfInstance = createInstance(
                         this.context,
                         this.bootstrapUrl,
                         historyChecker,
                         new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker),
-                        this.packageName,
-                        this.logLevel
+                        this.packageName
                 );
             }
         }

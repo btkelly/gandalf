@@ -165,7 +165,7 @@ public final class Gandalf {
             return this;
         }
 
-        public Installer setLogLevel(@NonNull @LogLevel final int logLevel) {
+        public Installer setLogLevel(@LogLevel final int logLevel) {
             this.logLevel = logLevel;
             return this;
         }

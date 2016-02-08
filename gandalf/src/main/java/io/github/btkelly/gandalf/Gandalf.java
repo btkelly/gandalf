@@ -148,7 +148,7 @@ public final class Gandalf {
         private Context context;
         private String bootstrapUrl;
         private String packageName;
-        private LogLevel logLevel = LogLevel.NONE;
+        @LogLevel private int logLevel = LoggerUtil.NONE;
 
         public Installer setContext(Context context) {
             this.context = context;
@@ -165,7 +165,7 @@ public final class Gandalf {
             return this;
         }
 
-        public Installer setLogLevel(@NonNull final LogLevel logLevel) {
+        public Installer setLogLevel(@NonNull @LogLevel final int logLevel) {
             this.logLevel = logLevel;
             return this;
         }

@@ -10,6 +10,8 @@ android:
   - build-tools-23.0.2
   - android-23
   - extra-android-m2repository
+  - extra-android-support
+  - doc-23
 branches:
   only:
   - master

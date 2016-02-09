@@ -15,7 +15,11 @@
  */
 package io.github.btkelly.gandalf.utils;
 
+import android.support.annotation.IntDef;
 import android.util.Log;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Simple log cat wrapper for different log levels
@@ -24,25 +28,37 @@ public final class LoggerUtil {
 
     private static final String LOGGER_TAG = "Gandalf";
 
-    public enum LogLevel {
-        DEBUG,
-        ERROR,
-        NONE
-    }
+    public static final int NONE = 0;
+    public static final int ERROR = 1;
+    public static final int DEBUG = 2;
+
+    @LogLevel private static int logLevel = NONE;
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @IntDef({NONE, ERROR, DEBUG})
+    public @interface LogLevel { }
 
     private LoggerUtil() {
 
     }
 
+    /**
+     * Set the maximum priority {@link io.github.btkelly.gandalf.utils.LoggerUtil.LogLevel}
+     * @param level the maximum level that will be logged
+     */
+    public static void setLogLevel(@LogLevel final int level) {
+        LoggerUtil.logLevel = level;
+    }
+
     public static void logD(String message) {
-        //TODO add log level config to gandalf class
-        Log.d(LOGGER_TAG, message);
+        if (logLevel >= DEBUG) {
+            Log.d(LOGGER_TAG, message);
+        }
     }
 
     public static void logE(String message) {
-        //TODO add log level config to gandalf class
-        Log.e(LOGGER_TAG, message);
+        if (logLevel >= ERROR) {
+            Log.e(LOGGER_TAG, message);
+        }
     }
-
-
 }

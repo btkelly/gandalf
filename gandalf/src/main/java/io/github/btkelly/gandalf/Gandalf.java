@@ -30,6 +30,7 @@ import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.network.BootstrapApi;
 import io.github.btkelly.gandalf.network.BootstrapCallback;
 import io.github.btkelly.gandalf.utils.LoggerUtil;
+import io.github.btkelly.gandalf.utils.LoggerUtil.LogLevel;
 import io.github.btkelly.gandalf.utils.StringUtils;
 
 /**
@@ -45,7 +46,8 @@ public final class Gandalf {
     private final GateKeeper gateKeeper;
     private final String packageName;
 
-    private Gandalf(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper, String packageName) {
+    private Gandalf(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper,
+                    String packageName) {
         this.context = context;
         this.bootstrapUrl = bootstrapUrl;
         this.historyChecker = historyChecker;
@@ -146,6 +148,7 @@ public final class Gandalf {
         private Context context;
         private String bootstrapUrl;
         private String packageName;
+        @LogLevel private int logLevel = LoggerUtil.NONE;
 
         public Installer setContext(Context context) {
             this.context = context;
@@ -159,6 +162,11 @@ public final class Gandalf {
 
         public Installer setPackageName(String packageName) {
             this.packageName = packageName;
+            return this;
+        }
+
+        public Installer setLogLevel(@LogLevel final int logLevel) {
+            this.logLevel = logLevel;
             return this;
         }
 
@@ -182,6 +190,8 @@ public final class Gandalf {
                 }
 
                 HistoryChecker historyChecker = new DefaultHistoryChecker(this.context);
+
+                LoggerUtil.setLogLevel(logLevel);
 
                 gandalfInstance = createInstance(
                         this.context,

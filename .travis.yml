@@ -11,6 +11,7 @@ android:
   - android-23
   - extra-android-m2repository
   - extra-android-support
+  - doc-23
 branches:
   only:
   - master

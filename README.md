@@ -1,4 +1,4 @@
-# Gandalf [![Build Status](https://travis-ci.org/btkelly/gandalf.svg?branch=master)](https://travis-ci.org/btkelly/gandalf) <a href="http://www.detroitlabs.com/"><img src="https://img.shields.io/badge/Sponsor-Detroit%20Labs-000000.svg" /></a>
+# Gandalf [![Build Status](https://travis-ci.org/btkelly/gandalf.svg?branch=master)](https://travis-ci.org/btkelly/gandalf) <a href="http://www.detroitlabs.com/"><img src="https://img.shields.io/badge/Sponsor-Detroit%20Labs-000000.svg" /></a> [ ![Download](https://api.bintray.com/packages/btkelly/maven/gandalf/images/download.svg) ](https://bintray.com/btkelly/maven/gandalf/_latestVersion) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Gandalf-green.svg?style=true)](https://android-arsenal.com/details/1/3127)
 
 In the lifetime of any application there will come a time where you need to drop support for a feature, end of life a product, notify about maintenance, any number of other reasons, Gandalf is here to help!
 

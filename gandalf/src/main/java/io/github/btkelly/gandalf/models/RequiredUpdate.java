@@ -24,8 +24,8 @@ import android.support.annotation.Nullable;
  */
 public class RequiredUpdate implements Parcelable {
 
-    String minimumVersion;
-    String message;
+    private final String minimumVersion;
+    private final String message;
 
     @Nullable
     public String getMinimumVersion() {
@@ -56,8 +56,9 @@ public class RequiredUpdate implements Parcelable {
         dest.writeString(this.message);
     }
 
-    RequiredUpdate() {
-
+    RequiredUpdate(String minimumVersion, String message) {
+        this.minimumVersion = minimumVersion;
+        this.message = message;
     }
 
     protected RequiredUpdate(Parcel in) {

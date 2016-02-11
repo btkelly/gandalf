@@ -24,9 +24,9 @@ import android.support.annotation.Nullable;
  */
 public class Bootstrap implements Parcelable {
 
-    Alert alert;
-    OptionalUpdate optionalUpdate;
-    RequiredUpdate requiredUpdate;
+    private final Alert alert;
+    private final OptionalUpdate optionalUpdate;
+    private final RequiredUpdate requiredUpdate;
 
     @Nullable
     public Alert getAlert() {
@@ -64,8 +64,10 @@ public class Bootstrap implements Parcelable {
         dest.writeParcelable(this.requiredUpdate, flags);
     }
 
-    private Bootstrap() {
-
+    Bootstrap(Alert alert, OptionalUpdate optionalUpdate, RequiredUpdate requiredUpdate) {
+        this.alert = alert;
+        this.optionalUpdate = optionalUpdate;
+        this.requiredUpdate = requiredUpdate;
     }
 
     protected Bootstrap(Parcel in) {
@@ -125,24 +127,11 @@ public class Bootstrap implements Parcelable {
 
         public Bootstrap build() {
 
-            Alert alert = new Alert();
-            alert.blocking = isAlertBlocking;
-            alert.message = alertMessage;
+            Alert alert = new Alert(alertMessage, isAlertBlocking);
+            OptionalUpdate optionalUpdate = new OptionalUpdate(optionalVersion, optionalMessage);
+            RequiredUpdate requiredUpdate = new RequiredUpdate(minimumVersion, requiredMessage);
 
-            OptionalUpdate optionalUpdate = new OptionalUpdate();
-            optionalUpdate.optionalVersion = optionalVersion;
-            optionalUpdate.message = optionalMessage;
-
-            RequiredUpdate requiredUpdate = new RequiredUpdate();
-            requiredUpdate.minimumVersion = minimumVersion;
-            requiredUpdate.message = requiredMessage;
-
-            Bootstrap bootstrap = new Bootstrap();
-            bootstrap.alert = alert;
-            bootstrap.optionalUpdate = optionalUpdate;
-            bootstrap.requiredUpdate = requiredUpdate;
-
-            return bootstrap;
+            return new Bootstrap(alert, optionalUpdate, requiredUpdate);
         }
 
     }

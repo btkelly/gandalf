@@ -6,7 +6,7 @@ Gandalf will easily add a check to a remote file that can notify a user with a s
 
 ## Usage
 
-The goal of Gandalf was to add this basic boiler plate code to any application quickly. You will need to add the following code to your application as well as host a JSON file on a publicly accessible server with the format included below.
+The goal of Gandalf was to add this basic boiler plate code to any application quickly. You will need to add the following code to your application as well as host a JSON file on a publicly accessible server.
 
 #### Application Class
 
@@ -77,7 +77,7 @@ Add the `android:name` attribute to the `application` tag and specify the path t
 
 #### JSON File
 
-You must host a JSON file remotely and set the URL of this file in the the Gandalf installer. The JSON file must match the following format and use the Android `versionCode` not the `versionName` for version information.
+You must host a JSON file remotely and set the URL of this file in the the Gandalf installer. The JSON file use the Android `versionCode` not the `versionName` for version information. By default the format must match the file included below, if you would like to use custom JSON you can provide a [custom deserializer](####Custom JSON Deserializer).
 
 ```json
 {
@@ -102,6 +102,33 @@ You must host a JSON file remotely and set the URL of this file in the the Ganda
 That's all that's needed to get Gandalf up and running using the basic settings.
  
 If extending `GandalfActivity` doesn't work for you the `Gandalf` class can be used directly by calling `shallIPass(GandalfCallback callback)`. In this case make sure you respond to the callback methods and make a call to `gandalf.save(Alert alert)` and `gandalf.save(OptionalUpdate optionalUpdate)` if not using the `BootstrapDialogUtil` for your UI.
+
+#### Custom JSON Deserializer
+
+You may have a different JSON format for the bootstrap file, no problem! To do this you must provide a [`JsonDeserializer<Bootstrap>`](https://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/com/google/gson/JsonDeserializer.html) during the Gandalf installation.
+
+```java
+new Gandalf.Installer()
+        .setContext(this)
+        .setPackageName("com.my.package")
+        .setBootstrapUrl("http://www.example.com/bootstrap.json")                
+        .setCustomDeserializer(new JsonDeserializer<Bootstrap>() {
+             @Override
+             public Bootstrap deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+
+                //Inspect the JsonElement object to retrieve the pieces of the Bootstrap file and return using the builder like below
+                 return new Bootstrap.Builder()
+                         .setAlertBlocking(false)
+                         .setAlertMessage("Down for maintenance.")
+                         .setOptionalVersion("8")
+                         .setOptionalMessage("There is a newer version of the app, please update below.")
+                         .setMinimumVersion("6")
+                         .setRequiredMessage("You must update to the latest version of the app.")
+                         .build();
+             }
+         })
+        .install();
+```
 
 ## Example App
 

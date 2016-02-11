@@ -54,8 +54,7 @@ public class App extends Application {
         @Override
         public Bootstrap deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 
-            //Inspect the json to retrieve the pieces of the Bootstrap file and return using the builder like below
-
+            //Inspect the JsonElement object to retrieve the pieces of the Bootstrap file and return using the builder like below
             return new Bootstrap.Builder()
                     .setAlertBlocking(false)
                     .setAlertMessage("Down for maintenance.")

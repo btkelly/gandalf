@@ -64,12 +64,6 @@ public class Bootstrap implements Parcelable {
         dest.writeParcelable(this.requiredUpdate, flags);
     }
 
-    public Bootstrap(Alert alert, OptionalUpdate optionalUpdate, RequiredUpdate requiredUpdate) {
-        this.alert = alert;
-        this.optionalUpdate = optionalUpdate;
-        this.requiredUpdate = requiredUpdate;
-    }
-
     private Bootstrap() {
 
     }

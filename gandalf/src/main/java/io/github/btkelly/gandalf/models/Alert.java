@@ -24,8 +24,8 @@ import android.support.annotation.Nullable;
  */
 public class Alert implements Parcelable {
 
-    private String message;
-    private boolean blocking;
+    String message;
+    boolean blocking;
 
     @Nullable
     public String getMessage() {
@@ -55,7 +55,7 @@ public class Alert implements Parcelable {
         dest.writeByte(blocking ? (byte) 1 : (byte) 0);
     }
 
-    private Alert() {
+    Alert() {
 
     }
 

@@ -24,9 +24,9 @@ import android.support.annotation.Nullable;
  */
 public class Bootstrap implements Parcelable {
 
-    private Alert alert;
-    private OptionalUpdate optionalUpdate;
-    private RequiredUpdate requiredUpdate;
+    Alert alert;
+    OptionalUpdate optionalUpdate;
+    RequiredUpdate requiredUpdate;
 
     @Nullable
     public Alert getAlert() {
@@ -64,6 +64,12 @@ public class Bootstrap implements Parcelable {
         dest.writeParcelable(this.requiredUpdate, flags);
     }
 
+    public Bootstrap(Alert alert, OptionalUpdate optionalUpdate, RequiredUpdate requiredUpdate) {
+        this.alert = alert;
+        this.optionalUpdate = optionalUpdate;
+        this.requiredUpdate = requiredUpdate;
+    }
+
     private Bootstrap() {
 
     }
@@ -83,4 +89,67 @@ public class Bootstrap implements Parcelable {
             return new Bootstrap[size];
         }
     };
+
+    public static class Builder {
+
+        private boolean isAlertBlocking;
+        private String alertMessage;
+        private String optionalVersion;
+        private String optionalMessage;
+        private String minimumVersion;
+        private String requiredMessage;
+
+        public Builder setAlertBlocking(boolean alertBlocking) {
+            isAlertBlocking = alertBlocking;
+            return this;
+        }
+
+        public Builder setAlertMessage(String alertMessage) {
+            this.alertMessage = alertMessage;
+            return this;
+        }
+
+        public Builder setOptionalVersion(String optionalVersion) {
+            this.optionalVersion = optionalVersion;
+            return this;
+        }
+
+        public Builder setOptionalMessage(String optionalMessage) {
+            this.optionalMessage = optionalMessage;
+            return this;
+        }
+
+        public Builder setMinimumVersion(String minimumVersion) {
+            this.minimumVersion = minimumVersion;
+            return this;
+        }
+
+        public Builder setRequiredMessage(String requiredMessage) {
+            this.requiredMessage = requiredMessage;
+            return this;
+        }
+
+        public Bootstrap build() {
+
+            Alert alert = new Alert();
+            alert.blocking = isAlertBlocking;
+            alert.message = alertMessage;
+
+            OptionalUpdate optionalUpdate = new OptionalUpdate();
+            optionalUpdate.optionalVersion = optionalVersion;
+            optionalUpdate.message = optionalMessage;
+
+            RequiredUpdate requiredUpdate = new RequiredUpdate();
+            requiredUpdate.minimumVersion = minimumVersion;
+            requiredUpdate.message = requiredMessage;
+
+            Bootstrap bootstrap = new Bootstrap();
+            bootstrap.alert = alert;
+            bootstrap.optionalUpdate = optionalUpdate;
+            bootstrap.requiredUpdate = requiredUpdate;
+
+            return bootstrap;
+        }
+
+    }
 }

@@ -18,9 +18,11 @@ package io.github.btkelly.gandalf.network;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +46,8 @@ public class BootstrapApi {
     private static final int CACHE_SIZE = 1024;
     private static final long CONNECTION_TIMEOUT_SECONDS = 30;
 
+    @Nullable
+    private final JsonDeserializer<Bootstrap> customDeserializer;
     private final String bootStrapUrl;
     private final OkHttpClient okHttpClient;
 
@@ -51,9 +55,11 @@ public class BootstrapApi {
      * Creates a bootstrap api class
      * @param context - Android context used for setting up http cache directory
      * @param bootStrapUrl - url to fetch the bootstrap file from
+     * @param customDeserializer - a custom deserializer for parsing the JSON response
      */
-    public BootstrapApi(Context context, String bootStrapUrl) {
+    public BootstrapApi(Context context, String bootStrapUrl, @Nullable JsonDeserializer<Bootstrap> customDeserializer) {
         this.bootStrapUrl = bootStrapUrl;
+        this.customDeserializer = customDeserializer;
 
         File cacheDir = context.getCacheDir();
         Cache cache = new Cache(cacheDir, CACHE_SIZE);
@@ -95,8 +101,13 @@ public class BootstrapApi {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-                Gson gson = new GsonBuilder()
-                        .create();
+                GsonBuilder gsonBuilder = new GsonBuilder();
+
+                if (customDeserializer != null) {
+                    gsonBuilder.registerTypeAdapter(Bootstrap.class, customDeserializer);
+                }
+
+                Gson gson = gsonBuilder.create();
 
                 BootstrapResponse bootstrapResponse = gson.fromJson(response.body().string(), BootstrapResponse.class);
                 final Bootstrap bootstrap = bootstrapResponse.getAndroid();

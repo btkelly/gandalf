@@ -77,7 +77,7 @@ Add the `android:name` attribute to the `application` tag and specify the path t
 
 #### JSON File
 
-You must host a JSON file remotely and set the URL of this file in the the Gandalf installer. The JSON file use the Android `versionCode` not the `versionName` for version information. By default the format must match the file included below, if you would like to use custom JSON you can provide a [custom deserializer](####Custom JSON Deserializer).
+You must host a JSON file remotely and set the URL of this file in the the Gandalf installer. The JSON file use the Android `versionCode` not the `versionName` for version information. By default the format must match the file included below, if you would like to use custom JSON you can provide a [custom deserializer](#custom-json-deserializer).
 
 ```json
 {

@@ -1,7 +1,3 @@
-plugins {
-    id "com.github.hierynomus.license" version "0.12.1"
-}
-
 apply plugin: 'com.android.application'
 
 android {
@@ -40,11 +36,6 @@ android {
     }
 }
 
-license {
-    header = file('../Apache2License.txt')
-    strictCheck true
-}
-
 dependencies {
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -54,5 +45,3 @@ dependencies {
 
     testCompile 'junit:junit:4.11'
 }
-
-preBuild.dependsOn licenseFormat

@@ -4,6 +4,14 @@ In the lifetime of any application there will come a time where you need to drop
 
 Gandalf will easily add a check to a remote file that can notify a user with a simple alert, inform them of an optional update, and in dire situations block the user from accessing older versions of the application completely (**ex:**security vulnerability has been found).
 
+## Download
+
+Gandalf is hosted on the jCenter repository and can be downloaded via Gradle: 
+
+```
+compile 'com.btkelly:gandalf:{latest_version}'
+```
+
 ## Usage
 
 The goal of Gandalf was to add this basic boiler plate code to any application quickly. You will need to add the following code to your application as well as host a JSON file on a publicly accessible server.

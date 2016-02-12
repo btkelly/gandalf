@@ -81,7 +81,7 @@ public final class Gandalf {
 
     /**
      * Returns the package name set during the Gandalf Install
-     * @return
+     * @return the package name set during install
      */
     public String getPackageName() {
         return packageName;

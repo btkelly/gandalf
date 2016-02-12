@@ -56,12 +56,9 @@ public class App extends Application {
 
             //Inspect the JsonElement object to retrieve the pieces of the Bootstrap file and return using the builder like below
             return new Bootstrap.Builder()
-                    .setAlertBlocking(false)
-                    .setAlertMessage("Down for maintenance.")
-                    .setOptionalVersion("8")
-                    .setOptionalMessage("There is a newer version of the app, please update below.")
-                    .setMinimumVersion("6")
-                    .setRequiredMessage("You must update to the latest version of the app.")
+                    .setAlert("Down for maintenance.", false)
+                    .setOptionalUpdate("There is a newer version of the app, please update below.", "8")
+                    .setRequiredUpdate("You must update to the latest version of the app.", "6")
                     .build();
         }
     };

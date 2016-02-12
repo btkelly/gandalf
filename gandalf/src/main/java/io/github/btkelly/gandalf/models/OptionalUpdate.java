@@ -56,9 +56,9 @@ public class OptionalUpdate implements Parcelable {
         dest.writeString(this.message);
     }
 
-    OptionalUpdate(String optionalVersion, String message) {
-        this.optionalVersion = optionalVersion;
+    OptionalUpdate(String message, String optionalVersion) {
         this.message = message;
+        this.optionalVersion = optionalVersion;
     }
 
     protected OptionalUpdate(Parcel in) {

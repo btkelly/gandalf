@@ -88,50 +88,31 @@ public class Bootstrap implements Parcelable {
 
     public static class Builder {
 
-        private boolean isAlertBlocking;
-        private String alertMessage;
-        private String optionalVersion;
-        private String optionalMessage;
-        private String minimumVersion;
-        private String requiredMessage;
+        private Alert alert;
+        private OptionalUpdate optionalUpdate;
+        private RequiredUpdate requiredUpdate;
 
-        public Builder setAlertBlocking(boolean alertBlocking) {
-            isAlertBlocking = alertBlocking;
+        public Builder setAlert(String message, boolean blocking) {
+            this.alert = new Alert(message, blocking);
             return this;
         }
 
-        public Builder setAlertMessage(String alertMessage) {
-            this.alertMessage = alertMessage;
+        public Builder setOptionalUpdate(String message, String version) {
+            this.optionalUpdate = new OptionalUpdate(message, version);
             return this;
         }
 
-        public Builder setOptionalVersion(String optionalVersion) {
-            this.optionalVersion = optionalVersion;
-            return this;
-        }
-
-        public Builder setOptionalMessage(String optionalMessage) {
-            this.optionalMessage = optionalMessage;
-            return this;
-        }
-
-        public Builder setMinimumVersion(String minimumVersion) {
-            this.minimumVersion = minimumVersion;
-            return this;
-        }
-
-        public Builder setRequiredMessage(String requiredMessage) {
-            this.requiredMessage = requiredMessage;
+        public Builder setRequiredUpdate(String message, String version) {
+            this.requiredUpdate = new RequiredUpdate(message, version);
             return this;
         }
 
         public Bootstrap build() {
-
-            Alert alert = new Alert(alertMessage, isAlertBlocking);
-            OptionalUpdate optionalUpdate = new OptionalUpdate(optionalVersion, optionalMessage);
-            RequiredUpdate requiredUpdate = new RequiredUpdate(minimumVersion, requiredMessage);
-
-            return new Bootstrap(alert, optionalUpdate, requiredUpdate);
+            return new Bootstrap(
+                    alert,
+                    optionalUpdate,
+                    requiredUpdate
+            );
         }
 
     }

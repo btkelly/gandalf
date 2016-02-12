@@ -56,9 +56,9 @@ public class RequiredUpdate implements Parcelable {
         dest.writeString(this.message);
     }
 
-    RequiredUpdate(String minimumVersion, String message) {
-        this.minimumVersion = minimumVersion;
+    RequiredUpdate(String message, String minimumVersion) {
         this.message = message;
+        this.minimumVersion = minimumVersion;
     }
 
     protected RequiredUpdate(Parcel in) {

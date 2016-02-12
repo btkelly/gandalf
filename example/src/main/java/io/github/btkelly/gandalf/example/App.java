@@ -17,8 +17,16 @@ package io.github.btkelly.gandalf.example;
 
 import android.app.Application;
 
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+
+import java.lang.reflect.Type;
+
 import io.github.btkelly.gandalf.Gandalf;
 import io.github.btkelly.gandalf.example.utils.MockWebServerUtil;
+import io.github.btkelly.gandalf.models.Bootstrap;
 import io.github.btkelly.gandalf.utils.LoggerUtil;
 
 /**
@@ -36,8 +44,22 @@ public class App extends Application {
                 .setContext(this)
                 .setPackageName("com.github.stkent.bugshaker")
                 .setBootstrapUrl(mockBootstrapUrl)
+                //.setCustomDeserializer(this.customDeserializer) //Uncomment this line to include a custom deserializers to allow for a custom JSON structure.
                 .install();
 
         LoggerUtil.logD("Mock server started at " + mockBootstrapUrl);
     }
+
+    private JsonDeserializer<Bootstrap> customDeserializer = new JsonDeserializer<Bootstrap>() {
+        @Override
+        public Bootstrap deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+
+            //Inspect the JsonElement object to retrieve the pieces of the Bootstrap file and return using the builder like below
+            return new Bootstrap.Builder()
+                    .setAlert("Down for maintenance.", false)
+                    .setOptionalUpdate("There is a newer version of the app, please update below.", "8")
+                    .setRequiredUpdate("You must update to the latest version of the app.", "6")
+                    .build();
+        }
+    };
 }

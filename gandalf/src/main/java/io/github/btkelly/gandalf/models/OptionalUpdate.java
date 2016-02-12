@@ -24,8 +24,8 @@ import android.support.annotation.Nullable;
  */
 public class OptionalUpdate implements Parcelable {
 
-    private String optionalVersion;
-    private String message;
+    private final String optionalVersion;
+    private final String message;
 
     @Nullable
     public String getOptionalVersion() {
@@ -56,8 +56,9 @@ public class OptionalUpdate implements Parcelable {
         dest.writeString(this.message);
     }
 
-    private OptionalUpdate() {
-
+    OptionalUpdate(String message, String optionalVersion) {
+        this.message = message;
+        this.optionalVersion = optionalVersion;
     }
 
     protected OptionalUpdate(Parcel in) {

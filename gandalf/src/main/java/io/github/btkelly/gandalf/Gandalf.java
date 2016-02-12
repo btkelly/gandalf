@@ -17,6 +17,9 @@ package io.github.btkelly.gandalf;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.google.gson.JsonDeserializer;
 
 import java.io.IOException;
 
@@ -45,14 +48,16 @@ public final class Gandalf {
     private final HistoryChecker historyChecker;
     private final GateKeeper gateKeeper;
     private final String packageName;
+    private final JsonDeserializer<Bootstrap> customDeserializer;
 
     private Gandalf(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper,
-                    String packageName) {
+                    String packageName, JsonDeserializer<Bootstrap> customDeserializer) {
         this.context = context;
         this.bootstrapUrl = bootstrapUrl;
         this.historyChecker = historyChecker;
         this.gateKeeper = gateKeeper;
         this.packageName = packageName;
+        this.customDeserializer = customDeserializer;
     }
 
     public static Gandalf get() {
@@ -69,13 +74,14 @@ public final class Gandalf {
                                           @NonNull final String bootstrapUrl,
                                           @NonNull final HistoryChecker historyChecker,
                                           @NonNull final GateKeeper gateKeeper,
-                                          @NonNull final String packageName) {
-        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper, packageName);
+                                          @NonNull final String packageName,
+                                          @Nullable final JsonDeserializer<Bootstrap> customDeserializer) {
+        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper, packageName, customDeserializer);
     }
 
     /**
      * Returns the package name set during the Gandalf Install
-     * @return
+     * @return the package name set during install
      */
     public String getPackageName() {
         return packageName;
@@ -107,7 +113,7 @@ public final class Gandalf {
 
         LoggerUtil.logD("Fetching bootstrap");
 
-        new BootstrapApi(context, bootstrapUrl)
+        new BootstrapApi(context, bootstrapUrl, customDeserializer)
                 .fetchBootstrap(new BootstrapCallback() {
 
                     @Override
@@ -148,6 +154,7 @@ public final class Gandalf {
         private Context context;
         private String bootstrapUrl;
         private String packageName;
+        private JsonDeserializer<Bootstrap> customDeserializer;
         @LogLevel private int logLevel = LoggerUtil.NONE;
 
         public Installer setContext(Context context) {
@@ -162,6 +169,11 @@ public final class Gandalf {
 
         public Installer setPackageName(String packageName) {
             this.packageName = packageName;
+            return this;
+        }
+
+        public Installer setCustomDeserializer(JsonDeserializer<Bootstrap> customDeserializer) {
+            this.customDeserializer = customDeserializer;
             return this;
         }
 
@@ -198,7 +210,8 @@ public final class Gandalf {
                         this.bootstrapUrl,
                         historyChecker,
                         new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker),
-                        this.packageName
+                        this.packageName,
+                        this.customDeserializer
                 );
             }
         }

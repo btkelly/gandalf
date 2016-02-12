@@ -32,17 +32,31 @@
 
         <section id="main_content">
           <h1>
-<a id="gandalf------" class="anchor" href="#gandalf------" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gandalf <a href="https://travis-ci.org/btkelly/gandalf"><img src="https://travis-ci.org/btkelly/gandalf.svg?branch=master" alt="Build Status"></a> <a href="http://www.detroitlabs.com/"><img src="https://img.shields.io/badge/Sponsor-Detroit%20Labs-000000.svg"></a> <a href="https://bintray.com/btkelly/maven/gandalf/_latestVersion"> <img src="https://api.bintray.com/packages/btkelly/maven/gandalf/images/download.svg" alt="Download"> </a> <a href="https://android-arsenal.com/details/1/3127"><img src="https://img.shields.io/badge/Android%20Arsenal-Gandalf-green.svg?style=true" alt="AA"></a>
+<a id="gandalf------" class="anchor" href="#gandalf------" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gandalf <a href="https://travis-ci.org/btkelly/gandalf"><img src="https://travis-ci.org/btkelly/gandalf.svg?branch=master" alt="Build Status"></a> <a href="http://www.detroitlabs.com/"><img src="https://img.shields.io/badge/Sponsor-Detroit%20Labs-000000.svg"></a> <a href="https://bintray.com/btkelly/maven/gandalf/_latestVersion"> <img src="https://api.bintray.com/packages/btkelly/maven/gandalf/images/download.svg" alt="Download"> </a> <a href="https://android-arsenal.com/details/1/3127"><img src="https://img.shields.io/badge/Android%20Arsenal-Gandalf-green.svg?style=true" alt="Android Arsenal"></a>
 </h1>
 
 <p>In the lifetime of any application there will come a time where you need to drop support for a feature, end of life a product, notify about maintenance, any number of other reasons, Gandalf is here to help!</p>
 
 <p>Gandalf will easily add a check to a remote file that can notify a user with a simple alert, inform them of an optional update, and in dire situations block the user from accessing older versions of the application completely (<strong>ex:</strong>security vulnerability has been found).</p>
 
+<h4>
+<a id="need-an-ios-version" class="anchor" href="#need-an-ios-version" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Need an iOS version?</h4>
+
+<p>You're in luck! Gandalf was built in parallel with its iOS counterpart,
+<a href="http://dtrenz.github.io/LaunchGate/">LaunchGate</a>.</p>
+
+<h2>
+<a id="download" class="anchor" href="#download" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Download</h2>
+
+<p>Gandalf is hosted on the jCenter repository and can be downloaded via Gradle: </p>
+
+<pre><code>compile 'com.btkelly:gandalf:{latest_version}'
+</code></pre>
+
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
-<p>The goal of Gandalf was to add this basic boiler plate code to any application quickly. You will need to add the following code to your application as well as host a JSON file on a publicly accessible server with the format included below.</p>
+<p>The goal of Gandalf was to add this basic boiler plate code to any application quickly. You will need to add the following code to your application as well as host a JSON file on a publicly accessible server.</p>
 
 <h4>
 <a id="application-class" class="anchor" href="#application-class" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Application Class</h4>
@@ -111,7 +125,7 @@
 <h4>
 <a id="json-file" class="anchor" href="#json-file" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>JSON File</h4>
 
-<p>You must host a JSON file remotely and set the URL of this file in the the Gandalf installer. The JSON file must match the following format and use the Android <code>versionCode</code> not the <code>versionName</code> for version information.</p>
+<p>You must host a JSON file remotely and set the URL of this file in the the Gandalf installer. The JSON file use the Android <code>versionCode</code> not the <code>versionName</code> for version information. By default the format must match the file included below, if you would like to use custom JSON you can provide a <a href="#custom-json-deserializer">custom deserializer</a>.</p>
 
 <div class="highlight highlight-source-json"><pre>{
   <span class="pl-s"><span class="pl-pds">"</span>android<span class="pl-pds">"</span></span>: {
@@ -133,6 +147,32 @@
 <p>That's all that's needed to get Gandalf up and running using the basic settings.</p>
 
 <p>If extending <code>GandalfActivity</code> doesn't work for you the <code>Gandalf</code> class can be used directly by calling <code>shallIPass(GandalfCallback callback)</code>. In this case make sure you respond to the callback methods and make a call to <code>gandalf.save(Alert alert)</code> and <code>gandalf.save(OptionalUpdate optionalUpdate)</code> if not using the <code>BootstrapDialogUtil</code> for your UI.</p>
+
+<h4>
+<a id="custom-json-deserializer" class="anchor" href="#custom-json-deserializer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Custom JSON Deserializer</h4>
+
+<p>You may have a different JSON format for the bootstrap file, no problem! To do this you must provide a <a href="https://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/com/google/gson/JsonDeserializer.html"><code>JsonDeserializer&lt;Bootstrap&gt;</code></a> during the Gandalf installation.</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">new</span> <span class="pl-smi">Gandalf</span>.<span class="pl-smi">Installer</span>()
+        .setContext(<span class="pl-v">this</span>)
+        .setPackageName(<span class="pl-s"><span class="pl-pds">"</span>com.my.package<span class="pl-pds">"</span></span>)
+        .setBootstrapUrl(<span class="pl-s"><span class="pl-pds">"</span>http://www.example.com/bootstrap.json<span class="pl-pds">"</span></span>)                
+        .setCustomDeserializer(<span class="pl-k">new</span> <span class="pl-k">JsonDeserializer&lt;<span class="pl-smi">Bootstrap</span>&gt;</span>() {
+             <span class="pl-k">@Override</span>
+             <span class="pl-k">public</span> <span class="pl-smi">Bootstrap</span> <span class="pl-en">deserialize</span>(<span class="pl-smi">JsonElement</span> <span class="pl-v">json</span>, <span class="pl-smi">Type</span> <span class="pl-v">typeOfT</span>, <span class="pl-smi">JsonDeserializationContext</span> <span class="pl-v">context</span>) <span class="pl-k">throws</span> <span class="pl-smi">JsonParseException</span> {
+
+                <span class="pl-c">//Inspect the JsonElement object to retrieve the pieces of the Bootstrap file and return using the builder like below</span>
+                 <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Bootstrap</span>.<span class="pl-smi">Builder</span>()
+                         .setAlertBlocking(<span class="pl-c1">false</span>)
+                         .setAlertMessage(<span class="pl-s"><span class="pl-pds">"</span>Down for maintenance.<span class="pl-pds">"</span></span>)
+                         .setOptionalVersion(<span class="pl-s"><span class="pl-pds">"</span>8<span class="pl-pds">"</span></span>)
+                         .setOptionalMessage(<span class="pl-s"><span class="pl-pds">"</span>There is a newer version of the app, please update below.<span class="pl-pds">"</span></span>)
+                         .setMinimumVersion(<span class="pl-s"><span class="pl-pds">"</span>6<span class="pl-pds">"</span></span>)
+                         .setRequiredMessage(<span class="pl-s"><span class="pl-pds">"</span>You must update to the latest version of the app.<span class="pl-pds">"</span></span>)
+                         .build();
+             }
+         })
+        .install();</pre></div>
 
 <h2>
 <a id="example-app" class="anchor" href="#example-app" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example App</h2>

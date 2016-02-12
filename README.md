@@ -4,6 +4,10 @@ In the lifetime of any application there will come a time where you need to drop
 
 Gandalf will easily add a check to a remote file that can notify a user with a simple alert, inform them of an optional update, and in dire situations block the user from accessing older versions of the application completely (**ex:**security vulnerability has been found).
 
+#### Need an iOS version?
+You're in luck! Gandalf was built in parallel with its iOS counterpart,
+[LaunchGate](http://dtrenz.github.io/LaunchGate/).
+
 ## Download
 
 Gandalf is hosted on the jCenter repository and can be downloaded via Gradle: 

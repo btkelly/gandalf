@@ -12,7 +12,7 @@ You're in luck! Gandalf was built in parallel with its iOS counterpart,
 
 Gandalf is hosted on the jCenter repository and can be downloaded via Gradle: 
 
-```
+```groovy
 compile 'com.btkelly:gandalf:{latest_version}'
 ```
 

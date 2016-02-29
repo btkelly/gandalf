@@ -146,6 +146,9 @@ new Gandalf.Installer()
 
 Included in the source is a simple example application showing four different launch states based on a remote file. You can load and relaunch the app with each scenario by selecting an option in the Android menu.
 
+#### Screenshots
+<img src="http://i.imgur.com/WrWQv1r.png" width="30%"> <img src="http://i.imgur.com/435BD4V.png" width="30%"> <img src="http://i.imgur.com/bnM1yNa.png" width="30%">
+
 ## License
 
 Copyright 2016 Bryan Kelly

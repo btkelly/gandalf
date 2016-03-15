@@ -32,6 +32,7 @@ import io.github.btkelly.gandalf.models.Bootstrap;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.network.BootstrapApi;
 import io.github.btkelly.gandalf.network.BootstrapCallback;
+import io.github.btkelly.gandalf.holders.DialogStringsHolder;
 import io.github.btkelly.gandalf.utils.LoggerUtil;
 import io.github.btkelly.gandalf.utils.LoggerUtil.LogLevel;
 import io.github.btkelly.gandalf.utils.StringUtils;
@@ -49,15 +50,17 @@ public final class Gandalf {
     private final GateKeeper gateKeeper;
     private final String packageName;
     private final JsonDeserializer<Bootstrap> customDeserializer;
+    private final DialogStringsHolder dialogStringsHolder;
 
     private Gandalf(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper,
-                    String packageName, JsonDeserializer<Bootstrap> customDeserializer) {
+                    String packageName, JsonDeserializer<Bootstrap> customDeserializer, DialogStringsHolder dialogStringsHolder) {
         this.context = context;
         this.bootstrapUrl = bootstrapUrl;
         this.historyChecker = historyChecker;
         this.gateKeeper = gateKeeper;
         this.packageName = packageName;
         this.customDeserializer = customDeserializer;
+        this.dialogStringsHolder = dialogStringsHolder;
     }
 
     public static Gandalf get() {
@@ -75,8 +78,9 @@ public final class Gandalf {
                                           @NonNull final HistoryChecker historyChecker,
                                           @NonNull final GateKeeper gateKeeper,
                                           @NonNull final String packageName,
-                                          @Nullable final JsonDeserializer<Bootstrap> customDeserializer) {
-        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper, packageName, customDeserializer);
+                                          @Nullable final JsonDeserializer<Bootstrap> customDeserializer,
+                                          @NonNull final DialogStringsHolder dialogStringsHolder) {
+        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper, packageName, customDeserializer, dialogStringsHolder);
     }
 
     /**
@@ -85,6 +89,14 @@ public final class Gandalf {
      */
     public String getPackageName() {
         return packageName;
+    }
+
+    /**
+     * Returns the DialogStringsHolder instance set during the Gandalf Install
+     * @return the DialogStringsHolder instance set during install
+     */
+    public DialogStringsHolder getDialogStringsHolder() {
+        return dialogStringsHolder;
     }
 
     /**
@@ -157,6 +169,8 @@ public final class Gandalf {
         private JsonDeserializer<Bootstrap> customDeserializer;
         @LogLevel private int logLevel = LoggerUtil.NONE;
 
+        private DialogStringsHolder dialogStringsHolder;
+
         public Installer setContext(Context context) {
             this.context = context;
             return this;
@@ -182,6 +196,11 @@ public final class Gandalf {
             return this;
         }
 
+        public Installer setDialogStringsHolder(DialogStringsHolder dialogStringsHolder) {
+            this.dialogStringsHolder = dialogStringsHolder;
+            return this;
+        }
+
         public void install() {
 
             synchronized (Gandalf.class) {
@@ -201,6 +220,10 @@ public final class Gandalf {
                     throw new IllegalStateException("You must supply a package name for the PlayStore");
                 }
 
+                if (this.dialogStringsHolder == null) {
+                    this.dialogStringsHolder = new DialogStringsHolder(context);
+                }
+
                 HistoryChecker historyChecker = new DefaultHistoryChecker(this.context);
 
                 LoggerUtil.setLogLevel(logLevel);
@@ -211,7 +234,8 @@ public final class Gandalf {
                         historyChecker,
                         new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker),
                         this.packageName,
-                        this.customDeserializer
+                        this.customDeserializer,
+                        this.dialogStringsHolder
                 );
             }
         }

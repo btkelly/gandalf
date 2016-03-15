@@ -57,10 +57,10 @@ public final class BootstrapDialogUtil {
 
         if (ActivityStateUtil.isActivityValid(activity)) {
             new AlertDialog.Builder(activity)
-                    .setTitle("Update Required")
+                    .setTitle(gandalf.getDialogStringsHolder().getUpdateRequiredTitle())
                     .setMessage(requiredUpdate.getMessage())
-                    .setPositiveButton("Download Update", onClickListener)
-                    .setNegativeButton("Close App", onClickListener)
+                    .setPositiveButton(gandalf.getDialogStringsHolder().getDownloadUpdateButtonText(), onClickListener)
+                    .setNegativeButton(gandalf.getDialogStringsHolder().getCloseAppButtonText(), onClickListener)
                     .setCancelable(false)
                     .show();
         }
@@ -89,11 +89,11 @@ public final class BootstrapDialogUtil {
 
         if (ActivityStateUtil.isActivityValid(activity)) {
             new AlertDialog.Builder(activity)
-                    .setTitle("Update Available")
+                    .setTitle(gandalf.getDialogStringsHolder().getUpdateAvailableTitle())
                     .setMessage(optionalUpdate.getMessage())
-                    .setPositiveButton("Download Update", onClickListener)
-                    .setNeutralButton("Skip Update", onClickListener)
-                    .setNegativeButton("Close App", onClickListener)
+                    .setPositiveButton(gandalf.getDialogStringsHolder().getDownloadUpdateButtonText(), onClickListener)
+                    .setNeutralButton(gandalf.getDialogStringsHolder().getSkipUpdateButtonText(), onClickListener)
+                    .setNegativeButton(gandalf.getDialogStringsHolder().getCloseAppButtonText(), onClickListener)
                     .setCancelable(false)
                     .show();
         }
@@ -120,10 +120,18 @@ public final class BootstrapDialogUtil {
         };
 
         if (ActivityStateUtil.isActivityValid(activity)) {
+
+            String neutralButtonText;
+            if (alert.isBlocking()) {
+                neutralButtonText = gandalf.getDialogStringsHolder().getCloseAppButtonText();
+            } else {
+                neutralButtonText = gandalf.getDialogStringsHolder().getOkButtonText();
+            }
+
             new AlertDialog.Builder(activity)
-                    .setTitle("Alert")
+                    .setTitle(gandalf.getDialogStringsHolder().getAlertTitle())
                     .setMessage(alert.getMessage())
-                    .setNeutralButton(alert.isBlocking() ? "Close App" : "OK", onClickListener)
+                    .setNeutralButton(neutralButtonText, onClickListener)
                     .setCancelable(false)
                     .show();
         }

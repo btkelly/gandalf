@@ -46,30 +46,51 @@ public class DialogStringsHolder {
     }
 
     public String getUpdateAvailableTitle() {
+        if (updateAvailableTitle == null) {
+            setUpdateAvailableTitle(R.string.update_available_title);
+        }
         return updateAvailableTitle;
     }
 
     public String getUpdateRequiredTitle() {
+        if (updateRequiredTitle == null) {
+            setUpdateRequiredTitle(R.string.update_required_title);
+        }
         return updateRequiredTitle;
     }
 
     public String getAlertTitle() {
+        if (alertTitle == null) {
+            setUpdateAvailableTitle(R.string.alert_title);
+        }
         return alertTitle;
     }
 
     public String getDownloadUpdateButtonText() {
+        if (downloadUpdateButton == null) {
+            setDownloadUpdateButtonText(R.string.download_update_button);
+        }
         return downloadUpdateButton;
     }
 
     public String getSkipUpdateButtonText() {
+        if (skipUpdateButton == null) {
+            setSkipUpdateButtonText(R.string.skip_update_button);
+        }
         return skipUpdateButton;
     }
 
     public String getCloseAppButtonText() {
+        if (closeAppButton == null) {
+            setCloseAppButtonText(R.string.close_app_button);
+        }
         return closeAppButton;
     }
 
     public String getOkButtonText() {
+        if (okButton == null) {
+            setOkButtonText(R.string.ok_button);
+        }
         return okButton;
     }
 

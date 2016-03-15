@@ -24,12 +24,16 @@ import android.support.annotation.Nullable;
  */
 public class Alert implements Parcelable {
 
-    private final String message;
+    private String message;
     private final boolean blocking;
 
     @Nullable
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public boolean isBlocking() {

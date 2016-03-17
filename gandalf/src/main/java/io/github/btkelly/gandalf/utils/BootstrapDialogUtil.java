@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 
 import io.github.btkelly.gandalf.Gandalf;
+import io.github.btkelly.gandalf.holders.DialogStringsHolder;
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.models.RequiredUpdate;
@@ -56,11 +57,12 @@ public final class BootstrapDialogUtil {
         };
 
         if (ActivityStateUtil.isActivityValid(activity)) {
+            DialogStringsHolder dialogStringsHolder = gandalf.getDialogStringsHolder();
             new AlertDialog.Builder(activity)
-                    .setTitle(gandalf.getDialogStringsHolder().getUpdateRequiredTitle())
+                    .setTitle(dialogStringsHolder.getUpdateRequiredTitle())
                     .setMessage(requiredUpdate.getMessage())
-                    .setPositiveButton(gandalf.getDialogStringsHolder().getDownloadUpdateButtonText(), onClickListener)
-                    .setNegativeButton(gandalf.getDialogStringsHolder().getCloseAppButtonText(), onClickListener)
+                    .setPositiveButton(dialogStringsHolder.getDownloadUpdateButtonText(), onClickListener)
+                    .setNegativeButton(dialogStringsHolder.getCloseAppButtonText(), onClickListener)
                     .setCancelable(false)
                     .show();
         }
@@ -88,12 +90,13 @@ public final class BootstrapDialogUtil {
         };
 
         if (ActivityStateUtil.isActivityValid(activity)) {
+            DialogStringsHolder dialogStringsHolder = gandalf.getDialogStringsHolder();
             new AlertDialog.Builder(activity)
-                    .setTitle(gandalf.getDialogStringsHolder().getUpdateAvailableTitle())
+                    .setTitle(dialogStringsHolder.getUpdateAvailableTitle())
                     .setMessage(optionalUpdate.getMessage())
-                    .setPositiveButton(gandalf.getDialogStringsHolder().getDownloadUpdateButtonText(), onClickListener)
-                    .setNeutralButton(gandalf.getDialogStringsHolder().getSkipUpdateButtonText(), onClickListener)
-                    .setNegativeButton(gandalf.getDialogStringsHolder().getCloseAppButtonText(), onClickListener)
+                    .setPositiveButton(dialogStringsHolder.getDownloadUpdateButtonText(), onClickListener)
+                    .setNeutralButton(dialogStringsHolder.getSkipUpdateButtonText(), onClickListener)
+                    .setNegativeButton(dialogStringsHolder.getCloseAppButtonText(), onClickListener)
                     .setCancelable(false)
                     .show();
         }
@@ -120,16 +123,16 @@ public final class BootstrapDialogUtil {
         };
 
         if (ActivityStateUtil.isActivityValid(activity)) {
-
+            DialogStringsHolder dialogStringsHolder = gandalf.getDialogStringsHolder();
             String neutralButtonText;
             if (alert.isBlocking()) {
-                neutralButtonText = gandalf.getDialogStringsHolder().getCloseAppButtonText();
+                neutralButtonText = dialogStringsHolder.getCloseAppButtonText();
             } else {
-                neutralButtonText = gandalf.getDialogStringsHolder().getOkButtonText();
+                neutralButtonText = dialogStringsHolder.getOkButtonText();
             }
 
             new AlertDialog.Builder(activity)
-                    .setTitle(gandalf.getDialogStringsHolder().getAlertTitle())
+                    .setTitle(dialogStringsHolder.getAlertTitle())
                     .setMessage(alert.getMessage())
                     .setNeutralButton(neutralButtonText, onClickListener)
                     .setCancelable(false)

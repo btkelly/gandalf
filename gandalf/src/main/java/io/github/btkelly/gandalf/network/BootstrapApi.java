@@ -113,14 +113,17 @@ public class BootstrapApi {
                 try {
                     BootstrapResponse bootstrapResponse = gson.fromJson(response.body().string(), BootstrapResponse.class);
                     final Bootstrap bootstrap = bootstrapResponse.getAndroid();
-
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            bootstrapCallback.onSuccess(bootstrap);
-                        }
-                    });
-                } catch (JsonSyntaxException e) {
+                    if (bootstrap != null) {
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                bootstrapCallback.onSuccess(bootstrap);
+                            }
+                        });
+                    } else {
+                        throw new NullPointerException("No \"android\" key found in the JSON response");
+                    }
+                } catch (JsonSyntaxException | NullPointerException e) {
                     bootstrapCallback.onError(e);
                 }
             }

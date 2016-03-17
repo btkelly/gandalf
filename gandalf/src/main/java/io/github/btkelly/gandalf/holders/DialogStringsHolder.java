@@ -36,13 +36,6 @@ public class DialogStringsHolder {
 
     public DialogStringsHolder(Context context) {
         this.context = context;
-        setUpdateAvailableTitle(R.string.update_available_title);
-        setUpdateRequiredTitle(R.string.update_required_title);
-        setDownloadUpdateButtonText(R.string.download_update_button);
-        setSkipUpdateButtonText(R.string.skip_update_button);
-        setCloseAppButtonText(R.string.close_app_button);
-        setAlertTitle(R.string.alert_title);
-        setOkButtonText(R.string.ok_button);
     }
 
     public String getUpdateAvailableTitle() {

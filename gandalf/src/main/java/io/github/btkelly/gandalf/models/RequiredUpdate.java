@@ -25,7 +25,7 @@ import android.support.annotation.Nullable;
 public class RequiredUpdate implements Parcelable {
 
     private final String minimumVersion;
-    private String message;
+    private final String message;
 
     @Nullable
     public String getMinimumVersion() {
@@ -35,10 +35,6 @@ public class RequiredUpdate implements Parcelable {
     @Nullable
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     @Override

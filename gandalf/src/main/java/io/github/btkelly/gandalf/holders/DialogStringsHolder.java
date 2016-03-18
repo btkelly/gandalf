@@ -16,6 +16,7 @@
 package io.github.btkelly.gandalf.holders;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import io.github.btkelly.gandalf.R;
@@ -27,8 +28,11 @@ public class DialogStringsHolder {
 
     private Context context;
     private String updateAvailableTitle;
+    private @Nullable String updateAvailableMessage;
     private String updateRequiredTitle;
+    private @Nullable String updateRequiredMessage;
     private String alertTitle;
+    private @Nullable String alertMessage;
     private String downloadUpdateButton;
     private String skipUpdateButton;
     private String closeAppButton;
@@ -45,6 +49,10 @@ public class DialogStringsHolder {
         return updateAvailableTitle;
     }
 
+    @Nullable public String getUpdateAvailableMessage() {
+        return updateAvailableMessage;
+    }
+
     public String getUpdateRequiredTitle() {
         if (updateRequiredTitle == null) {
             setUpdateRequiredTitle(R.string.update_required_title);
@@ -52,11 +60,19 @@ public class DialogStringsHolder {
         return updateRequiredTitle;
     }
 
+    @Nullable public String getUpdateRequiredMessage() {
+        return updateRequiredMessage;
+    }
+
     public String getAlertTitle() {
         if (alertTitle == null) {
             setUpdateAvailableTitle(R.string.alert_title);
         }
         return alertTitle;
+    }
+
+    @Nullable public String getAlertMessage() {
+        return alertMessage;
     }
 
     public String getDownloadUpdateButtonText() {
@@ -95,12 +111,28 @@ public class DialogStringsHolder {
         this.updateAvailableTitle = updateAvailableTitle;
     }
 
+    public void setUpdateAvailableMessage(@StringRes int updateAvailableMessage) {
+        this.updateAvailableMessage = context.getResources().getString(updateAvailableMessage);
+    }
+
+    public void setUpdateAvailableMessage(@Nullable String updateAvailableMessage) {
+        this.updateAvailableMessage = updateAvailableMessage;
+    }
+
     public void setUpdateRequiredTitle(@StringRes int updateRequiredTitle) {
         this.updateRequiredTitle = context.getResources().getString(updateRequiredTitle);
     }
 
     public void setUpdateRequiredTitle(String updateRequiredTitle) {
         this.updateRequiredTitle = updateRequiredTitle;
+    }
+
+    public void setUpdateRequiredMessage(@StringRes int updateRequiredMessage) {
+        this.updateRequiredMessage = context.getResources().getString(updateRequiredMessage);
+    }
+
+    public void setUpdateRequiredMessage(@Nullable String updateRequiredMessage) {
+        this.updateRequiredMessage = updateRequiredMessage;
     }
 
     public void setDownloadUpdateButtonText(@StringRes int downloadUpdateButton) {
@@ -133,6 +165,14 @@ public class DialogStringsHolder {
 
     public void setAlertTitle(String alertTitle) {
         this.alertTitle = alertTitle;
+    }
+
+    public void setAlertMessage(@StringRes int alertMessage) {
+        this.alertMessage = context.getResources().getString(alertMessage);
+    }
+
+    public void setAlertMessage(@Nullable String alertMessage) {
+        this.alertMessage = alertMessage;
     }
 
     public void setOkButtonText(@StringRes int okButton) {

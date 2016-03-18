@@ -17,4 +17,13 @@
 -->
 <resources>
     <string name="app_name">gandalf</string>
+
+    <string name="update_available_title">Update available</string>
+    <string name="update_required_title">Update required</string>
+    <string name="alert_title">Alert</string>
+    <string name="download_update_button">Download update</string>
+    <string name="skip_update_button">Skip update</string>
+    <string name="close_app_button">Close app</string>
+    <string name="ok_button">@android:string/ok</string>
+
 </resources>

@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 
 import io.github.btkelly.gandalf.Gandalf;
+import io.github.btkelly.gandalf.holders.DialogStringsHolder;
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.models.RequiredUpdate;
@@ -56,11 +57,12 @@ public final class BootstrapDialogUtil {
         };
 
         if (ActivityStateUtil.isActivityValid(activity)) {
+            DialogStringsHolder dialogStringsHolder = gandalf.getDialogStringsHolder();
             new AlertDialog.Builder(activity)
-                    .setTitle("Update Required")
+                    .setTitle(dialogStringsHolder.getUpdateRequiredTitle())
                     .setMessage(requiredUpdate.getMessage())
-                    .setPositiveButton("Download Update", onClickListener)
-                    .setNegativeButton("Close App", onClickListener)
+                    .setPositiveButton(dialogStringsHolder.getDownloadUpdateButtonText(), onClickListener)
+                    .setNegativeButton(dialogStringsHolder.getCloseAppButtonText(), onClickListener)
                     .setCancelable(false)
                     .show();
         }
@@ -88,12 +90,13 @@ public final class BootstrapDialogUtil {
         };
 
         if (ActivityStateUtil.isActivityValid(activity)) {
+            DialogStringsHolder dialogStringsHolder = gandalf.getDialogStringsHolder();
             new AlertDialog.Builder(activity)
-                    .setTitle("Update Available")
+                    .setTitle(dialogStringsHolder.getUpdateAvailableTitle())
                     .setMessage(optionalUpdate.getMessage())
-                    .setPositiveButton("Download Update", onClickListener)
-                    .setNeutralButton("Skip Update", onClickListener)
-                    .setNegativeButton("Close App", onClickListener)
+                    .setPositiveButton(dialogStringsHolder.getDownloadUpdateButtonText(), onClickListener)
+                    .setNeutralButton(dialogStringsHolder.getSkipUpdateButtonText(), onClickListener)
+                    .setNegativeButton(dialogStringsHolder.getCloseAppButtonText(), onClickListener)
                     .setCancelable(false)
                     .show();
         }
@@ -120,10 +123,18 @@ public final class BootstrapDialogUtil {
         };
 
         if (ActivityStateUtil.isActivityValid(activity)) {
+            DialogStringsHolder dialogStringsHolder = gandalf.getDialogStringsHolder();
+            String neutralButtonText;
+            if (alert.isBlocking()) {
+                neutralButtonText = dialogStringsHolder.getCloseAppButtonText();
+            } else {
+                neutralButtonText = dialogStringsHolder.getOkButtonText();
+            }
+
             new AlertDialog.Builder(activity)
-                    .setTitle("Alert")
+                    .setTitle(dialogStringsHolder.getAlertTitle())
                     .setMessage(alert.getMessage())
-                    .setNeutralButton(alert.isBlocking() ? "Close App" : "OK", onClickListener)
+                    .setNeutralButton(neutralButtonText, onClickListener)
                     .setCancelable(false)
                     .show();
         }

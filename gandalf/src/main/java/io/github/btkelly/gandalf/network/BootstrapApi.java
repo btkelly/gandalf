@@ -23,6 +23,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.File;
 import java.io.IOException;
@@ -109,15 +110,22 @@ public class BootstrapApi {
 
                 Gson gson = gsonBuilder.create();
 
-                BootstrapResponse bootstrapResponse = gson.fromJson(response.body().string(), BootstrapResponse.class);
-                final Bootstrap bootstrap = bootstrapResponse.getAndroid();
-
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        bootstrapCallback.onSuccess(bootstrap);
+                try {
+                    BootstrapResponse bootstrapResponse = gson.fromJson(response.body().string(), BootstrapResponse.class);
+                    final Bootstrap bootstrap = bootstrapResponse.getAndroid();
+                    if (bootstrap != null) {
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                bootstrapCallback.onSuccess(bootstrap);
+                            }
+                        });
+                    } else {
+                        throw new NullPointerException("No \"android\" key found in the JSON response");
                     }
-                });
+                } catch (JsonSyntaxException | NullPointerException e) {
+                    bootstrapCallback.onError(e);
+                }
             }
         });
     }

@@ -27,12 +27,19 @@ import io.github.btkelly.gandalf.R;
 public class DialogStringsHolder {
 
     private Context context;
+
+    @Nullable
+    private String updateAvailableMessage;
     private String updateAvailableTitle;
-    private @Nullable String updateAvailableMessage;
+
+    @Nullable
+    private String updateRequiredMessage;
     private String updateRequiredTitle;
-    private @Nullable String updateRequiredMessage;
+
+    @Nullable
+    private String alertMessage;
     private String alertTitle;
-    private @Nullable String alertMessage;
+
     private String downloadUpdateButton;
     private String skipUpdateButton;
     private String closeAppButton;
@@ -49,7 +56,8 @@ public class DialogStringsHolder {
         return updateAvailableTitle;
     }
 
-    @Nullable public String getUpdateAvailableMessage() {
+    @Nullable
+    public String getUpdateAvailableMessage() {
         return updateAvailableMessage;
     }
 
@@ -60,7 +68,8 @@ public class DialogStringsHolder {
         return updateRequiredTitle;
     }
 
-    @Nullable public String getUpdateRequiredMessage() {
+    @Nullable
+    public String getUpdateRequiredMessage() {
         return updateRequiredMessage;
     }
 
@@ -71,7 +80,8 @@ public class DialogStringsHolder {
         return alertTitle;
     }
 
-    @Nullable public String getAlertMessage() {
+    @Nullable
+    public String getAlertMessage() {
         return alertMessage;
     }
 

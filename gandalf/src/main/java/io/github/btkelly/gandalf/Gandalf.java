@@ -21,8 +21,6 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.JsonDeserializer;
 
-import java.io.IOException;
-
 import io.github.btkelly.gandalf.checker.DefaultHistoryChecker;
 import io.github.btkelly.gandalf.checker.DefaultVersionChecker;
 import io.github.btkelly.gandalf.checker.GateKeeper;
@@ -150,7 +148,7 @@ public final class Gandalf {
                     }
 
                     @Override
-                    public void onError(IOException e) {
+                    public void onError(Exception e) {
                         LoggerUtil.logE("Error fetching bootstrap: " + e.getMessage());
                         //In any error case we should let the user in as to not block based on a bug
                         gandalfCallback.onNoActionRequired();

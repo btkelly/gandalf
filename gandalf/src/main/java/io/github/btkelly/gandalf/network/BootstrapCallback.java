@@ -15,8 +15,6 @@
  */
 package io.github.btkelly.gandalf.network;
 
-import java.io.IOException;
-
 import io.github.btkelly.gandalf.models.Bootstrap;
 
 /**
@@ -26,6 +24,6 @@ import io.github.btkelly.gandalf.models.Bootstrap;
 public interface BootstrapCallback {
 
     void onSuccess(Bootstrap bootstrap);
-    void onError(IOException e);
+    void onError(Exception e);
 
 }

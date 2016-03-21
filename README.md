@@ -2,7 +2,7 @@
 
 In the lifetime of any application there will come a time where you need to drop support for a feature, end of life a product, notify about maintenance, any number of other reasons, Gandalf is here to help!
 
-Gandalf will easily add a check to a remote file that can notify a user with a simple alert, inform them of an optional update, and in dire situations block the user from accessing older versions of the application completely (**ex:**security vulnerability has been found).
+Gandalf will easily add a check to a remote file that can notify a user with a simple alert, inform them of an optional update, and in dire situations block the user from accessing older versions of the application completely (**ex:** security vulnerability has been found).
 
 #### Need an iOS version?
 You're in luck! Gandalf was built in parallel with its iOS counterpart,
@@ -10,7 +10,7 @@ You're in luck! Gandalf was built in parallel with its iOS counterpart,
 
 ## Download
 
-Gandalf is hosted on the jCenter repository and can be downloaded via Gradle: 
+Gandalf is hosted on the jCenter repository and can be downloaded via Gradle:
 
 ```groovy
 compile 'com.btkelly:gandalf:{latest_version}'
@@ -62,7 +62,7 @@ public class SplashActivity extends GandalfActivity {
 
 #### Manifest Changes
 
-Add the `android:name` attribute to the `application` tag and specify the path to your custom [`Application`](http://developer.android.com/reference/android/app/Application.html) class from above and set your `SplashActivity` as the entry point for your app. 
+Add the `android:name` attribute to the `application` tag and specify the path to your custom [`Application`](http://developer.android.com/reference/android/app/Application.html) class from above and set your `SplashActivity` as the entry point for your app.
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -112,8 +112,48 @@ You must host a JSON file remotely and set the URL of this file in the the Ganda
 
 
 That's all that's needed to get Gandalf up and running using the basic settings.
- 
+
 If extending `GandalfActivity` doesn't work for you the `Gandalf` class can be used directly by calling `shallIPass(GandalfCallback callback)`. In this case make sure you respond to the callback methods and make a call to `gandalf.save(Alert alert)` and `gandalf.save(OptionalUpdate optionalUpdate)` if not using the `BootstrapDialogUtil` for your UI.
+
+#### Custom titles, buttons and messages
+
+By default, Gandalf provides default title and button text, and gets the message to display to the user from the JSON file.
+
+However, you are able to use your own strings. To do so, you should use the `DialogStringHolder` class when installing Gandalf.
+
+1. If you do not provide a `DialogStringHolder` during installation, a default instance will be used.
+2. If you do not provide message strings in the `DialogStringHolder`, the message from the JSON file will be used.
+3. If you provide `DialogStringHolder` but do not set some field manually, default values will be used for all unset strings.
+4. You could either pass a `String` instance or a string resource id.
+
+**Remember**: you are not forced to set every string : default values will be used for unset string.
+
+```java
+DialogStringsHolder dialogStringsHolder = new DialogStringsHolder(this);
+
+// Defines custom dialog titles
+dialogStringsHolder.setAlertTitle(R.string.alert_title);
+dialogStringsHolder.setUpdateAvailableTitle(R.string.update_available_title);
+dialogStringsHolder.setUpdateRequiredTitle(R.string.update_required_title);
+
+// Defines custom button text
+dialogStringsHolder.setCloseAppButtonText(R.string.close_app_button);
+dialogStringsHolder.setDownloadUpdateButtonText(R.string.download_update_button);
+dialogStringsHolder.setOkButtonText(R.string.ok_button);
+dialogStringsHolder.setSkipUpdateButtonText(R.string.skip_update_button);
+
+// Defines custom messages
+dialogStringsHolder.setUpdateAvailableMessage(R.string.optional_update_message);
+dialogStringsHolder.setUpdateRequiredMessage(R.string.required_update_message);
+dialogStringsHolder.setAlertMessage(R.string.required_update_message);
+
+new Gandalf.Installer()
+        .setContext(this)
+        .setPackageName("com.my.package")
+        .setBootstrapUrl("http://www.example.com/bootstrap.json")
+        .setDialogStringsHolder(dialogStringsHolder) // Set the custom DialogStringsHolder
+        .install();
+```
 
 #### Custom JSON Deserializer
 
@@ -123,7 +163,7 @@ You may have a different JSON format for the bootstrap file, no problem! To do t
 new Gandalf.Installer()
         .setContext(this)
         .setPackageName("com.my.package")
-        .setBootstrapUrl("http://www.example.com/bootstrap.json")                
+        .setBootstrapUrl("http://www.example.com/bootstrap.json")
         .setCustomDeserializer(new JsonDeserializer<Bootstrap>() {
              @Override
              public Bootstrap deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

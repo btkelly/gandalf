@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import io.github.btkelly.gandalf.models.Bootstrap;
+import io.github.btkelly.gandalf.models.BootstrapException;
 import io.github.btkelly.gandalf.models.BootstrapResponse;
 import io.github.btkelly.gandalf.utils.StringUtils;
 import okhttp3.Cache;
@@ -118,7 +119,7 @@ public class BootstrapApi {
                             }
                         });
                     } else {
-                        postError(bootstrapCallback, new IllegalStateException("No \"android\" key found in the JSON response"));
+                        postError(bootstrapCallback, new BootstrapException("No \"android\" key found in the JSON response"));
                     }
                 } catch (JsonSyntaxException e) {
                     postError(bootstrapCallback, e);

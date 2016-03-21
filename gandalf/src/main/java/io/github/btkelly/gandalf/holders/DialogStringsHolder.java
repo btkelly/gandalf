@@ -26,7 +26,7 @@ import io.github.btkelly.gandalf.R;
  */
 public class DialogStringsHolder {
 
-    private Context context;
+    private final Context context;
 
     @Nullable
     private String updateAvailableMessage;

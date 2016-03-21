@@ -54,8 +54,9 @@ public class BootstrapApi {
 
     /**
      * Creates a bootstrap api class
-     * @param context - Android context used for setting up http cache directory
-     * @param bootStrapUrl - url to fetch the bootstrap file from
+     *
+     * @param context            - Android context used for setting up http cache directory
+     * @param bootStrapUrl       - url to fetch the bootstrap file from
      * @param customDeserializer - a custom deserializer for parsing the JSON response
      */
     public BootstrapApi(Context context, String bootStrapUrl, @Nullable JsonDeserializer<Bootstrap> customDeserializer) {
@@ -75,8 +76,9 @@ public class BootstrapApi {
     /**
      * Will execute a request to fetch the application bootstrap file specified by the bootstrap
      * url set on the Gandalf class. Request is executed on a background thread.
-     * @throws IllegalStateException - throws if the bootstrap url has not been set
+     *
      * @param bootstrapCallback - a BootstrapCallback to receive call backs for the network call
+     * @throws IllegalStateException - throws if the bootstrap url has not been set
      */
     public void fetchBootstrap(final BootstrapCallback bootstrapCallback) {
 
@@ -91,12 +93,7 @@ public class BootstrapApi {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        bootstrapCallback.onError(e);
-                    }
-                });
+                postError(bootstrapCallback, e);
             }
 
             @Override
@@ -121,11 +118,20 @@ public class BootstrapApi {
                             }
                         });
                     } else {
-                        throw new NullPointerException("No \"android\" key found in the JSON response");
+                        postError(bootstrapCallback, new IllegalStateException("No \"android\" key found in the JSON response"));
                     }
-                } catch (JsonSyntaxException | NullPointerException e) {
-                    bootstrapCallback.onError(e);
+                } catch (JsonSyntaxException e) {
+                    postError(bootstrapCallback, e);
                 }
+            }
+        });
+    }
+
+    private void postError(final BootstrapCallback bootstrapCallback, final Exception e) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                bootstrapCallback.onError(e);
             }
         });
     }

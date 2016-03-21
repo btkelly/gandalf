@@ -1,5 +1,12 @@
 # Change Log
 
+## v1.2.0
+
+_03-21-2016_
+
+- Library is a bit more error tolerant and will silently fail on malformed JSON
+- New class `DialogStringsHolder` which allows users to customize titles, buttons, and messages. This adds the ability to optionally override the JSON response and display a specific message.
+
 ## v1.1.0
 
 _02-15-2016_

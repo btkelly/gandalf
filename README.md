@@ -117,13 +117,13 @@ If extending `GandalfActivity` doesn't work for you the `Gandalf` class can be u
 
 #### Custom titles, buttons and messages
 
-By default, Gandalf provides default title and button text, and get the message to display to the user from the JSON file.
+By default, Gandalf provides default title and button text, and gets the message to display to the user from the JSON file.
 
 However, you are able to use your own strings. To do so, you should use the `DialogStringHolder` class when installing Gandalf.
 
 1. If you do not provide a `DialogStringHolder` during installation, a default instance will be used.
 2. If you do not provide message strings in the `DialogStringHolder`, the message from the JSON file will be used.
-3. If you provide `DialogStringHolder` but do not set some field manually, default values will be used instead.
+3. If you provide `DialogStringHolder` but do not set some field manually, default values will be used for all unset strings.
 4. You could either pass a `String` instance or a string resource id.
 
 **Remember**: you are not forced to set every string : default values will be used for unset string.

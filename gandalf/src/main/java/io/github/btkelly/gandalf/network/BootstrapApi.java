@@ -110,16 +110,20 @@ public class BootstrapApi {
 
                 try {
                     BootstrapResponse bootstrapResponse = gson.fromJson(response.body().string(), BootstrapResponse.class);
-                    final Bootstrap bootstrap = bootstrapResponse.getAndroid();
-                    if (bootstrap != null) {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                bootstrapCallback.onSuccess(bootstrap);
-                            }
-                        });
+                    if (bootstrapResponse != null) {
+                        final Bootstrap bootstrap = bootstrapResponse.getAndroid();
+                        if (bootstrap != null) {
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    bootstrapCallback.onSuccess(bootstrap);
+                                }
+                            });
+                        } else {
+                            postError(bootstrapCallback, new BootstrapException("No \"android\" key found in the JSON response"));
+                        }
                     } else {
-                        postError(bootstrapCallback, new BootstrapException("No \"android\" key found in the JSON response"));
+                        postError(bootstrapCallback, new BootstrapException("No content found in the JSON response"));
                     }
                 } catch (JsonSyntaxException e) {
                     postError(bootstrapCallback, e);

@@ -1,5 +1,11 @@
 # Change Log
 
+## v1.2.1
+
+_03-24-2016_
+
+- Network code now handles a null JSON response and fails silently.
+
 ## v1.2.0
 
 _03-21-2016_

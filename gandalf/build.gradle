@@ -14,7 +14,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.noveogroup.android.check'
 apply plugin: 'gnag-plugin'
 
-def versionString = "1.2.0"
+def versionString = "1.2.1"
 
 android {
     compileSdkVersion 23

@@ -23,6 +23,6 @@ import android.support.annotation.NonNull;
  */
 public interface OnUpdateSelectedListener {
 
-    void onSelectedUpdate(@NonNull Activity activity);
+    void onUpdateSelected(@NonNull Activity activity);
 
 }

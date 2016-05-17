@@ -33,7 +33,7 @@ public final class PlayStoreUpdateListener implements OnUpdateSelectedListener {
     }
 
     @Override
-    public void onSelectedUpdate(@NonNull Activity activity) {
+    public void onUpdateSelected(@NonNull Activity activity) {
         openPlayStoreToUpdate(activity, packageName);
     }
 

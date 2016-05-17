@@ -157,7 +157,7 @@ new Gandalf.Installer()
 
 #### Custom OnUpdateSelectedListener
 
-You my provide a custom listener to be invoked when the user selects to update their app. This can be helpful if you are not hosting your application on Google Play and would like to download an APK from another source. Two listeners are already provided, the `PlayStoreUpdateListener` which opens Google Play to the specified package name and the `FileDownloadUpdateListener` which will download a file specified by the Uri provided.
+You may provide a custom listener to be invoked when the user selects to update their app. This can be helpful if you are not hosting your application on Google Play and would like to download an APK from another source. Two default listeners are already provided, the `PlayStoreUpdateListener` which opens Google Play to the specified package name and the `FileDownloadUpdateListener` which will download a file specified by the Uri provided.
 
 ```java
 new Gandalf.Installer()

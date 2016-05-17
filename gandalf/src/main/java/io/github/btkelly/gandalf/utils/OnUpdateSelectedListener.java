@@ -18,16 +18,11 @@ package io.github.btkelly.gandalf.utils;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 
-import io.github.btkelly.gandalf.models.OptionalUpdate;
-import io.github.btkelly.gandalf.models.RequiredUpdate;
-
 /**
  * Created by bryankelly on 5/17/16.
  */
 public interface OnUpdateSelectedListener {
 
-    void selectedRequiredUpdate(@NonNull Activity activity, @NonNull RequiredUpdate requiredUpdate);
-
-    void selectedOptionalUpdate(@NonNull Activity activity, @NonNull OptionalUpdate optionalUpdate);
+    void onSelectedUpdate(@NonNull Activity activity);
 
 }

@@ -20,9 +20,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import io.github.btkelly.gandalf.models.OptionalUpdate;
-import io.github.btkelly.gandalf.models.RequiredUpdate;
-
 import static android.content.Intent.ACTION_VIEW;
 
 public final class PlayStoreUpdateListener implements OnUpdateSelectedListener {
@@ -36,12 +33,7 @@ public final class PlayStoreUpdateListener implements OnUpdateSelectedListener {
     }
 
     @Override
-    public void selectedRequiredUpdate(@NonNull Activity activity, @NonNull RequiredUpdate requiredUpdate) {
-        openPlayStoreToUpdate(activity, packageName);
-    }
-
-    @Override
-    public void selectedOptionalUpdate(@NonNull Activity activity, @NonNull OptionalUpdate optionalUpdate) {
+    public void onSelectedUpdate(@NonNull Activity activity) {
         openPlayStoreToUpdate(activity, packageName);
     }
 

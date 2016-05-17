@@ -24,9 +24,6 @@ import android.support.annotation.Nullable;
 
 import java.util.Map;
 
-import io.github.btkelly.gandalf.models.OptionalUpdate;
-import io.github.btkelly.gandalf.models.RequiredUpdate;
-
 /**
  * Created by bryankelly on 5/17/16.
  */
@@ -41,12 +38,7 @@ public class FileDownloadUpdateListener implements OnUpdateSelectedListener {
     }
 
     @Override
-    public void selectedRequiredUpdate(@NonNull Activity activity, @NonNull RequiredUpdate requiredUpdate) {
-        downloadFile();
-    }
-
-    @Override
-    public void selectedOptionalUpdate(@NonNull Activity activity, @NonNull OptionalUpdate optionalUpdate) {
+    public void onSelectedUpdate(@NonNull Activity activity) {
         downloadFile();
     }
 

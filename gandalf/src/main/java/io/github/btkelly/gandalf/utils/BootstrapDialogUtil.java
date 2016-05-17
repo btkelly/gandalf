@@ -47,7 +47,7 @@ public final class BootstrapDialogUtil {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                    gandalf.getOnUpdateSelectedListener().selectedRequiredUpdate(activity, requiredUpdate);
+                    gandalf.getOnUpdateSelectedListener().onSelectedUpdate(activity);
                 } else {
                     if (ActivityStateUtil.isActivityValid(activity)) {
                         activity.finish();
@@ -83,7 +83,7 @@ public final class BootstrapDialogUtil {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                    gandalf.getOnUpdateSelectedListener().selectedOptionalUpdate(activity, optionalUpdate);
+                    gandalf.getOnUpdateSelectedListener().onSelectedUpdate(activity);
                 } else if (which == DialogInterface.BUTTON_NEUTRAL) {
                     gandalf.save(optionalUpdate);
                     bootstrapDialogListener.continueLoading();

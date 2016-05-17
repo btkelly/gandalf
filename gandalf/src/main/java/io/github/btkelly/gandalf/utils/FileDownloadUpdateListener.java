@@ -40,6 +40,9 @@ public class FileDownloadUpdateListener implements OnUpdateSelectedListener {
     @Override
     public void onSelectedUpdate(@NonNull Activity activity) {
         downloadFile();
+        if (ActivityStateUtil.isActivityValid(activity)) {
+            activity.finish();
+        }
     }
 
     @Nullable

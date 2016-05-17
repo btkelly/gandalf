@@ -41,13 +41,13 @@ public final class BootstrapDialogUtil {
 
     public static void showRequiredUpdateDialog(@NonNull final Activity activity,
                                                 @NonNull final Gandalf gandalf,
-                                                @NonNull RequiredUpdate requiredUpdate) {
+                                                @NonNull final RequiredUpdate requiredUpdate) {
 
         DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                    PlayStoreUtil.openPlayStoreToUpdate(activity, gandalf.getPackageName());
+                    gandalf.getOnUpdateSelectedListener().selectedRequiredUpdate(activity, requiredUpdate);
                 } else {
                     if (ActivityStateUtil.isActivityValid(activity)) {
                         activity.finish();
@@ -83,7 +83,7 @@ public final class BootstrapDialogUtil {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                    PlayStoreUtil.openPlayStoreToUpdate(activity, gandalf.getPackageName());
+                    gandalf.getOnUpdateSelectedListener().selectedOptionalUpdate(activity, optionalUpdate);
                 } else if (which == DialogInterface.BUTTON_NEUTRAL) {
                     gandalf.save(optionalUpdate);
                     bootstrapDialogListener.continueLoading();

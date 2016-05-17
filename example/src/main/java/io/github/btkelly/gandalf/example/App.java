@@ -15,7 +15,10 @@
  */
 package io.github.btkelly.gandalf.example;
 
+import android.app.Activity;
 import android.app.Application;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -27,7 +30,11 @@ import java.lang.reflect.Type;
 import io.github.btkelly.gandalf.Gandalf;
 import io.github.btkelly.gandalf.example.utils.MockWebServerUtil;
 import io.github.btkelly.gandalf.models.Bootstrap;
+import io.github.btkelly.gandalf.models.OptionalUpdate;
+import io.github.btkelly.gandalf.models.RequiredUpdate;
+import io.github.btkelly.gandalf.utils.FileDownloadUpdateListener;
 import io.github.btkelly.gandalf.utils.LoggerUtil;
+import io.github.btkelly.gandalf.utils.OnUpdateSelectedListener;
 
 /**
  * TODO: Add a class header comment!
@@ -43,12 +50,27 @@ public class App extends Application {
         new Gandalf.Installer()
                 .setContext(this)
                 .setPackageName("com.github.stkent.bugshaker")
+                //.setOnUpdateSelectedListener(this.onUpdateSelectedListener)
+                //.setOnUpdateSelectedListener(new FileDownloadUpdateListener(this, Uri.parse("http://www.google.com/myApk.apk")))
                 .setBootstrapUrl(mockBootstrapUrl)
                 //.setCustomDeserializer(this.customDeserializer) //Uncomment this line to include a custom deserializers to allow for a custom JSON structure.
                 .install();
 
         LoggerUtil.logD("Mock server started at " + mockBootstrapUrl);
     }
+
+    private OnUpdateSelectedListener onUpdateSelectedListener = new OnUpdateSelectedListener() {
+
+        @Override
+        public void selectedRequiredUpdate(@NonNull Activity activity, @NonNull RequiredUpdate requiredUpdate) {
+            //Process the user selecting they would like to update for a required update
+        }
+
+        @Override
+        public void selectedOptionalUpdate(@NonNull Activity activity, @NonNull OptionalUpdate optionalUpdate) {
+            //Process the user selecting they would like to update for an optional update
+        }
+    };
 
     private JsonDeserializer<Bootstrap> customDeserializer = new JsonDeserializer<Bootstrap>() {
         @Override

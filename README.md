@@ -155,6 +155,23 @@ new Gandalf.Installer()
         .install();
 ```
 
+#### Custom OnUpdateSelectedListener
+
+You may provide a custom listener to be invoked when the user selects to update their app. This can be helpful if you are not hosting your application on Google Play and would like to download an APK from another source. Two default listeners are already provided, the `PlayStoreUpdateListener` which opens Google Play to the specified package name and the `FileDownloadUpdateListener` which will download a file specified by the Uri provided.
+
+```java
+new Gandalf.Installer()
+        .setContext(this)
+        .setOnUpdateSelectedListener(new OnUpdateSelectedListener() {
+            @Override
+            public void onUpdateSelected(@NonNull Activity activity) {
+                //Perform some action when the user would like to update
+            }
+        })
+        .setBootstrapUrl("http://www.example.com/bootstrap.json")
+        .install();
+```
+
 #### Custom JSON Deserializer
 
 You may have a different JSON format for the bootstrap file, no problem! To do this you must provide a [`JsonDeserializer<Bootstrap>`](https://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/com/google/gson/JsonDeserializer.html) during the Gandalf installation.

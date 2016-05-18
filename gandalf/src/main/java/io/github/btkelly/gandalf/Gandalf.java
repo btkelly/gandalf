@@ -33,6 +33,8 @@ import io.github.btkelly.gandalf.network.BootstrapCallback;
 import io.github.btkelly.gandalf.holders.DialogStringsHolder;
 import io.github.btkelly.gandalf.utils.LoggerUtil;
 import io.github.btkelly.gandalf.utils.LoggerUtil.LogLevel;
+import io.github.btkelly.gandalf.utils.OnUpdateSelectedListener;
+import io.github.btkelly.gandalf.utils.PlayStoreUpdateListener;
 import io.github.btkelly.gandalf.utils.StringUtils;
 
 /**
@@ -46,17 +48,18 @@ public final class Gandalf {
     private final String bootstrapUrl;
     private final HistoryChecker historyChecker;
     private final GateKeeper gateKeeper;
-    private final String packageName;
+    private final OnUpdateSelectedListener onUpdateSelectedListener;
     private final JsonDeserializer<Bootstrap> customDeserializer;
     private final DialogStringsHolder dialogStringsHolder;
 
     private Gandalf(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper,
-                    String packageName, JsonDeserializer<Bootstrap> customDeserializer, DialogStringsHolder dialogStringsHolder) {
+                    OnUpdateSelectedListener onUpdateSelectedListener, JsonDeserializer<Bootstrap> customDeserializer,
+                    DialogStringsHolder dialogStringsHolder) {
         this.context = context;
         this.bootstrapUrl = bootstrapUrl;
         this.historyChecker = historyChecker;
         this.gateKeeper = gateKeeper;
-        this.packageName = packageName;
+        this.onUpdateSelectedListener = onUpdateSelectedListener;
         this.customDeserializer = customDeserializer;
         this.dialogStringsHolder = dialogStringsHolder;
     }
@@ -75,18 +78,18 @@ public final class Gandalf {
                                           @NonNull final String bootstrapUrl,
                                           @NonNull final HistoryChecker historyChecker,
                                           @NonNull final GateKeeper gateKeeper,
-                                          @NonNull final String packageName,
+                                          @NonNull final OnUpdateSelectedListener onUpdateSelectedListener,
                                           @Nullable final JsonDeserializer<Bootstrap> customDeserializer,
                                           @NonNull final DialogStringsHolder dialogStringsHolder) {
-        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper, packageName, customDeserializer, dialogStringsHolder);
+        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper, onUpdateSelectedListener, customDeserializer, dialogStringsHolder);
     }
 
     /**
-     * Returns the package name set during the Gandalf Install
-     * @return the package name set during install
+     * Returns the OnUpdateSelectedListener set during the Gandalf install
+     * @return the onUpdateSelectedListener set during install
      */
-    public String getPackageName() {
-        return packageName;
+    public OnUpdateSelectedListener getOnUpdateSelectedListener() {
+        return this.onUpdateSelectedListener;
     }
 
     /**
@@ -164,6 +167,7 @@ public final class Gandalf {
         private Context context;
         private String bootstrapUrl;
         private String packageName;
+        private OnUpdateSelectedListener onUpdateSelectedListener;
         private JsonDeserializer<Bootstrap> customDeserializer;
         @LogLevel private int logLevel = LoggerUtil.NONE;
 
@@ -181,6 +185,11 @@ public final class Gandalf {
 
         public Installer setPackageName(String packageName) {
             this.packageName = packageName;
+            return this;
+        }
+
+        public Installer setOnUpdateSelectedListener(OnUpdateSelectedListener onUpdateSelectedListener) {
+            this.onUpdateSelectedListener = onUpdateSelectedListener;
             return this;
         }
 
@@ -214,12 +223,16 @@ public final class Gandalf {
                     throw new IllegalStateException("You must supply a bootstrap url");
                 }
 
-                if (StringUtils.isBlank(this.packageName)) {
-                    throw new IllegalStateException("You must supply a package name for the PlayStore");
+                if (StringUtils.isBlank(this.packageName) && this.onUpdateSelectedListener == null) {
+                    throw new IllegalStateException("You must supply a package name or a custom OnUpdateSelectedListener");
                 }
 
                 if (this.dialogStringsHolder == null) {
                     this.dialogStringsHolder = new DialogStringsHolder(context);
+                }
+
+                if (this.onUpdateSelectedListener == null) {
+                    this.onUpdateSelectedListener = new PlayStoreUpdateListener(this.packageName);
                 }
 
                 HistoryChecker historyChecker = new DefaultHistoryChecker(this.context);
@@ -231,7 +244,7 @@ public final class Gandalf {
                         this.bootstrapUrl,
                         historyChecker,
                         new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker),
-                        this.packageName,
+                        this.onUpdateSelectedListener,
                         this.customDeserializer,
                         this.dialogStringsHolder
                 );

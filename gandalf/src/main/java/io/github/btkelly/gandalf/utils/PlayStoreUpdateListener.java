@@ -22,15 +22,27 @@ import android.support.annotation.NonNull;
 
 import static android.content.Intent.ACTION_VIEW;
 
-public final class PlayStoreUtil {
+public final class PlayStoreUpdateListener implements OnUpdateSelectedListener {
 
     private static final String GOOGLE_PLAY_STORE_URI_PREFIX = "https://play.google.com/store/apps/details?id=";
 
-    private PlayStoreUtil() {
+    private final String packageName;
 
+    public PlayStoreUpdateListener(String packageName) {
+        this.packageName = packageName;
     }
 
-    public static void openPlayStoreToUpdate(@NonNull final Activity activity, @NonNull final String packageName) {
+    @Override
+    public void onUpdateSelected(@NonNull Activity activity) {
+        openPlayStoreToUpdate(activity, packageName);
+    }
+
+    @NonNull
+    private Uri getGooglePlayStoreUriForPackageName(@NonNull final String packageName) {
+        return Uri.parse(GOOGLE_PLAY_STORE_URI_PREFIX + packageName);
+    }
+
+    private void openPlayStoreToUpdate(@NonNull final Activity activity, @NonNull final String packageName) {
         if (ActivityStateUtil.isActivityValid(activity)) {
 
             activity.startActivity(
@@ -44,10 +56,4 @@ public final class PlayStoreUtil {
             activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
-
-    @NonNull
-    private static Uri getGooglePlayStoreUriForPackageName(@NonNull final String packageName) {
-        return Uri.parse(GOOGLE_PLAY_STORE_URI_PREFIX + packageName);
-    }
-
 }

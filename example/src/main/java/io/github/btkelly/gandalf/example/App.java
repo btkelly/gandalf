@@ -43,6 +43,7 @@ public class App extends Application {
         new Gandalf.Installer()
                 .setContext(this)
                 .setPackageName("com.github.stkent.bugshaker")
+                //.setOnUpdateSelectedListener(new FileDownloadUpdateListener(this, Uri.parse("http://www.google.com/myApk.apk"))) //Uncomment this line to provide a file download listener instead of the package name Play Store above
                 .setBootstrapUrl(mockBootstrapUrl)
                 //.setCustomDeserializer(this.customDeserializer) //Uncomment this line to include a custom deserializers to allow for a custom JSON structure.
                 .install();

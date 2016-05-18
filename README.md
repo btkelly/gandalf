@@ -164,7 +164,7 @@ new Gandalf.Installer()
         .setContext(this)
         .setOnUpdateSelectedListener(new OnUpdateSelectedListener() {
             @Override
-            public void onSelectedUpdate(@NonNull Activity activity) {
+            public void onUpdateSelected(@NonNull Activity activity) {
                 //Perform some action when the user would like to update
             }
         })

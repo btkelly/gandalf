@@ -1,5 +1,12 @@
 # Change Log
 
+## v1.3.0
+
+_08-04-2016_
+
+- Added ability to set a custom listener when the user opts to update.
+- Included a basic FileDownloadUpdateListener for specifying a custom apk to download.
+
 ## v1.2.1
 
 _03-24-2016_

@@ -1,5 +1,11 @@
 # Change Log
 
+## v1.3.1
+
+_08-16-2016__
+
+- Removed application block from lib manifest to avoid merging conflicts.
+
 ## v1.3.0
 
 _08-04-2016_

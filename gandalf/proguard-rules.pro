@@ -15,3 +15,5 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keep class io.github.btkelly.gandalf.models.** { *; }

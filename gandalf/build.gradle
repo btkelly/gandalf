@@ -23,6 +23,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName versionString
+        consumerProguardFiles 'proguard-rules.pro'
     }
 
     lintOptions {

@@ -137,12 +137,12 @@ public final class Gandalf {
                         if (gateKeeper.updateIsRequired(bootstrap)) {
                             LoggerUtil.logD("Update is required");
                             gandalfCallback.onRequiredUpdate(bootstrap.getRequiredUpdate());
-                        } else if (gateKeeper.updateIsOptional(bootstrap)) {
-                            LoggerUtil.logD("Update is optional");
-                            gandalfCallback.onOptionalUpdate(bootstrap.getOptionalUpdate());
                         } else if (gateKeeper.showAlert(bootstrap)) {
                             LoggerUtil.logD("Alert");
                             gandalfCallback.onAlert(bootstrap.getAlert());
+                        } else if (gateKeeper.updateIsOptional(bootstrap)) {
+                            LoggerUtil.logD("Update is optional");
+                            gandalfCallback.onOptionalUpdate(bootstrap.getOptionalUpdate());
                         } else {
                             LoggerUtil.logD("No action is required");
                             gandalfCallback.onNoActionRequired();

@@ -1,5 +1,12 @@
 # Change Log
 
+## v1.3.2
+
+_08-24-2016__
+
+- Changed the priority of Gandalf actions, an alert will now show before an optional update
+- Added consumer proguard rules to fix Gson parsing when minify is enabled
+
 ## v1.3.1
 
 _08-16-2016__

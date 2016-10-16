@@ -36,6 +36,7 @@ import io.github.btkelly.gandalf.utils.LoggerUtil.LogLevel;
 import io.github.btkelly.gandalf.utils.OnUpdateSelectedListener;
 import io.github.btkelly.gandalf.utils.PlayStoreUpdateListener;
 import io.github.btkelly.gandalf.utils.StringUtils;
+import okhttp3.OkHttpClient;
 
 /**
  * This is the public api that allows consumers to configure the Gandalf library.
@@ -45,6 +46,7 @@ public final class Gandalf {
     private static Gandalf gandalfInstance;
 
     private final Context context;
+    private final OkHttpClient okHttpClient;
     private final String bootstrapUrl;
     private final HistoryChecker historyChecker;
     private final GateKeeper gateKeeper;
@@ -52,10 +54,11 @@ public final class Gandalf {
     private final JsonDeserializer<Bootstrap> customDeserializer;
     private final DialogStringsHolder dialogStringsHolder;
 
-    private Gandalf(Context context, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper,
+    private Gandalf(Context context, OkHttpClient okHttpClient, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper,
                     OnUpdateSelectedListener onUpdateSelectedListener, JsonDeserializer<Bootstrap> customDeserializer,
                     DialogStringsHolder dialogStringsHolder) {
         this.context = context;
+        this.okHttpClient = okHttpClient;
         this.bootstrapUrl = bootstrapUrl;
         this.historyChecker = historyChecker;
         this.gateKeeper = gateKeeper;
@@ -75,13 +78,14 @@ public final class Gandalf {
     }
 
     private static Gandalf createInstance(@NonNull final Context context,
+                                          @NonNull final OkHttpClient okHttpClient,
                                           @NonNull final String bootstrapUrl,
                                           @NonNull final HistoryChecker historyChecker,
                                           @NonNull final GateKeeper gateKeeper,
                                           @NonNull final OnUpdateSelectedListener onUpdateSelectedListener,
                                           @Nullable final JsonDeserializer<Bootstrap> customDeserializer,
                                           @NonNull final DialogStringsHolder dialogStringsHolder) {
-        return new Gandalf(context, bootstrapUrl, historyChecker, gateKeeper, onUpdateSelectedListener, customDeserializer, dialogStringsHolder);
+        return new Gandalf(context, okHttpClient, bootstrapUrl, historyChecker, gateKeeper, onUpdateSelectedListener, customDeserializer, dialogStringsHolder);
     }
 
     /**
@@ -126,7 +130,7 @@ public final class Gandalf {
 
         LoggerUtil.logD("Fetching bootstrap");
 
-        new BootstrapApi(context, bootstrapUrl, customDeserializer)
+        new BootstrapApi(context, okHttpClient, bootstrapUrl, customDeserializer)
                 .fetchBootstrap(new BootstrapCallback() {
 
                     @Override
@@ -165,6 +169,7 @@ public final class Gandalf {
     public static class Installer {
 
         private Context context;
+        private OkHttpClient okHttpClient;
         private String bootstrapUrl;
         private String packageName;
         private OnUpdateSelectedListener onUpdateSelectedListener;
@@ -175,6 +180,11 @@ public final class Gandalf {
 
         public Installer setContext(Context context) {
             this.context = context;
+            return this;
+        }
+
+        public Installer setOkHttpClient(OkHttpClient okHttpClient) {
+            this.okHttpClient = okHttpClient;
             return this;
         }
 
@@ -241,6 +251,7 @@ public final class Gandalf {
 
                 gandalfInstance = createInstance(
                         this.context,
+                        this.okHttpClient,
                         this.bootstrapUrl,
                         historyChecker,
                         new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker),

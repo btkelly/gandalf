@@ -91,7 +91,9 @@
             <property name="severity" value="info" />
         </module>
         <module name="MethodLength" />
-        <module name="ParameterNumber" />
+        <module name="ParameterNumber">
+            <property name="max" value="8" />
+        </module>
 
 
         <!-- Checks for whitespace                               -->

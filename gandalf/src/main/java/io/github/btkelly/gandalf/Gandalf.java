@@ -85,7 +85,14 @@ public final class Gandalf {
                                           @NonNull final OnUpdateSelectedListener onUpdateSelectedListener,
                                           @Nullable final JsonDeserializer<Bootstrap> customDeserializer,
                                           @NonNull final DialogStringsHolder dialogStringsHolder) {
-        return new Gandalf(context, okHttpClient, bootstrapUrl, historyChecker, gateKeeper, onUpdateSelectedListener, customDeserializer, dialogStringsHolder);
+        return new Gandalf(context,
+                okHttpClient,
+                bootstrapUrl,
+                historyChecker,
+                gateKeeper,
+                onUpdateSelectedListener,
+                customDeserializer,
+                dialogStringsHolder);
     }
 
     /**

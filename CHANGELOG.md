@@ -1,5 +1,11 @@
 # Change Log
 
+## v1.3.3
+
+_10-24-2016__
+
+- Added ability to provide a custom OkHttpClient
+
 ## v1.3.2
 
 _08-24-2016__

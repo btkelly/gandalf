@@ -45,8 +45,8 @@ import okhttp3.Response;
  */
 public class BootstrapApi {
 
-    private static final int CACHE_SIZE = 1024;
-    private static final long CONNECTION_TIMEOUT_SECONDS = 30;
+    private static final int DEFAULT_CACHE_SIZE = 1024;
+    private static final long DEFAULT_CONNECTION_TIMEOUT_SECONDS = 30;
 
     @Nullable
     private final JsonDeserializer<Bootstrap> customDeserializer;
@@ -57,21 +57,27 @@ public class BootstrapApi {
      * Creates a bootstrap api class
      *
      * @param context            - Android context used for setting up http cache directory
+     * @param okHttpClient       - OkHttpClient to be used for requests, falls back to default if null
      * @param bootStrapUrl       - url to fetch the bootstrap file from
      * @param customDeserializer - a custom deserializer for parsing the JSON response
      */
-    public BootstrapApi(Context context, String bootStrapUrl, @Nullable JsonDeserializer<Bootstrap> customDeserializer) {
+    public BootstrapApi(Context context, @Nullable OkHttpClient okHttpClient, String bootStrapUrl,
+                        @Nullable JsonDeserializer<Bootstrap> customDeserializer) {
         this.bootStrapUrl = bootStrapUrl;
         this.customDeserializer = customDeserializer;
 
-        File cacheDir = context.getCacheDir();
-        Cache cache = new Cache(cacheDir, CACHE_SIZE);
+        if (okHttpClient == null) {
+            File cacheDir = context.getCacheDir();
+            Cache cache = new Cache(cacheDir, DEFAULT_CACHE_SIZE);
 
-        okHttpClient = new OkHttpClient.Builder()
-                .cache(cache)
-                .connectTimeout(CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                .readTimeout(CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                .build();
+            this.okHttpClient = new OkHttpClient.Builder()
+                    .cache(cache)
+                    .connectTimeout(DEFAULT_CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                    .readTimeout(DEFAULT_CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                    .build();
+        } else {
+            this.okHttpClient = okHttpClient;
+        }
     }
 
     /**

@@ -56,7 +56,7 @@ public class FileDownloadUpdateListener implements OnUpdateSelectedListener {
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void downloadFile() {
+    protected void downloadFile() {
         String fileName = fileUri.getLastPathSegment();
 
         DownloadManager.Request request = new DownloadManager.Request(fileUri)

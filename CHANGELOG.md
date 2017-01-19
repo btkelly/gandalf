@@ -1,5 +1,11 @@
 # Change Log
 
+## v1.3.4
+
+_01-19-2017__
+
+- Changed protection level of `downloadFile()` in FileDownloadUpdateListener.java to allow overriding the default behavior.
+
 ## v1.3.3
 
 _10-24-2016__

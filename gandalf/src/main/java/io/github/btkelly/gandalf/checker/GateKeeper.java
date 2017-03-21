@@ -24,6 +24,7 @@ import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.AppVersionDetails;
 import io.github.btkelly.gandalf.models.Bootstrap;
 import io.github.btkelly.gandalf.models.BootstrapException;
+import io.github.btkelly.gandalf.models.GandalfException;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.models.RequiredUpdate;
 
@@ -53,8 +54,9 @@ public class GateKeeper {
      * Checks version of installed app against the {@link Bootstrap}.
      * @param bootstrap - provided version requirements
      * @return true if the app's version is lower than required
+     * @throws GandalfException the versionCode is not a valid integer
      */
-    public boolean updateIsRequired(@NonNull final Bootstrap bootstrap) {
+    public boolean updateIsRequired(@NonNull final Bootstrap bootstrap) throws GandalfException {
         final RequiredUpdate requiredUpdate = bootstrap.getRequiredUpdate();
 
         return requiredUpdate != null
@@ -65,8 +67,9 @@ public class GateKeeper {
      * Checks version of installed app against the {@link Bootstrap}.
      * @param bootstrap - provided version requirements
      * @return true if an update is available and hasn't been recorded in history
+     * @throws GandalfException the versionCode is not a valid integer
      */
-    public boolean updateIsOptional(@NonNull final Bootstrap bootstrap) {
+    public boolean updateIsOptional(@NonNull final Bootstrap bootstrap) throws GandalfException {
         final OptionalUpdate optionalUpdate = bootstrap.getOptionalUpdate();
 
         return optionalUpdate != null

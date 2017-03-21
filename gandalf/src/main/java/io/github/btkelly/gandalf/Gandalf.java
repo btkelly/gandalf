@@ -27,6 +27,7 @@ import io.github.btkelly.gandalf.checker.GateKeeper;
 import io.github.btkelly.gandalf.checker.HistoryChecker;
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.Bootstrap;
+import io.github.btkelly.gandalf.models.GandalfException;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.network.BootstrapApi;
 import io.github.btkelly.gandalf.network.BootstrapCallback;
@@ -145,18 +146,22 @@ public final class Gandalf {
 
                         LoggerUtil.logD("Fetched bootstrap: " + bootstrap);
 
-                        if (gateKeeper.updateIsRequired(bootstrap)) {
-                            LoggerUtil.logD("Update is required");
-                            gandalfCallback.onRequiredUpdate(bootstrap.getRequiredUpdate());
-                        } else if (gateKeeper.showAlert(bootstrap)) {
-                            LoggerUtil.logD("Alert");
-                            gandalfCallback.onAlert(bootstrap.getAlert());
-                        } else if (gateKeeper.updateIsOptional(bootstrap)) {
-                            LoggerUtil.logD("Update is optional");
-                            gandalfCallback.onOptionalUpdate(bootstrap.getOptionalUpdate());
-                        } else {
-                            LoggerUtil.logD("No action is required");
-                            gandalfCallback.onNoActionRequired();
+                        try {
+                            if (gateKeeper.updateIsRequired(bootstrap)) {
+                                LoggerUtil.logD("Update is required");
+                                gandalfCallback.onRequiredUpdate(bootstrap.getRequiredUpdate());
+                            } else if (gateKeeper.showAlert(bootstrap)) {
+                                LoggerUtil.logD("Alert");
+                                gandalfCallback.onAlert(bootstrap.getAlert());
+                            } else if (gateKeeper.updateIsOptional(bootstrap)) {
+                                LoggerUtil.logD("Update is optional");
+                                gandalfCallback.onOptionalUpdate(bootstrap.getOptionalUpdate());
+                            } else {
+                                LoggerUtil.logD("No action is required");
+                                gandalfCallback.onNoActionRequired();
+                            }
+                        } catch (GandalfException exception) {
+                            gandalfCallback.onError(exception);
                         }
 
                     }
@@ -165,7 +170,7 @@ public final class Gandalf {
                     public void onError(Exception e) {
                         LoggerUtil.logE("Error fetching bootstrap: " + e.getMessage());
                         //In any error case we should let the user in as to not block based on a bug
-                        gandalfCallback.onNoActionRequired();
+                        gandalfCallback.onError(new GandalfException(e));
                     }
                 });
     }

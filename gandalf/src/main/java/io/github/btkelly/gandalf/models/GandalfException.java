@@ -15,7 +15,6 @@
  */
 package io.github.btkelly.gandalf.models;
 
-
 public class GandalfException extends Exception {
 
     public GandalfException(Exception e) {

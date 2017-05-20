@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.AppVersionDetails;
 import io.github.btkelly.gandalf.models.BootstrapException;
+import io.github.btkelly.gandalf.models.GandalfException;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.models.RequiredUpdate;
 import io.github.btkelly.gandalf.utils.StringUtils;
@@ -35,9 +36,10 @@ public class DefaultVersionChecker implements VersionChecker {
      * @param requiredUpdate current required version information
      * @param appVersionDetails details about the current version of the install app
      * @return {@code true} if app's version is less than the required version
+     * @throws GandalfException the versionCode is not a valid integer
      */
     @Override
-    public boolean showRequiredUpdate(@NonNull final RequiredUpdate requiredUpdate, @NonNull final AppVersionDetails appVersionDetails) {
+    public boolean showRequiredUpdate(@NonNull final RequiredUpdate requiredUpdate, @NonNull final AppVersionDetails appVersionDetails) throws GandalfException {
 
         final String minimumVersionString = requiredUpdate.getMinimumVersion();
 
@@ -50,7 +52,7 @@ public class DefaultVersionChecker implements VersionChecker {
             return appVersionDetails.getVersionCode() < minimumVersion;
 
         } catch (NumberFormatException e) {
-            throw new BootstrapException("Invalid number format on RequiredUpdate version", e);
+            throw new GandalfException("Invalid number format on RequiredUpdate version", e);
         }
     }
 
@@ -60,9 +62,10 @@ public class DefaultVersionChecker implements VersionChecker {
      * @param optionalUpdate current optional version information
      * @param appVersionDetails details about the current version of the installed app
      * @return {@code true} if app's version is behind the optional version
+     * @throws GandalfException the versionCode is not a valid integer
      */
     @Override
-    public boolean showOptionalUpdate(@NonNull final OptionalUpdate optionalUpdate, @NonNull final AppVersionDetails appVersionDetails) {
+    public boolean showOptionalUpdate(@NonNull final OptionalUpdate optionalUpdate, @NonNull final AppVersionDetails appVersionDetails) throws GandalfException {
         final String optionalVersionString = optionalUpdate.getOptionalVersion();
 
         if (StringUtils.isBlank(optionalVersionString)) {
@@ -74,7 +77,7 @@ public class DefaultVersionChecker implements VersionChecker {
             return appVersionDetails.getVersionCode() < optionalVersionCode;
 
         } catch (NumberFormatException e) {
-            throw new BootstrapException("Invalid number format on OptionalUpdate version", e);
+            throw new GandalfException("Invalid number format on OptionalUpdate version", e);
         }
     }
 

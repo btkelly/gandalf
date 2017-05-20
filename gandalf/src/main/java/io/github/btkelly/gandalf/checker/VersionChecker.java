@@ -17,6 +17,7 @@ package io.github.btkelly.gandalf.checker;
 
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.AppVersionDetails;
+import io.github.btkelly.gandalf.models.GandalfException;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.models.RequiredUpdate;
 
@@ -30,16 +31,18 @@ public interface VersionChecker {
      * @param requiredUpdate current required version information
      * @param appVersionDetails details about the current version of the install app
      * @return {@code true} if {@code requiredUpdate} should be shown
+     * @throws GandalfException the versionCode is not a valid integer
      */
-    boolean showRequiredUpdate(RequiredUpdate requiredUpdate, AppVersionDetails appVersionDetails);
+    boolean showRequiredUpdate(RequiredUpdate requiredUpdate, AppVersionDetails appVersionDetails) throws GandalfException;
 
     /**
      * Checks if the {@link OptionalUpdate} should be shown.
      * @param optionalUpdate current optional version information
      * @param appVersionDetails details about the current version of the installed app
      * @return {@code true} if {@code optionalUpdate} should be shown
+     * @throws GandalfException the versionCode is not a valid integer
      */
-    boolean showOptionalUpdate(OptionalUpdate optionalUpdate, AppVersionDetails appVersionDetails);
+    boolean showOptionalUpdate(OptionalUpdate optionalUpdate, AppVersionDetails appVersionDetails) throws GandalfException;
 
     /**
      * Checks if the {@link Alert} should be shown.

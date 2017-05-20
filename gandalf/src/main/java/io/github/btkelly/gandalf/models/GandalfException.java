@@ -13,19 +13,15 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package io.github.btkelly.gandalf;
+package io.github.btkelly.gandalf.models;
 
-import io.github.btkelly.gandalf.models.Alert;
-import io.github.btkelly.gandalf.models.GandalfException;
-import io.github.btkelly.gandalf.models.OptionalUpdate;
-import io.github.btkelly.gandalf.models.RequiredUpdate;
+public class GandalfException extends Exception {
 
-public interface GandalfCallback {
+    public GandalfException(Exception e) {
+        super(e);
+    }
 
-    void onRequiredUpdate(RequiredUpdate requiredUpdate);
-    void onOptionalUpdate(OptionalUpdate optionalUpdate);
-    void onAlert(Alert alert);
-    void onNoActionRequired();
-    void onError(GandalfException gandalfException);
-
+    public GandalfException(String s, Throwable e) {
+        super(s, e);
+    }
 }

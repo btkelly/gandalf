@@ -22,17 +22,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.support.annotation.RawRes;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import io.github.btkelly.gandalf.activities.GandalfActivity;
 import io.github.btkelly.gandalf.example.R;
 import io.github.btkelly.gandalf.example.utils.MockWebServerUtil;
+import io.github.btkelly.gandalf.models.GandalfException;
 
 /**
  * An example splash activity that demonstrates the simplest way to add Gandalf to a project
  */
 public class SplashActivity extends GandalfActivity {
+
+    private static final String TAG = SplashActivity.class.getName();
 
     @Override
     public void youShallPass() {
@@ -82,13 +86,19 @@ public class SplashActivity extends GandalfActivity {
                 PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext())
                         .edit()
                         .clear()
-                        .commit();
+                        .apply();
 
                 restartApp(R.raw.no_action_bootstrap);
                 break;
         }
 
         return true;
+    }
+
+    @Override
+    public void onError(GandalfException gandalfException) {
+        Log.e(TAG, "Error executing Gandalf", gandalfException);
+        youShallPass();
     }
 
     @SuppressLint("CommitPrefEdits")

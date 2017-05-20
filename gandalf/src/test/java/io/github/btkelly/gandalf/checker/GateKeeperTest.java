@@ -29,6 +29,7 @@ import org.mockito.MockitoAnnotations;
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.AppVersionDetails;
 import io.github.btkelly.gandalf.models.Bootstrap;
+import io.github.btkelly.gandalf.models.GandalfException;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.models.RequiredUpdate;
 
@@ -72,60 +73,73 @@ public class GateKeeperTest {
 
     //RequiredUpdate tests
     @Test
-    public void showRequiredUpdateShouldReturnFalseWhenRequiredUpdateIsNull() {
+    public void showRequiredUpdateShouldReturnFalseWhenRequiredUpdateIsNull() throws GandalfException {
         when(mockBootstrap.getRequiredUpdate()).thenReturn(null);
 
         Assert.assertFalse("RequiredUpdate is null, this should be false", subject.updateIsRequired(mockBootstrap));
     }
 
     @Test
-    public void showRequiredUpdateShouldBeTrueWhenVersionCheckRequiresUpdate() {
+    public void showRequiredUpdateShouldBeTrueWhenVersionCheckRequiresUpdate() throws GandalfException {
         when(mockVersionChecker.showRequiredUpdate(Mockito.any(RequiredUpdate.class), Mockito.any(AppVersionDetails.class))).thenReturn(true);
 
         Assert.assertTrue(ASSERT_TRUE_MESSAGE, subject.updateIsRequired(mockBootstrap));
     }
 
     @Test
-    public void showRequiredUpdateShouldBeFalseWhenVersionCheckFalse() {
+    public void showRequiredUpdateShouldBeFalseWhenVersionCheckFalse() throws GandalfException {
         when(mockVersionChecker.showRequiredUpdate(Mockito.any(RequiredUpdate.class), Mockito.any(AppVersionDetails.class))).thenReturn(false);
 
         Assert.assertFalse(ASSERT_FALSE_MESSAGE, subject.updateIsRequired(mockBootstrap));
     }
 
+    @Test(expected = GandalfException.class)
+    public void showRequiredUpdateShouldThrowExceptionWhenExceptionIsThrown() throws GandalfException {
+        when(mockVersionChecker.showRequiredUpdate(Mockito.any(RequiredUpdate.class), Mockito.any(AppVersionDetails.class))).thenThrow(GandalfException.class);
+        subject.updateIsRequired(mockBootstrap);
+    }
+
     //OptionalUpdate tests
     @Test
-    public void showOptionalUpdateShouldBeFalseIfOptionalUpdateIsNull() {
+    public void showOptionalUpdateShouldBeFalseIfOptionalUpdateIsNull() throws GandalfException {
         when(mockBootstrap.getOptionalUpdate()).thenReturn(null);
 
         Assert.assertFalse("OptionalUpdate is null, should be false", subject.updateIsOptional(mockBootstrap));
     }
 
     @Test
-    public void showOptionalUpdateShouldBeTrueWithAvailableTrueAndHistoryFalse() {
+    public void showOptionalUpdateShouldBeTrueWithAvailableTrueAndHistoryFalse() throws GandalfException {
         setOptionalUpdateScenario(true, false);
 
         Assert.assertTrue(ASSERT_TRUE_MESSAGE, subject.updateIsOptional(mockBootstrap));
     }
 
     @Test
-    public void showOptionalUpdateShouldBeFalseWithAvailableTrueAndHistoryTrue() {
+    public void showOptionalUpdateShouldBeFalseWithAvailableTrueAndHistoryTrue() throws GandalfException {
         setOptionalUpdateScenario(true, true);
 
         Assert.assertFalse(ASSERT_FALSE_MESSAGE, subject.updateIsOptional(mockBootstrap));
     }
 
     @Test
-    public void showOptionalUpdateShouldBeFalseWithAvailableFalseAndHistoryFalse() {
+    public void showOptionalUpdateShouldBeFalseWithAvailableFalseAndHistoryFalse() throws GandalfException {
         setOptionalUpdateScenario(false, false);
 
         Assert.assertFalse(ASSERT_FALSE_MESSAGE, subject.updateIsOptional(mockBootstrap));
     }
 
     @Test
-    public void showOptionalUpdateShouldBeFalseWithAvailableFalseAndHistoryTrue() {
+    public void showOptionalUpdateShouldBeFalseWithAvailableFalseAndHistoryTrue() throws GandalfException {
         setOptionalUpdateScenario(false, true);
 
         Assert.assertFalse(ASSERT_FALSE_MESSAGE, subject.updateIsOptional(mockBootstrap));
+    }
+
+    @Test(expected = GandalfException.class)
+    public void showOptionalUpdateShouldThrowExceptionWhenExceptionIsThrown() throws GandalfException {
+        when(mockVersionChecker.showOptionalUpdate(Mockito.any(OptionalUpdate.class),
+                Mockito.any(AppVersionDetails.class))).thenThrow(GandalfException.class);
+        subject.updateIsOptional(mockBootstrap);
     }
 
 
@@ -170,7 +184,7 @@ public class GateKeeperTest {
         when(mockHistoryChecker.contains(Mockito.any(Alert.class))).thenReturn(alertMatchesHistory);
     }
 
-    private void setOptionalUpdateScenario(final boolean updateAvailable, final boolean updateMatchesHistory) {
+    private void setOptionalUpdateScenario(final boolean updateAvailable, final boolean updateMatchesHistory) throws GandalfException {
         when(mockVersionChecker.showOptionalUpdate(Mockito.any(OptionalUpdate.class),
                 Mockito.any(AppVersionDetails.class))).thenReturn(updateAvailable);
         when(mockHistoryChecker.contains(Mockito.any(OptionalUpdate.class))).thenReturn(updateMatchesHistory);

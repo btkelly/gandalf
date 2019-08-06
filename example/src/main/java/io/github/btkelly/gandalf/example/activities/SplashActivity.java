@@ -64,7 +64,7 @@ public class SplashActivity extends GandalfActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
 
         switch (item.getItemId()) {
             case R.id.menuRestartAlert:

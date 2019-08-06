@@ -5,12 +5,10 @@ buildscript {
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-        classpath 'com.btkelly:gnag:1.3.1'
     }
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'gnag'
 
 def versionString = "1.3.5"
 
@@ -50,18 +48,6 @@ android {
     }
 }
 
-gnag {
-    checkstyle {
-        reporterConfig project.file('config/checkstyle.xml')
-    }
-    pmd {
-        reporterConfig project.file('config/pmd.xml')
-    }
-    github {
-        repoName 'btkelly/gandalf'
-    }
-}
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -97,6 +83,3 @@ ext {
     developerName = 'Bryan Kelly'
     developerEmail = 'bobbake4@gmail.com'
 }
-
-apply from: 'https://raw.githubusercontent.com/btkelly/JCenter/f988f0e106be89c876e038894b9892f9d1d0b643/bintrayv1.gradle'
-apply from: 'https://raw.githubusercontent.com/btkelly/JCenter/master/installv1.gradle'

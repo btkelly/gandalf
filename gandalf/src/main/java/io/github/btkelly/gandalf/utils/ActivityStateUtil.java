@@ -18,7 +18,7 @@ package io.github.btkelly.gandalf.utils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 public final class ActivityStateUtil {
 

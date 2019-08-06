@@ -15,7 +15,7 @@
  */
 package io.github.btkelly.gandalf.checker;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.AppVersionDetails;

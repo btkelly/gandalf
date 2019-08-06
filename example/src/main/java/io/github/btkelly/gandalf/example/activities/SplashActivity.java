@@ -21,9 +21,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
-import android.support.annotation.RawRes;
+import androidx.annotation.RawRes;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import org.jetbrains.annotations.NotNull;
 
 import io.github.btkelly.gandalf.activities.GandalfActivity;
 import io.github.btkelly.gandalf.example.R;

@@ -16,7 +16,7 @@
 package io.github.btkelly.gandalf.utils;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by bryankelly on 5/17/16.

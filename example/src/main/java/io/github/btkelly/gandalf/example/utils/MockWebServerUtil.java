@@ -18,8 +18,9 @@ package io.github.btkelly.gandalf.example.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.RawRes;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RawRes;
 
 import java.io.BufferedReader;
 import java.io.IOException;

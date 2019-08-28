@@ -45,7 +45,6 @@ public final class Gandalf {
 
     private static Gandalf gandalfInstance;
 
-    private final Context context;
     private final OkHttpClient okHttpClient;
     private final String bootstrapUrl;
     private final HistoryChecker historyChecker;
@@ -54,10 +53,9 @@ public final class Gandalf {
     private final JsonDeserializer<Bootstrap> customDeserializer;
     private final DialogStringsHolder dialogStringsHolder;
 
-    private Gandalf(Context context, OkHttpClient okHttpClient, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper,
+    private Gandalf(OkHttpClient okHttpClient, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper,
                     OnUpdateSelectedListener onUpdateSelectedListener, JsonDeserializer<Bootstrap> customDeserializer,
                     DialogStringsHolder dialogStringsHolder) {
-        this.context = context;
         this.okHttpClient = okHttpClient;
         this.bootstrapUrl = bootstrapUrl;
         this.historyChecker = historyChecker;
@@ -77,16 +75,14 @@ public final class Gandalf {
         return gandalfInstance;
     }
 
-    private static Gandalf createInstance(@NonNull final Context context,
-                                          @NonNull final OkHttpClient okHttpClient,
+    private static Gandalf createInstance(@NonNull final OkHttpClient okHttpClient,
                                           @NonNull final String bootstrapUrl,
                                           @NonNull final HistoryChecker historyChecker,
                                           @NonNull final GateKeeper gateKeeper,
                                           @NonNull final OnUpdateSelectedListener onUpdateSelectedListener,
                                           @Nullable final JsonDeserializer<Bootstrap> customDeserializer,
                                           @NonNull final DialogStringsHolder dialogStringsHolder) {
-        return new Gandalf(context,
-                okHttpClient,
+        return new Gandalf(okHttpClient,
                 bootstrapUrl,
                 historyChecker,
                 gateKeeper,
@@ -133,7 +129,7 @@ public final class Gandalf {
      * Starts the flow on checking a remote file and determining if any updates or alerts are available.
      * @param gandalfCallback - a callback interface to respond to events from the bootstrap check
      */
-    public void shallIPass(final GandalfCallback gandalfCallback) {
+    public void shallIPass(Context context, final GandalfCallback gandalfCallback) {
 
         LoggerUtil.logD("Fetching bootstrap");
 
@@ -257,7 +253,6 @@ public final class Gandalf {
                 LoggerUtil.setLogLevel(logLevel);
 
                 gandalfInstance = createInstance(
-                        this.context,
                         this.okHttpClient,
                         this.bootstrapUrl,
                         historyChecker,

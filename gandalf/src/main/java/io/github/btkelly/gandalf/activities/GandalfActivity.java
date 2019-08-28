@@ -53,7 +53,7 @@ public abstract class GandalfActivity extends AppCompatActivity implements Ganda
         setContentView(contentView());
 
         this.gandalf = Gandalf.get();
-        this.gandalf.shallIPass(this);
+        this.gandalf.shallIPass(this, this);
     }
 
     @Override

@@ -55,7 +55,7 @@ gnag {
         reporterConfig project.file('config/checkstyle.xml')
     }
     pmd {
-        enabled false
+        enabled true
         reporterConfig project.file('config/pmd.xml')
     }
     github {

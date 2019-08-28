@@ -37,6 +37,7 @@
         <exclude name="AtLeastOneConstructor"/>
         <exclude name="AvoidFinalLocalVariable"/>
         <exclude name="AvoidPrefixingMethodParameters"/>
+        <exclude name="CommentDefaultAccessModifier"/>
         <exclude name="ConfusingTernary"/>
         <exclude name="DefaultPackage"/>
         <exclude name="LocalVariableCouldBeFinal"/>
@@ -63,11 +64,15 @@
     <rule ref="category/java/errorprone.xml">
         <exclude name="AssignmentInOperand"/>
         <exclude name="AvoidLiteralsInIfCondition"/>
+        <exclude name="BeanMembersShouldSerialize"/>
         <exclude name="DataflowAnomalyAnalysis"/>
         <exclude name="NullAssignment"/>
+        <exclude name="UseProperClassLoader"/>
     </rule>
 
-    <rule ref="category/java/multithreading.xml"/>
+    <rule ref="category/java/multithreading.xml">
+        <exclude name="DoNotUseThreads"/>
+    </rule>
 
     <rule ref="category/java/performance.xml">
         <exclude name="AvoidInstantiatingObjectsInLoops"/>
@@ -79,14 +84,19 @@
 
     <rule ref="category/java/design.xml/CyclomaticComplexity">
         <properties>
-            <property name="classReportLevel" value="20"/>
-            <property name="methodReportLevel" value="20"/>
+            <property name="methodReportLevel" value="40"/>
         </properties>
     </rule>
 
     <rule ref="category/java/design.xml/TooManyMethods">
         <properties>
             <property name="maxmethods" value="25"/>
+        </properties>
+    </rule>
+
+    <rule ref="category/java/codestyle.xml/LinguisticNaming">
+        <properties>
+            <property name="checkSetters" value="no"/>
         </properties>
     </rule>
 

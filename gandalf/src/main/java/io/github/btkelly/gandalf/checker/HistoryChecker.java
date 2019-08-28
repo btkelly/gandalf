@@ -31,27 +31,27 @@ public interface HistoryChecker {
      * @param alert item to compare against the history
      * @return {@code true} if provided alert matches the history
      */
-    boolean contains(@NonNull final Alert alert);
+    boolean contains(@NonNull Alert alert);
 
     /**
      * Saves the provided {@link OptionalUpdate} to shared preferences.
      * @param optionalUpdate the provided current optional update information
      * @return {@code true} if {@code optionalUpdate} was successfully saved
      */
-    boolean save(@NonNull final OptionalUpdate optionalUpdate);
+    boolean save(@NonNull OptionalUpdate optionalUpdate);
 
     /**
      * Checks provided {@link OptionalUpdate} against the last seen one.
      * @param optionalUpdate item to compare against the history
      * @return {@code true} if provided update matches the history
      */
-    boolean contains(@NonNull final OptionalUpdate optionalUpdate);
+    boolean contains(@NonNull OptionalUpdate optionalUpdate);
 
     /**
      * Saves the provided {@link Alert} to shared preferences.
      * @param alert this should be the current alert
      * @return {@code true} if {@code alert} was successfully saved
      */
-    boolean save(@NonNull final Alert alert);
+    boolean save(@NonNull Alert alert);
 
 }

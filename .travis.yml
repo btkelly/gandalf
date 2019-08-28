@@ -8,7 +8,7 @@ cache:
     - $HOME/.android/build-cache
 language: android
 jdk:
-- oraclejdk8
+- openjdk8
 android:
   components:
   - tools

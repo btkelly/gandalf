@@ -5,10 +5,12 @@ buildscript {
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.btkelly:gnag:1.3.1'
     }
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'gnag'
 
 def versionString = "1.3.5"
 
@@ -44,6 +46,18 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+}
+
+gnag {
+    checkstyle {
+        reporterConfig project.file('config/checkstyle.xml')
+    }
+    pmd {
+        reporterConfig project.file('config/pmd.xml')
+    }
+    github {
+        repoName 'btkelly/gandalf'
     }
 }
 

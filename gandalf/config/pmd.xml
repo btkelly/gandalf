@@ -1,109 +1,103 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+
+    Copyright 2016 Bryan Kelly
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License.
+
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+    License for the specific language governing permissions and limitations
+    under the License.
+
+-->
 
 <!-- Custom PMD config-->
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="ruleset"
-    xmlns="http://pmd.sf.net/ruleset/1.0.0"
-    xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
-    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd">
+<ruleset name="Gnag default PMD rules"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 
-    <description>POM rule set file</description>
+    <description>Gnag default PMD rules</description>
 
-    <rule ref="rulesets/java/android.xml" />
-
-    <rule ref="rulesets/java/basic.xml" />
-
-    <rule ref="rulesets/java/braces.xml" />
-
-    <rule ref="rulesets/java/clone.xml" />
-
-    <rule ref="rulesets/java/codesize.xml">
-        <exclude name="TooManyFields" />
-    </rule>
-    <rule ref="rulesets/java/codesize.xml/CyclomaticComplexity">
-        <properties>
-            <property name="reportLevel" value="20" />
-        </properties>
-    </rule>
-    <rule ref="rulesets/java/codesize.xml/TooManyMethods">
-        <properties>
-            <property name="maxmethods" value="25" />
-        </properties>
+    <rule ref="category/java/bestpractices.xml">
+        <exclude name="AvoidReassigningParameters"/>
+        <exclude name="GuardLogStatement"/>
+        <exclude name="LooseCoupling"/>
+        <exclude name="SwitchStmtsShouldHaveDefault"/>
     </rule>
 
-    <rule ref="rulesets/java/comments.xml">
-        <exclude name="CommentRequired" />
-        <exclude name="CommentSize" />
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="AbstractNaming"/>
+        <exclude name="AtLeastOneConstructor"/>
+        <exclude name="AvoidFinalLocalVariable"/>
+        <exclude name="AvoidPrefixingMethodParameters"/>
+        <exclude name="CommentDefaultAccessModifier"/>
+        <exclude name="ConfusingTernary"/>
+        <exclude name="DefaultPackage"/>
+        <exclude name="LocalVariableCouldBeFinal"/>
+        <exclude name="LongVariable"/>
+        <exclude name="MethodArgumentCouldBeFinal"/>
+        <exclude name="OnlyOneReturn"/>
+        <exclude name="ShortClassName"/>
+        <exclude name="ShortMethodName"/>
+        <exclude name="ShortVariable"/>
     </rule>
 
-    <rule ref="rulesets/java/controversial.xml">
-        <!-- while ((x = update()) != null) { process(x); } -->
-        <exclude name="AssignmentInOperand" />
-        <exclude name="AtLeastOneConstructor" />
-        <exclude name="AvoidFinalLocalVariable" />
-        <exclude name="AvoidLiteralsInIfCondition" />
-        <exclude name="AvoidPrefixingMethodParameters" />
-        <exclude name="DataflowAnomalyAnalysis" />
-        <exclude name="NullAssignment" />
-        <exclude name="OnlyOneReturn" />
-        <exclude name="DefaultPackage" />
+    <rule ref="category/java/design.xml">
+        <exclude name="ExcessiveImports"/>
+        <exclude name="LawOfDemeter"/>
+        <exclude name="LoosePackageCoupling"/>
+        <exclude name="TooManyFields"/>
     </rule>
 
-    <rule ref="rulesets/java/coupling.xml">
-        <exclude name="ExcessiveImports" />
-        <exclude name="LawOfDemeter" />
+    <rule ref="category/java/documentation.xml">
+        <exclude name="CommentRequired"/>
+        <exclude name="CommentSize"/>
     </rule>
 
-    <rule ref="rulesets/java/design.xml">
-        <exclude name="AvoidReassigningParameters" />
-        <!-- if (x != y) { short code block } else { long code block } -->
-        <exclude name="ConfusingTernary" />
-        <exclude name="SwitchStmtsShouldHaveDefault" />
+    <rule ref="category/java/errorprone.xml">
+        <exclude name="AssignmentInOperand"/>
+        <exclude name="AvoidLiteralsInIfCondition"/>
+        <exclude name="BeanMembersShouldSerialize"/>
+        <exclude name="DataflowAnomalyAnalysis"/>
+        <exclude name="NullAssignment"/>
+        <exclude name="UseProperClassLoader"/>
+    </rule>
+
+    <rule ref="category/java/multithreading.xml">
+        <exclude name="DoNotUseThreads"/>
+    </rule>
+
+    <rule ref="category/java/performance.xml">
+        <exclude name="AvoidInstantiatingObjectsInLoops"/>
         <!-- Android listeners contain a lot of such switch statements -->
-        <exclude name="TooFewBranchesForASwitchStatement" />
+        <exclude name="TooFewBranchesForASwitchStatement"/>
     </rule>
 
-    <rule ref="rulesets/java/empty.xml" />
+    <rule ref="category/java/security.xml"/>
 
-    <rule ref="rulesets/java/finalizers.xml" />
-
-    <rule ref="rulesets/java/imports.xml" />
-
-    <rule ref="rulesets/java/junit.xml" />
-
-    <rule ref="rulesets/java/logging-jakarta-commons.xml">
-        <exclude name="GuardLogStatement" />
+    <rule ref="category/java/design.xml/CyclomaticComplexity">
+        <properties>
+            <property name="methodReportLevel" value="40"/>
+        </properties>
     </rule>
 
-    <rule ref="rulesets/java/logging-java.xml">
-        <exclude name="GuardLogStatementJavaUtil" />
+    <rule ref="category/java/design.xml/TooManyMethods">
+        <properties>
+            <property name="maxmethods" value="25"/>
+        </properties>
     </rule>
 
-    <rule ref="rulesets/java/migrating.xml" />
-
-    <rule ref="rulesets/java/naming.xml">
-        <exclude name="AbstractNaming" />
-        <exclude name="LongVariable" />
-        <exclude name="ShortClassName" />
-        <exclude name="ShortVariable" />
-        <exclude name="ShortMethodName" />
+    <rule ref="category/java/codestyle.xml/LinguisticNaming">
+        <properties>
+            <property name="checkSetters" value="no"/>
+        </properties>
     </rule>
-
-    <rule ref="rulesets/java/optimizations.xml">
-        <exclude name="AvoidInstantiatingObjectsInLoops" />
-        <exclude name="LocalVariableCouldBeFinal" />
-        <exclude name="MethodArgumentCouldBeFinal" />
-    </rule>
-
-    <rule ref="rulesets/java/strictexception.xml" />
-
-    <rule ref="rulesets/java/strings.xml" />
-
-    <rule ref="rulesets/java/typeresolution.xml">
-        <exclude name="LooseCoupling" />
-    </rule>
-
-    <rule ref="rulesets/java/unnecessary.xml" />
-
-    <rule ref="rulesets/java/unusedcode.xml" />
 
 </ruleset>

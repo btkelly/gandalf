@@ -18,7 +18,7 @@ package io.github.btkelly.gandalf.utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import static android.content.Intent.ACTION_VIEW;
 

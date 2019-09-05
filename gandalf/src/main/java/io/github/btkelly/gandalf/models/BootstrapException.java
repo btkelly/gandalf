@@ -16,6 +16,9 @@
 package io.github.btkelly.gandalf.models;
 
 public class BootstrapException extends RuntimeException {
+
+    public static final long serialVersionUID = 4326259;
+
     public BootstrapException() {
         super();
     }

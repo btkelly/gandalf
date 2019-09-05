@@ -16,9 +16,10 @@
 package io.github.btkelly.gandalf.activities;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import io.github.btkelly.gandalf.Gandalf;
 import io.github.btkelly.gandalf.GandalfCallback;
@@ -52,7 +53,7 @@ public abstract class GandalfActivity extends AppCompatActivity implements Ganda
         setContentView(contentView());
 
         this.gandalf = Gandalf.get();
-        this.gandalf.shallIPass(this);
+        this.gandalf.shallIPass(this, this);
     }
 
     @Override

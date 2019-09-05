@@ -5,7 +5,7 @@ buildscript {
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-        classpath 'com.btkelly:gnag:1.3.1'
+        classpath 'com.btkelly:gnag:2.3.0'
     }
 }
 
@@ -15,12 +15,11 @@ apply plugin: 'gnag'
 def versionString = "1.3.5"
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 29
         versionCode 1
         versionName versionString
         consumerProguardFiles 'proguard-rules.pro'
@@ -52,9 +51,11 @@ android {
 
 gnag {
     checkstyle {
+        enabled true
         reporterConfig project.file('config/checkstyle.xml')
     }
     pmd {
+        enabled true
         reporterConfig project.file('config/pmd.xml')
     }
     github {
@@ -63,40 +64,12 @@ gnag {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.google.code.gson:gson:2.8.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.0.1'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.7.13'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:3.0.0'
 }
-
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'gandalf'
-
-    publishedGroupId = 'com.btkelly'
-
-    artifact = 'gandalf'
-
-    libraryName = 'Gandalf'
-    libraryDescription = 'Easily notify a user with a simple alert, inform them of an optional update, and in dire situations block the user from accessing older versions of the application completely.'
-    libraryVersion = versionString
-    libraryIssueTrackerUrl = 'https://github.com/btkelly/gandalf/issues'
-    libraryLabels = ['android', 'update']
-
-    licenseName = 'Apache License Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.html'
-
-    gitUrl = 'https://github.com/btkelly/gandalf'
-    siteUrl = 'http://btkelly.github.io/gandalf'
-
-    developerId = 'btkelly'
-    developerName = 'Bryan Kelly'
-    developerEmail = 'bobbake4@gmail.com'
-}
-
-apply from: 'https://raw.githubusercontent.com/btkelly/JCenter/f988f0e106be89c876e038894b9892f9d1d0b643/bintrayv1.gradle'
-apply from: 'https://raw.githubusercontent.com/btkelly/JCenter/master/installv1.gradle'

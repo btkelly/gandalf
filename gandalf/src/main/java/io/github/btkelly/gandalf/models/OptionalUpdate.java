@@ -17,7 +17,7 @@ package io.github.btkelly.gandalf.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Model to hold the optional update information

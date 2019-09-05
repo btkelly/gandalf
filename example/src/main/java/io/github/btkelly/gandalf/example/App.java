@@ -38,17 +38,34 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        String mockBootstrapUrl = MockWebServerUtil.startMockWebServer(this);
+        Thread startMockServer = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String mockBootstrapUrl = MockWebServerUtil.startMockWebServer(App.this);
 
-        new Gandalf.Installer()
-                .setContext(this)
-                .setPackageName("com.github.stkent.bugshaker")
-                //.setOnUpdateSelectedListener(new FileDownloadUpdateListener(this, Uri.parse("http://www.google.com/myApk.apk"))) //Uncomment this line to provide a file download listener instead of the package name Play Store above
-                .setBootstrapUrl(mockBootstrapUrl)
-                //.setCustomDeserializer(this.customDeserializer) //Uncomment this line to include a custom deserializers to allow for a custom JSON structure.
-                .install();
+                    new Gandalf.Installer()
+                            .setContext(App.this)
+                            .setPackageName("com.github.stkent.bugshaker")
+                            //.setOnUpdateSelectedListener(new FileDownloadUpdateListener(this, Uri.parse("http://www.google.com/myApk.apk"))) //Uncomment this line to provide a file download listener instead of the package name Play Store above
+                            .setBootstrapUrl(mockBootstrapUrl)
+                            //.setCustomDeserializer(this.customDeserializer) //Uncomment this line to include a custom deserializers to allow for a custom JSON structure.
+                            .install();
 
-        LoggerUtil.logD("Mock server started at " + mockBootstrapUrl);
+                    LoggerUtil.logD("Mock server started at " + mockBootstrapUrl);
+                } catch (Exception e) {
+                    throw new RuntimeException("Problem starting mock web server");
+                }
+            }
+        });
+
+        startMockServer.start();
+
+        try {
+            startMockServer.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private JsonDeserializer<Bootstrap> customDeserializer = new JsonDeserializer<Bootstrap>() {

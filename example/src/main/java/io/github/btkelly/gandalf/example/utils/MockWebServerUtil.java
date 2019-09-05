@@ -18,8 +18,9 @@ package io.github.btkelly.gandalf.example.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.RawRes;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RawRes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -52,38 +53,26 @@ public final class MockWebServerUtil {
         shutdownWebServer();
         mockWebServer = new MockWebServer();
 
-        Thread startMockServer = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mockWebServer.start();
-
-                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
-                    int mockBootstrapResId = sharedPreferences.getInt(KEY_BOOTSTRAP_RES_ID, R.raw.no_action_bootstrap);
-
-                    String mockBootstrapJsonBody = getMockJsonBootstrap(context, mockBootstrapResId);
-
-                    MockResponse mockResponse = new MockResponse();
-                    mockResponse.setResponseCode(200);
-                    mockResponse.setBody(mockBootstrapJsonBody);
-                    mockResponse.setBodyDelay(2, TimeUnit.SECONDS);
-
-                    mockWebServer.enqueue(mockResponse);
-
-                } catch (IOException e) {
-                    throw new RuntimeException("Problem starting mock web server");
-                }
-            }
-        });
-
-        startMockServer.start();
-
         try {
-            startMockServer.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            mockWebServer.start();
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+            int mockBootstrapResId = sharedPreferences.getInt(KEY_BOOTSTRAP_RES_ID, R.raw.no_action_bootstrap);
+
+            String mockBootstrapJsonBody = getMockJsonBootstrap(context, mockBootstrapResId);
+
+            MockResponse mockResponse = new MockResponse();
+            mockResponse.setResponseCode(200);
+            mockResponse.setBody(mockBootstrapJsonBody);
+            mockResponse.setBodyDelay(2, TimeUnit.SECONDS);
+
+            mockWebServer.enqueue(mockResponse);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Problem starting mock web server");
         }
+
 
         return String.valueOf(mockWebServer.url(""));
     }

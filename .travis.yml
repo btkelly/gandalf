@@ -24,6 +24,3 @@ branches:
   only:
   - master
 script: "./travis-build.sh"
-env:
-  matrix:
-    secure: nnuCxQ/T2wIEg+IcFQbQLip5dZMpJe5ATA1dwV9t1KjmhIkhnrjABIltiLm0o2o88Rt46dt9ZSmSDTz/GaR+Kuni8gmu/OM0Rsy3aOXF+shfvZJNfecaM8FZI0pP6hV/Nx9PsY7/NOZunpYdh4DCIS4rN1SIEM+cagJKtQfta75BXu0XQHgXYyaz3NN2Ao/4c0KxCP2cwdwvSWqamQJuUUZ+Zc5xG9w8N3/EHgBa88Ai+xs2ZpFWY9XoNzHql6/AqDNLTbPgUqMz6p37j9eBtn1x/O87ips7jSuF1LDbp5zmRUbgAxdOX4EMI1efwU69+lACeQcZ5n/cyf3Nr4L2F7rNCyiaROfALt3fYzgHWBFOTHlvlFzyovmtrEPUm9bScR6xG1McnqNmwZY3laCPr+YlkMFQT9df3fGsk/XWTjDdHnxtudNjD3kw1IVCwW73ULiqpz8KGN5+uf9TPBD6916dmsha7+ZajzNywLfZqyeSuJ60/vyqoSnEYWVRm+x4l7Vo7aNO1wsLiiUmoDLtNDHciZ9ssNTexoCOdIpiXWYNv4Xn9l8L/0dqQHOCdafnhKbhHE+MDMyRR/PNDPmr5oFSeb/RJEwsKl0xkaTPNqT5IQenGRZgUmjvBZjoUeQE+9C39YuGaAO6nTyMBSCupwmorNW3hQJLovLKEirwf4Q=

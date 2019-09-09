@@ -1,0 +1,26 @@
+version = "1.4.0"
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'gandalf'
+
+    publishedGroupId = 'com.btkelly'
+
+    artifact = 'gandalf'
+
+    libraryName = 'Gandalf'
+    libraryDescription = 'Easily notify a user with a simple alert, inform them of an optional update, and in dire situations block the user from accessing older versions of the application completely.'
+    libraryVersion = version
+    libraryIssueTrackerUrl = 'https://github.com/btkelly/gandalf/issues'
+    libraryLabels = ['android', 'update']
+
+    licenseName = 'Apache License Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+    gitUrl = 'https://github.com/btkelly/gandalf'
+    siteUrl = 'http://btkelly.github.io/gandalf'
+
+    developerId = 'btkelly'
+    developerName = 'Bryan Kelly'
+    developerEmail = 'bobbake4@gmail.com'
+}

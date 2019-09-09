@@ -3,16 +3,15 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath 'com.btkelly:gnag:2.3.0'
     }
 }
 
 apply plugin: 'com.android.library'
 apply plugin: 'gnag'
-
-def versionString = "1.3.5"
+apply from: 'variables.gradle'
 
 android {
     compileSdkVersion 29
@@ -21,7 +20,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
-        versionName versionString
+        versionName libraryVersion
         consumerProguardFiles 'proguard-rules.pro'
     }
 
@@ -49,6 +48,8 @@ android {
     }
 }
 
+apply from: 'bintray.gradle'
+
 gnag {
     checkstyle {
         enabled true
@@ -66,8 +67,8 @@ gnag {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.squareup.okhttp3:okhttp:4.0.1'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.1.1'
     implementation 'com.google.code.gson:gson:2.8.5'
 
     testImplementation 'junit:junit:4.12'

@@ -1,0 +1,117 @@
+apply plugin: 'maven-publish'
+
+afterEvaluate {
+    javadoc.classpath += files(android.libraryVariants.collect { variant ->
+        variant.getJavaCompileProvider().get().classpath.files
+    })
+}
+
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+publishing {
+    publications {
+        Production(MavenPublication) {
+            artifact("$buildDir/outputs/aar/gandalf-release.aar")
+            groupId publishedGroupId
+            artifactId artifact
+            version libraryVersion
+
+            pom {
+                packaging 'aar'
+                groupId publishedGroupId
+                artifactId artifact
+
+                name.set(libraryName)
+                description libraryDescription
+                url.set(siteUrl)
+
+                licenses {
+                    license {
+                        name.set(licenseName)
+                        url.set(licenseUrl)
+                    }
+                }
+                developers {
+                    developer {
+                        id.set(developerId)
+                        name.set(developerName)
+                        email.set(developerEmail)
+                    }
+                }
+                scm {
+                    connection.set(gitUrl)
+                    developerConnection.set(gitUrl)
+                    url.set(siteUrl)
+                }
+                withXml {
+
+                    def dependenciesNode = asNode().appendNode('dependencies')
+
+                    //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                    configurations.implementation.allDependencies.each {
+                        if (it.name != 'unspecified') {
+                            def dependencyNode = dependenciesNode.appendNode('dependency')
+                            dependencyNode.appendNode('groupId', it.group)
+                            dependencyNode.appendNode('artifactId', it.name)
+                            dependencyNode.appendNode('version', it.version)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+if (project.hasProperty('BINTRAY_USER') && project.hasProperty('BINTRAY_API_KEY')) {
+
+    apply plugin: 'com.jfrog.bintray'
+
+    bintray {
+        user = project.hasProperty('BINTRAY_USER')
+        key = project.hasProperty('BINTRAY_API_KEY')
+        publications = ['Production']
+        configurations = ['archives']
+        // Default: false. Whether to run this as dry-run, without deploying
+        dryRun = false
+        // Default: false. Whether to override version artifacts already published
+        override = false
+        // Default: false. Whether version should be auto published after an upload
+        publish = true
+        pkg {
+            repo = bintrayRepo
+            name = bintrayName
+            desc = libraryDescription
+            issueTrackerUrl = libraryIssueTrackerUrl
+            websiteUrl = siteUrl
+            vcsUrl = gitUrl
+            licenses = ['Apache-2.0']
+            labels = libraryLabels
+            publish = true
+            publicDownloadNumbers = true
+            version {
+                desc = libraryDescription
+            }
+        }
+    }
+} else {
+    println 'No Bintray Credentials found, skipping deployment tasks'
+}

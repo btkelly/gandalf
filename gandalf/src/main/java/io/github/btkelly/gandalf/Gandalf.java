@@ -127,6 +127,8 @@ public final class Gandalf {
 
     /**
      * Starts the flow on checking a remote file and determining if any updates or alerts are available.
+     *
+     * @param context - Android context object
      * @param gandalfCallback - a callback interface to respond to events from the bootstrap check
      */
     public void shallIPass(Context context, final GandalfCallback gandalfCallback) {

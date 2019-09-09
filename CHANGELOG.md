@@ -1,5 +1,12 @@
 # Change Log
 
+## v1.4.0
+
+_09-09-2019__
+
+- Updated project dependencies.
+- Updated Android Gradle plugin and Gradle version.
+
 ## v1.3.5
 
 _03-06-2017__

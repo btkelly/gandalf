@@ -1,10 +1,11 @@
 version = "1.4.0"
+group = "com.btkelly"
 
 ext {
     bintrayRepo = 'maven'
     bintrayName = 'gandalf'
 
-    publishedGroupId = 'com.btkelly'
+    publishedGroupId = group
 
     artifact = 'gandalf'
 

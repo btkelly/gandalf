@@ -30,7 +30,6 @@ artifacts {
 publishing {
     publications {
         Production(MavenPublication) {
-            artifact("$buildDir/outputs/aar/gandalf-release.aar")
             groupId publishedGroupId
             artifactId artifact
             version libraryVersion
@@ -86,8 +85,8 @@ if (project.hasProperty('BINTRAY_USER') && project.hasProperty('BINTRAY_API_KEY'
     apply plugin: 'com.jfrog.bintray'
 
     bintray {
-        user = project.hasProperty('BINTRAY_USER')
-        key = project.hasProperty('BINTRAY_API_KEY')
+        user = project.property('BINTRAY_USER')
+        key = project.property('BINTRAY_API_KEY')
         publications = ['Production']
         configurations = ['archives']
         // Default: false. Whether to run this as dry-run, without deploying

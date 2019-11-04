@@ -16,6 +16,8 @@
 package io.github.btkelly.gandalf;
 
 import android.content.Context;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -45,24 +47,21 @@ public final class Gandalf {
 
     private static Gandalf gandalfInstance;
 
-    private final OkHttpClient okHttpClient;
-    private final String bootstrapUrl;
     private final HistoryChecker historyChecker;
     private final GateKeeper gateKeeper;
     private final OnUpdateSelectedListener onUpdateSelectedListener;
-    private final JsonDeserializer<Bootstrap> customDeserializer;
     private final DialogStringsHolder dialogStringsHolder;
+    private final BootstrapApi bootstrapApi;
 
+    @SuppressWarnings("ParameterNumber")
     private Gandalf(OkHttpClient okHttpClient, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper,
                     OnUpdateSelectedListener onUpdateSelectedListener, JsonDeserializer<Bootstrap> customDeserializer,
-                    DialogStringsHolder dialogStringsHolder) {
-        this.okHttpClient = okHttpClient;
-        this.bootstrapUrl = bootstrapUrl;
+                    DialogStringsHolder dialogStringsHolder, Context context) {
         this.historyChecker = historyChecker;
         this.gateKeeper = gateKeeper;
         this.onUpdateSelectedListener = onUpdateSelectedListener;
-        this.customDeserializer = customDeserializer;
         this.dialogStringsHolder = dialogStringsHolder;
+        this.bootstrapApi = new BootstrapApi(context, okHttpClient, bootstrapUrl, customDeserializer);
     }
 
     public static Gandalf get() {
@@ -75,20 +74,23 @@ public final class Gandalf {
         return gandalfInstance;
     }
 
+    @SuppressWarnings("ParameterNumberCheck")
     private static Gandalf createInstance(@NonNull final OkHttpClient okHttpClient,
                                           @NonNull final String bootstrapUrl,
                                           @NonNull final HistoryChecker historyChecker,
                                           @NonNull final GateKeeper gateKeeper,
                                           @NonNull final OnUpdateSelectedListener onUpdateSelectedListener,
                                           @Nullable final JsonDeserializer<Bootstrap> customDeserializer,
-                                          @NonNull final DialogStringsHolder dialogStringsHolder) {
+                                          @NonNull final DialogStringsHolder dialogStringsHolder,
+                                          @NonNull final Context context) {
         return new Gandalf(okHttpClient,
                 bootstrapUrl,
                 historyChecker,
                 gateKeeper,
                 onUpdateSelectedListener,
                 customDeserializer,
-                dialogStringsHolder);
+                dialogStringsHolder,
+                context);
     }
 
     /**
@@ -128,15 +130,13 @@ public final class Gandalf {
     /**
      * Starts the flow on checking a remote file and determining if any updates or alerts are available.
      *
-     * @param context - Android context object
      * @param gandalfCallback - a callback interface to respond to events from the bootstrap check
      */
-    public void shallIPass(Context context, final GandalfCallback gandalfCallback) {
+    public void shallIPass(final GandalfCallback gandalfCallback) {
 
         LoggerUtil.logD("Fetching bootstrap");
 
-        new BootstrapApi(context, okHttpClient, bootstrapUrl, customDeserializer)
-                .fetchBootstrap(new BootstrapCallback() {
+        bootstrapApi.fetchBootstrap(new BootstrapCallback() {
 
                     @Override
                     public void onSuccess(Bootstrap bootstrap) {
@@ -250,19 +250,35 @@ public final class Gandalf {
                     this.onUpdateSelectedListener = new PlayStoreUpdateListener(this.packageName);
                 }
 
-                HistoryChecker historyChecker = new DefaultHistoryChecker(this.context);
+                final HistoryChecker historyChecker = new DefaultHistoryChecker(this.context);
 
                 LoggerUtil.setLogLevel(logLevel);
 
-                gandalfInstance = createInstance(
-                        this.okHttpClient,
-                        this.bootstrapUrl,
-                        historyChecker,
-                        new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker),
-                        this.onUpdateSelectedListener,
-                        this.customDeserializer,
-                        this.dialogStringsHolder
-                );
+
+                Thread createGandalfInstance = new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        gandalfInstance = createInstance(
+                                okHttpClient,
+                                bootstrapUrl,
+                                historyChecker,
+                                new GateKeeper(context, new DefaultVersionChecker(), historyChecker),
+                                onUpdateSelectedListener,
+                                customDeserializer,
+                                dialogStringsHolder,
+                                context
+                        );
+                    }
+                });
+
+                createGandalfInstance.start();
+
+                try {
+                    createGandalfInstance.join();
+                } catch (InterruptedException e) {
+                    Log.e(Gandalf.class.getCanonicalName(), "Interrupt", e);
+                }
             }
         }
     }

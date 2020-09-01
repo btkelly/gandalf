@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 Bryan Kelly
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.
- *
+ * <p>
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -16,8 +16,9 @@
 package io.github.btkelly.gandalf.network;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
-import android.os.Looper;
+
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
@@ -27,11 +28,13 @@ import com.google.gson.JsonSyntaxException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 import io.github.btkelly.gandalf.models.Bootstrap;
 import io.github.btkelly.gandalf.models.BootstrapException;
 import io.github.btkelly.gandalf.models.BootstrapResponse;
+import io.github.btkelly.gandalf.utils.HandlerExecutor;
 import io.github.btkelly.gandalf.utils.StringUtils;
 import okhttp3.Cache;
 import okhttp3.Call;
@@ -52,6 +55,7 @@ public class BootstrapApi {
     private final JsonDeserializer<Bootstrap> customDeserializer;
     private final String bootStrapUrl;
     private final OkHttpClient okHttpClient;
+    private final Executor executor;
 
     /**
      * Creates a bootstrap api class
@@ -61,8 +65,14 @@ public class BootstrapApi {
      * @param bootStrapUrl       - url to fetch the bootstrap file from
      * @param customDeserializer - a custom deserializer for parsing the JSON response
      */
-    public BootstrapApi(Context context, @Nullable OkHttpClient okHttpClient, String bootStrapUrl,
-                        @Nullable JsonDeserializer<Bootstrap> customDeserializer) {
+    @SuppressWarnings("PMD.CloseResource")
+    public BootstrapApi(
+            Context context,
+            @Nullable OkHttpClient okHttpClient,
+            String bootStrapUrl,
+            @Nullable JsonDeserializer<Bootstrap> customDeserializer,
+            @Nullable Executor executor
+    ) {
         this.bootStrapUrl = bootStrapUrl;
         this.customDeserializer = customDeserializer;
 
@@ -77,6 +87,16 @@ public class BootstrapApi {
                     .build();
         } else {
             this.okHttpClient = okHttpClient;
+        }
+
+        if (executor == null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                this.executor = context.getMainExecutor();
+            } else {
+                this.executor = new HandlerExecutor(new Handler(context.getMainLooper()));
+            }
+        } else {
+            this.executor = executor;
         }
     }
 
@@ -119,7 +139,7 @@ public class BootstrapApi {
                     if (bootstrapResponse != null) {
                         final Bootstrap bootstrap = bootstrapResponse.getAndroid();
                         if (bootstrap != null) {
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            executor.execute(new Runnable() {
                                 @Override
                                 public void run() {
                                     bootstrapCallback.onSuccess(bootstrap);
@@ -139,7 +159,7 @@ public class BootstrapApi {
     }
 
     private void postError(final BootstrapCallback bootstrapCallback, final Exception e) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        executor.execute(new Runnable() {
             @Override
             public void run() {
                 bootstrapCallback.onError(e);

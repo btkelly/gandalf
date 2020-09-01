@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 Bryan Kelly
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.
- *
+ * <p>
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -17,6 +17,7 @@ package io.github.btkelly.gandalf.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import androidx.annotation.Nullable;
 
 /**
@@ -24,8 +25,27 @@ import androidx.annotation.Nullable;
  */
 public class Alert implements Parcelable {
 
+    public static final Parcelable.Creator<Alert> CREATOR = new Parcelable.Creator<Alert>() {
+        public Alert createFromParcel(Parcel source) {
+            return new Alert(source);
+        }
+
+        public Alert[] newArray(int size) {
+            return new Alert[size];
+        }
+    };
     private final String message;
     private final boolean blocking;
+
+    Alert(String message, boolean blocking) {
+        this.message = message;
+        this.blocking = blocking;
+    }
+
+    protected Alert(Parcel in) {
+        this.message = in.readString();
+        this.blocking = in.readByte() != 0;
+    }
 
     @Nullable
     public String getMessage() {
@@ -54,24 +74,4 @@ public class Alert implements Parcelable {
         dest.writeString(this.message);
         dest.writeByte(blocking ? (byte) 1 : (byte) 0);
     }
-
-    Alert(String message, boolean blocking) {
-        this.message = message;
-        this.blocking = blocking;
-    }
-
-    protected Alert(Parcel in) {
-        this.message = in.readString();
-        this.blocking = in.readByte() != 0;
-    }
-
-    public static final Parcelable.Creator<Alert> CREATOR = new Parcelable.Creator<Alert>() {
-        public Alert createFromParcel(Parcel source) {
-            return new Alert(source);
-        }
-
-        public Alert[] newArray(int size) {
-            return new Alert[size];
-        }
-    };
 }

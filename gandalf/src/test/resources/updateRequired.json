@@ -1,0 +1,8 @@
+{
+  "android": {
+    "requiredUpdate": {
+      "minimumVersion": "7",
+      "message": "A new version of the application is available and is required to continue, please click below to update to the latest version."
+    }
+  }
+}

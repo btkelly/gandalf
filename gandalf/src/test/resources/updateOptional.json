@@ -1,0 +1,8 @@
+{
+  "android": {
+    "optionalUpdate": {
+      "optionalVersion": "7",
+      "message": "A new version of the application is available, please click below to update to the latest version."
+    }
+  }
+}

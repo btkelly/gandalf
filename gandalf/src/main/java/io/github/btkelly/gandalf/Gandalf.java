@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 Bryan Kelly
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.
- *
+ * <p>
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -16,21 +16,24 @@
 package io.github.btkelly.gandalf;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.JsonDeserializer;
 
+import java.util.concurrent.Executor;
+
 import io.github.btkelly.gandalf.checker.DefaultHistoryChecker;
 import io.github.btkelly.gandalf.checker.DefaultVersionChecker;
 import io.github.btkelly.gandalf.checker.GateKeeper;
 import io.github.btkelly.gandalf.checker.HistoryChecker;
+import io.github.btkelly.gandalf.holders.DialogStringsHolder;
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.Bootstrap;
 import io.github.btkelly.gandalf.models.OptionalUpdate;
 import io.github.btkelly.gandalf.network.BootstrapApi;
 import io.github.btkelly.gandalf.network.BootstrapCallback;
-import io.github.btkelly.gandalf.holders.DialogStringsHolder;
 import io.github.btkelly.gandalf.utils.LoggerUtil;
 import io.github.btkelly.gandalf.utils.LoggerUtil.LogLevel;
 import io.github.btkelly.gandalf.utils.OnUpdateSelectedListener;
@@ -52,10 +55,18 @@ public final class Gandalf {
     private final OnUpdateSelectedListener onUpdateSelectedListener;
     private final JsonDeserializer<Bootstrap> customDeserializer;
     private final DialogStringsHolder dialogStringsHolder;
+    private final Executor callbackExecutor;
 
-    private Gandalf(OkHttpClient okHttpClient, String bootstrapUrl, HistoryChecker historyChecker, GateKeeper gateKeeper,
-                    OnUpdateSelectedListener onUpdateSelectedListener, JsonDeserializer<Bootstrap> customDeserializer,
-                    DialogStringsHolder dialogStringsHolder) {
+    private Gandalf(
+            OkHttpClient okHttpClient,
+            String bootstrapUrl,
+            HistoryChecker historyChecker,
+            GateKeeper gateKeeper,
+            OnUpdateSelectedListener onUpdateSelectedListener,
+            JsonDeserializer<Bootstrap> customDeserializer,
+            DialogStringsHolder dialogStringsHolder,
+            Executor callbackExecutor
+    ) {
         this.okHttpClient = okHttpClient;
         this.bootstrapUrl = bootstrapUrl;
         this.historyChecker = historyChecker;
@@ -63,6 +74,7 @@ public final class Gandalf {
         this.onUpdateSelectedListener = onUpdateSelectedListener;
         this.customDeserializer = customDeserializer;
         this.dialogStringsHolder = dialogStringsHolder;
+        this.callbackExecutor = callbackExecutor;
     }
 
     public static Gandalf get() {
@@ -81,14 +93,17 @@ public final class Gandalf {
                                           @NonNull final GateKeeper gateKeeper,
                                           @NonNull final OnUpdateSelectedListener onUpdateSelectedListener,
                                           @Nullable final JsonDeserializer<Bootstrap> customDeserializer,
-                                          @NonNull final DialogStringsHolder dialogStringsHolder) {
+                                          @NonNull final DialogStringsHolder dialogStringsHolder,
+                                          @Nullable final Executor callbackExecutor) {
         return new Gandalf(okHttpClient,
                 bootstrapUrl,
                 historyChecker,
                 gateKeeper,
                 onUpdateSelectedListener,
                 customDeserializer,
-                dialogStringsHolder);
+                dialogStringsHolder,
+                callbackExecutor
+        );
     }
 
     /**
@@ -131,11 +146,12 @@ public final class Gandalf {
      * @param context - Android context object
      * @param gandalfCallback - a callback interface to respond to events from the bootstrap check
      */
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void shallIPass(Context context, final GandalfCallback gandalfCallback) {
 
         LoggerUtil.logD("Fetching bootstrap");
 
-        new BootstrapApi(context, okHttpClient, bootstrapUrl, customDeserializer)
+        new BootstrapApi(context, okHttpClient, bootstrapUrl, customDeserializer, callbackExecutor)
                 .fetchBootstrap(new BootstrapCallback() {
 
                     @Override
@@ -143,20 +159,24 @@ public final class Gandalf {
 
                         LoggerUtil.logD("Fetched bootstrap: " + bootstrap);
 
-                        if (gateKeeper.updateIsRequired(bootstrap)) {
-                            LoggerUtil.logD("Update is required");
-                            gandalfCallback.onRequiredUpdate(bootstrap.getRequiredUpdate());
-                        } else if (gateKeeper.showAlert(bootstrap)) {
-                            LoggerUtil.logD("Alert");
-                            gandalfCallback.onAlert(bootstrap.getAlert());
-                        } else if (gateKeeper.updateIsOptional(bootstrap)) {
-                            LoggerUtil.logD("Update is optional");
-                            gandalfCallback.onOptionalUpdate(bootstrap.getOptionalUpdate());
-                        } else {
-                            LoggerUtil.logD("No action is required");
+                        try {
+                            if (gateKeeper.updateIsRequired(bootstrap)) {
+                                LoggerUtil.logD("Update is required");
+                                gandalfCallback.onRequiredUpdate(bootstrap.getRequiredUpdate());
+                            } else if (gateKeeper.showAlert(bootstrap)) {
+                                LoggerUtil.logD("Alert");
+                                gandalfCallback.onAlert(bootstrap.getAlert());
+                            } else if (gateKeeper.updateIsOptional(bootstrap)) {
+                                LoggerUtil.logD("Update is optional");
+                                gandalfCallback.onOptionalUpdate(bootstrap.getOptionalUpdate());
+                            } else {
+                                LoggerUtil.logD("No action is required");
+                                gandalfCallback.onNoActionRequired();
+                            }
+                        } catch (Exception e) {
+                            LoggerUtil.logE(e.getMessage());
                             gandalfCallback.onNoActionRequired();
                         }
-
                     }
 
                     @Override
@@ -179,9 +199,11 @@ public final class Gandalf {
         private String packageName;
         private OnUpdateSelectedListener onUpdateSelectedListener;
         private JsonDeserializer<Bootstrap> customDeserializer;
-        @LogLevel private int logLevel = LoggerUtil.NONE;
+        @LogLevel
+        private int logLevel = LoggerUtil.NONE;
 
         private DialogStringsHolder dialogStringsHolder;
+        private Executor callbackExecutor;
 
         public Installer setContext(Context context) {
             this.context = context;
@@ -223,6 +245,11 @@ public final class Gandalf {
             return this;
         }
 
+        public Installer setCallbackExecutor(Executor callbackExecutor) {
+            this.callbackExecutor = callbackExecutor;
+            return this;
+        }
+
         public void install() {
 
             synchronized (Gandalf.class) {
@@ -261,7 +288,8 @@ public final class Gandalf {
                         new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker),
                         this.onUpdateSelectedListener,
                         this.customDeserializer,
-                        this.dialogStringsHolder
+                        this.dialogStringsHolder,
+                        this.callbackExecutor
                 );
             }
         }

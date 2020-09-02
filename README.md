@@ -208,7 +208,7 @@ Included in the source is a simple example application showing four different la
 
 ## License
 
-Copyright 2016 Bryan Kelly
+Copyright 2020 Bryan Kelly
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
 use this file except in compliance with the License.

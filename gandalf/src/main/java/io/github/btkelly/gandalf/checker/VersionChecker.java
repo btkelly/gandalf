@@ -27,7 +27,8 @@ public interface VersionChecker {
 
     /**
      * Checks if the {@link RequiredUpdate} should be shown.
-     * @param requiredUpdate current required version information
+     *
+     * @param requiredUpdate    current required version information
      * @param appVersionDetails details about the current version of the install app
      * @return {@code true} if {@code requiredUpdate} should be shown
      */
@@ -35,7 +36,8 @@ public interface VersionChecker {
 
     /**
      * Checks if the {@link OptionalUpdate} should be shown.
-     * @param optionalUpdate current optional version information
+     *
+     * @param optionalUpdate    current optional version information
      * @param appVersionDetails details about the current version of the installed app
      * @return {@code true} if {@code optionalUpdate} should be shown
      */
@@ -43,6 +45,7 @@ public interface VersionChecker {
 
     /**
      * Checks if the {@link Alert} should be shown.
+     *
      * @param alert current alert information
      * @return {@code true} if {@code alert} should be shown
      */

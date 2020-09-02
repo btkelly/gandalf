@@ -52,6 +52,7 @@ public class GateKeeper {
 
     /**
      * Checks version of installed app against the {@link Bootstrap}.
+     *
      * @param bootstrap - provided version requirements
      * @return true if the app's version is lower than required
      */
@@ -64,6 +65,7 @@ public class GateKeeper {
 
     /**
      * Checks version of installed app against the {@link Bootstrap}.
+     *
      * @param bootstrap - provided version requirements
      * @return true if an update is available and hasn't been recorded in history
      */
@@ -77,6 +79,7 @@ public class GateKeeper {
 
     /**
      * Checks previously seen {@link Alert} against the {@link Bootstrap}
+     *
      * @param bootstrap - provided version requirements
      * @return true if alert has not been seen or is blocking
      */

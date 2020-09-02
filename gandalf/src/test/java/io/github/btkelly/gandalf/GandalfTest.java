@@ -46,11 +46,10 @@ import static org.mockito.MockitoAnnotations.initMocks;
 })
 public class GandalfTest {
 
-    private static final String MOCK_PACKAGE = "mock.package";
     public static final String VERSION_NAME = "1.2.3";
     public static final String ALERT_MESSAGE = "Alert Message";
     public static final String LATCH_TIMEOUT_MESSAGE = "Latch timeout";
-
+    private static final String MOCK_PACKAGE = "mock.package";
     private MockWebServer mockWebServer;
 
     @Mock

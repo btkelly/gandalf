@@ -32,7 +32,8 @@ public class DefaultVersionChecker implements VersionChecker {
     /**
      * Checks provided {@link RequiredUpdate} against {@link AppVersionDetails} of the currently installed
      * app.
-     * @param requiredUpdate current required version information
+     *
+     * @param requiredUpdate    current required version information
      * @param appVersionDetails details about the current version of the install app
      * @return {@code true} if app's version is less than the required version
      */
@@ -57,7 +58,8 @@ public class DefaultVersionChecker implements VersionChecker {
     /**
      * Checks provided {@link OptionalUpdate} against {@link AppVersionDetails} of the currently installed
      * app.
-     * @param optionalUpdate current optional version information
+     *
+     * @param optionalUpdate    current optional version information
      * @param appVersionDetails details about the current version of the installed app
      * @return {@code true} if app's version is behind the optional version
      */
@@ -80,6 +82,7 @@ public class DefaultVersionChecker implements VersionChecker {
 
     /**
      * Checks provided {@link Alert}.
+     *
      * @param alert current alert information
      * @return {@code true} if alert should block
      */

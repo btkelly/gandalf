@@ -28,6 +28,7 @@ public interface HistoryChecker {
 
     /**
      * Checks provided {@link Alert} against the last seen one.
+     *
      * @param alert item to compare against the history
      * @return {@code true} if provided alert matches the history
      */
@@ -35,6 +36,7 @@ public interface HistoryChecker {
 
     /**
      * Saves the provided {@link OptionalUpdate} to shared preferences.
+     *
      * @param optionalUpdate the provided current optional update information
      * @return {@code true} if {@code optionalUpdate} was successfully saved
      */
@@ -42,6 +44,7 @@ public interface HistoryChecker {
 
     /**
      * Checks provided {@link OptionalUpdate} against the last seen one.
+     *
      * @param optionalUpdate item to compare against the history
      * @return {@code true} if provided update matches the history
      */
@@ -49,6 +52,7 @@ public interface HistoryChecker {
 
     /**
      * Saves the provided {@link Alert} to shared preferences.
+     *
      * @param alert this should be the current alert
      * @return {@code true} if {@code alert} was successfully saved
      */

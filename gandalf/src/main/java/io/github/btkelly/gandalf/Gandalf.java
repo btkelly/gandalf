@@ -108,6 +108,7 @@ public final class Gandalf {
 
     /**
      * Returns the OnUpdateSelectedListener set during the Gandalf install
+     *
      * @return the onUpdateSelectedListener set during install
      */
     public OnUpdateSelectedListener getOnUpdateSelectedListener() {
@@ -116,6 +117,7 @@ public final class Gandalf {
 
     /**
      * Returns the DialogStringsHolder instance set during the Gandalf Install
+     *
      * @return the DialogStringsHolder instance set during install
      */
     public DialogStringsHolder getDialogStringsHolder() {
@@ -124,6 +126,7 @@ public final class Gandalf {
 
     /**
      * Saves the provided {@link OptionalUpdate} to the history checker.
+     *
      * @param optionalUpdate the provided current optional update information
      * @return {@code true} if {@code optionalUpdate} was successfully saved
      */
@@ -133,6 +136,7 @@ public final class Gandalf {
 
     /**
      * Saves the provided {@link Alert} to the history checker.
+     *
      * @param alert this should be the current alert
      * @return {@code true} if {@code alert} was successfully saved
      */
@@ -143,7 +147,7 @@ public final class Gandalf {
     /**
      * Starts the flow on checking a remote file and determining if any updates or alerts are available.
      *
-     * @param context - Android context object
+     * @param context         - Android context object
      * @param gandalfCallback - a callback interface to respond to events from the bootstrap check
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")

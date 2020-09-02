@@ -40,6 +40,7 @@ public final class LoggerUtil {
 
     /**
      * Set the maximum priority {@link io.github.btkelly.gandalf.utils.LoggerUtil.LogLevel}
+     *
      * @param level the maximum level that will be logged
      */
     public static void setLogLevel(@LogLevel final int level) {

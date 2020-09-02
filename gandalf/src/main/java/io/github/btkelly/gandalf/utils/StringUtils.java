@@ -28,7 +28,7 @@ public final class StringUtils {
      * Returns either the passed in CharSequence, or if the CharSequence is
      * whitespace, empty ("") or null, the value of defaultString.
      *
-     * @param <T> the specific kind of CharSequence
+     * @param <T>           the specific kind of CharSequence
      * @param primaryString the CharSequence to check, may be null
      * @param defaultString the default CharSequence to return
      * @return the passed in CharSequence, or the default

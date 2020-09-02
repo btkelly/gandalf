@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 Bryan Kelly
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.
- *
+ * <p>
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 import io.github.btkelly.gandalf.example.R;
@@ -111,7 +112,7 @@ public final class MockWebServerUtil {
         Writer writer = new StringWriter();
         char[] buffer = new char[1024];
 
-        Reader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        Reader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
         int bufferData;
 

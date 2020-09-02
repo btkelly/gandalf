@@ -45,6 +45,7 @@ public class DefaultHistoryChecker implements HistoryChecker {
 
     /**
      * Checks if the previous check matches the current {@link OptionalUpdate}.
+     *
      * @param optionalUpdate this should be the current optional update information
      * @return true if {@code optionalUpdate} matches the last viewed update to be recorded.
      */
@@ -57,6 +58,7 @@ public class DefaultHistoryChecker implements HistoryChecker {
 
     /**
      * Saves the provided {@link OptionalUpdate} to shared preferences.
+     *
      * @param optionalUpdate the provided current optional update information
      * @return {@code true} if {@code optionalUpdate} was successfully saved
      */
@@ -70,6 +72,7 @@ public class DefaultHistoryChecker implements HistoryChecker {
 
     /**
      * Checks if the provided {@link Alert} matches the last one to be seen.
+     *
      * @param alert the current optional update information
      * @return true if {@code alert} matches the last viewed alert to be recorded.
      */
@@ -82,6 +85,7 @@ public class DefaultHistoryChecker implements HistoryChecker {
 
     /**
      * Saves the provided {@link Alert} to shared preferences.
+     *
      * @param alert this should be the current alert
      * @return {@code true} if {@code alert} was successfully saved
      */

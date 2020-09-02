@@ -36,6 +36,10 @@
         android:title="@string/restart_with_required_update"
         app:showAsAction="never" />
     <item
+        android:id="@+id/menuResartInvalid"
+        android:title="@string/restart_with_invalid_version"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/menuResetState"
         android:title="@string/reset_state_and_restart"
         app:showAsAction="never" />

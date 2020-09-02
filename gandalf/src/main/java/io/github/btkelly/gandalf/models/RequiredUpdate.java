@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 Bryan Kelly
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.
- *
+ * <p>
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -17,6 +17,7 @@ package io.github.btkelly.gandalf.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import androidx.annotation.Nullable;
 
 /**
@@ -24,8 +25,27 @@ import androidx.annotation.Nullable;
  */
 public class RequiredUpdate implements Parcelable {
 
+    public static final Parcelable.Creator<RequiredUpdate> CREATOR = new Parcelable.Creator<RequiredUpdate>() {
+        public RequiredUpdate createFromParcel(Parcel source) {
+            return new RequiredUpdate(source);
+        }
+
+        public RequiredUpdate[] newArray(int size) {
+            return new RequiredUpdate[size];
+        }
+    };
     private final String minimumVersion;
     private final String message;
+
+    RequiredUpdate(String message, String minimumVersion) {
+        this.message = message;
+        this.minimumVersion = minimumVersion;
+    }
+
+    protected RequiredUpdate(Parcel in) {
+        this.minimumVersion = in.readString();
+        this.message = in.readString();
+    }
 
     @Nullable
     public String getMinimumVersion() {
@@ -55,24 +75,4 @@ public class RequiredUpdate implements Parcelable {
         dest.writeString(this.minimumVersion);
         dest.writeString(this.message);
     }
-
-    RequiredUpdate(String message, String minimumVersion) {
-        this.message = message;
-        this.minimumVersion = minimumVersion;
-    }
-
-    protected RequiredUpdate(Parcel in) {
-        this.minimumVersion = in.readString();
-        this.message = in.readString();
-    }
-
-    public static final Parcelable.Creator<RequiredUpdate> CREATOR = new Parcelable.Creator<RequiredUpdate>() {
-        public RequiredUpdate createFromParcel(Parcel source) {
-            return new RequiredUpdate(source);
-        }
-
-        public RequiredUpdate[] newArray(int size) {
-            return new RequiredUpdate[size];
-        }
-    };
 }

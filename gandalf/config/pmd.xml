@@ -100,4 +100,10 @@
         </properties>
     </rule>
 
+    <rule ref="category/java/codestyle.xml/TooManyStaticImports">
+        <properties>
+            <property name="maximumStaticImports" value="15" />
+        </properties>
+    </rule>
+
 </ruleset>

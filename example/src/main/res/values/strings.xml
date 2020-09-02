@@ -21,5 +21,6 @@
     <string name="restart_with_blocking_alert">Restart with blocking alert</string>
     <string name="restart_with_optional_update">Restart with optional update</string>
     <string name="restart_with_required_update">Restart with required update</string>
+    <string name="restart_with_invalid_version">Restart with invalid version</string>
     <string name="reset_state_and_restart">Reset state and restart</string>
 </resources>

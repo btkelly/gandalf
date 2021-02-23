@@ -28,6 +28,7 @@ import io.github.btkelly.gandalf.checker.DefaultHistoryChecker;
 import io.github.btkelly.gandalf.checker.DefaultVersionChecker;
 import io.github.btkelly.gandalf.checker.GateKeeper;
 import io.github.btkelly.gandalf.checker.HistoryChecker;
+import io.github.btkelly.gandalf.checker.VersionChecker;
 import io.github.btkelly.gandalf.holders.DialogStringsHolder;
 import io.github.btkelly.gandalf.models.Alert;
 import io.github.btkelly.gandalf.models.Bootstrap;
@@ -208,6 +209,8 @@ public final class Gandalf {
 
         private DialogStringsHolder dialogStringsHolder;
         private Executor callbackExecutor;
+        private HistoryChecker historyChecker;
+        private VersionChecker versionChecker;
 
         public Installer setContext(Context context) {
             this.context = context;
@@ -254,6 +257,16 @@ public final class Gandalf {
             return this;
         }
 
+        public Installer setHistoryChecker(HistoryChecker historyChecker) {
+            this.historyChecker = historyChecker;
+            return this;
+        }
+
+        public Installer setVersionChecker(VersionChecker versionChecker) {
+            this.versionChecker = versionChecker;
+            return this;
+        }
+
         public void install() {
 
             synchronized (Gandalf.class) {
@@ -281,15 +294,21 @@ public final class Gandalf {
                     this.onUpdateSelectedListener = new PlayStoreUpdateListener(this.packageName);
                 }
 
-                HistoryChecker historyChecker = new DefaultHistoryChecker(this.context);
+                if (this.historyChecker == null) {
+                    this.historyChecker = new DefaultHistoryChecker(this.context);
+                }
+
+                if (this.versionChecker == null) {
+                    this.versionChecker = new DefaultVersionChecker();
+                }
 
                 LoggerUtil.setLogLevel(logLevel);
 
                 gandalfInstance = createInstance(
                         this.okHttpClient,
                         this.bootstrapUrl,
-                        historyChecker,
-                        new GateKeeper(this.context, new DefaultVersionChecker(), historyChecker),
+                        this.historyChecker,
+                        new GateKeeper(this.context, this.versionChecker, this.historyChecker),
                         this.onUpdateSelectedListener,
                         this.customDeserializer,
                         this.dialogStringsHolder,
